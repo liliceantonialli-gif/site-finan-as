@@ -1,0 +1,46 @@
+FICHA DA AULA — M.A. CONSULTORIA (Gestão Orçamentária)
+Preenchida em 30/09/2026 · substitua o que estiver entre [ ] antes de colar no código
+
+Nome do negócio
+M.A. Consultoria
+
+Tom de voz
+Sóbrio e acolhedor: linguagem simples, sem jargão, sem julgamento e sem promessa de enriquecimento.
+
+O que você faz e para quem
+Ajudo famílias e profissionais liberais a organizar o orçamento da casa com um método que fecha ao centavo com o extrato e a fatura. Em poucos encontros online, monto tudo com o cliente, na conta dele, e ensino a rotina de 30 minutos por mês — depois ele segue sozinho, sem que eu tenha acesso aos seus dados bancários.
+
+Serviços
+Conversa inicial — bate-papo online de 30 minutos para entender a rotina da casa e indicar o pacote certo — gratuito — agendamento em até 3 dias úteis [CONFIRMAR]
+Kit gratuito — guia do método em PDF, planilha-modelo e prompts para quem quer tentar sozinho — gratuito — envio por e-mail no mesmo dia
+Implantação Essencial — para 1 banco e até 2 cartões: montagem, 2 fechamentos acompanhados e suporte por mensagem por 60 dias — R$ 1.490 [CONFIRMAR] — cerca de 2 meses
+Implantação Completa — para vários bancos e cartões, parcelamentos e despesas divididas: montagem, 3 fechamentos acompanhados, revisão de metas e suporte por 90 dias — R$ 2.490 [CONFIRMAR] — cerca de 3 meses
+Profissionais liberais (casa + consultório/PJ) — separa pró-labore, conta da empresa e orçamento da casa — sob consulta — prazo definido na conversa inicial
+Sessão avulsa — 1 hora online para revisão, dúvidas ou quando o mês não fecha — R$ 250 [CONFIRMAR] — agendamento em até 5 dias úteis [CONFIRMAR]
+
+Formas de pagamento
+Pix ou cartão; implantação em 50% na contratação e 50% após o primeiro fechamento, ou em até 3x [CONFIRMAR]
+
+Dias e horário de atendimento
+Segunda a sexta, das 9h às 18h, atendimento 100% online [CONFIRMAR]
+
+Contato para fechar negócio
+WhatsApp [PREENCHER (00) 00000-0000] · e-mail [PREENCHER]
+
+Perguntas frequentes
+Vocês acessam minha conta bancária? Não. Tudo é criado no seu nome e fica no seu computador; nos encontros você compartilha a tela e eu oriento. Não peço senha, extrato nem acesso ao seu banco.
+Preciso saber Excel? Não. A inteligência artificial organiza os lançamentos; o seu papel é dizer o que cada gasto é.
+Vou pagar mensalidade? Não. A implantação tem preço fechado. Depois, só se quiser, existe a sessão avulsa.
+Tenho outros custos? Sim: uma assinatura de IA no seu nome (cerca de US$ 20/mês). A conexão automática com o banco é opcional.
+Quanto tempo por mês depois de pronto? Cerca de 30 minutos, no dia do vencimento da fatura.
+Funciona para casal com contas separadas? Sim, e é recomendado incluir as contas e cartões dos dois.
+Atende médicos e quem tem consultório? Sim, com escopo próprio para separar a empresa e a casa. O valor é definido na conversa inicial.
+Atende fora da minha cidade? Sim, todos os atendimentos são online.
+É consultoria de investimentos? Não. O serviço organiza e controla o orçamento; não indico investimentos.
+Posso testar antes? Sim, baixe o kit gratuito e tente sozinho.
+
+Endereço do seu site
+[PREENCHER — aparece em Settings → Pages depois de publicar. Ex.: https://seu-usuario.github.io/seu-repositorio/]
+
+Endereço do seu Worker
+[PREENCHER — você recebe no passo 2. Termina em .workers.dev. Ex.: https://agente-vendas.seu-subdominio.workers.dev]
