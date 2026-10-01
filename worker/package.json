@@ -1,0 +1,11 @@
+{
+  "name": "agente-vendas",
+  "private": true,
+  "description": "Assistente de chat do site da M.A. Consultoria (Cloudflare Worker)",
+  "scripts": {
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.145.0"
+  }
+}
