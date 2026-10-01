@@ -32,6 +32,7 @@ body {
   background: var(--cor-creme);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip; /* impede rolagem lateral no celular */
 }
 
 img { max-width: 100%; display: block; }
@@ -566,6 +567,14 @@ button { font-family: inherit; cursor: pointer; }
 .mensagem-formulario[data-estado="sucesso"] { color: var(--cor-verde-fechou); }
 .mensagem-formulario[data-estado="erro"] { color: #B3261E; }
 
+/* ---------- pré-formulário ---------- */
+.campo-opcoes { border: 0; padding: 0; margin: 0; }
+.campo-opcoes legend { font-weight: 600; font-size: 0.92rem; margin-bottom: 0.4rem; padding: 0; }
+.campo-opcoes label { display: flex; gap: 0.55rem; align-items: center; font-weight: 400; font-size: 0.95rem; cursor: pointer; }
+.campo-opcoes input { width: 1.05rem; height: 1.05rem; accent-color: var(--cor-azul-marinho); }
+.opcional { font-weight: 400; color: var(--cor-cinza-texto); font-size: 0.85em; }
+.nota-formulario { font-size: 0.88rem; color: var(--cor-cinza-texto); border-left: 3px solid var(--cor-laranja); padding-left: 0.8rem; }
+
 /* ---------- rodapé ---------- */
 .rodape {
   background: var(--cor-azul-marinho);
@@ -620,10 +629,11 @@ button { font-family: inherit; cursor: pointer; }
     padding: 1.5rem 1.25rem;
     gap: 1.2rem;
     transform: translateX(100%);
-    transition: transform 0.25s ease;
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0.25s;
     overflow-y: auto;
   }
-  .menu-principal.menu-aberto { transform: translateX(0); }
+  .menu-principal.menu-aberto { transform: translateX(0); visibility: visible; }
   .botao-menu-mobile { display: block; }
 
   .hero .container { grid-template-columns: 1fr; }

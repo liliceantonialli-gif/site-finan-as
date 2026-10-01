@@ -1,0 +1,9 @@
+# Configuração do assistente de chat (Cloudflare Worker "agente-vendas").
+# O nome abaixo precisa ser igual ao nome do Worker no painel da Cloudflare.
+name = "agente-vendas"
+main = "index.js"
+compatibility_date = "2026-09-01"
+
+# Acesso aos modelos de IA da Cloudflare (Workers AI)
+[ai]
+binding = "AI"

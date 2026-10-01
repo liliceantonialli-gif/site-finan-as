@@ -41,8 +41,8 @@
         <h1>Organize uma vez. Siga sozinha.</h1>
         <p class="hero__subtitulo">Implantação guiada do orçamento da sua família: em poucos encontros, você sai com uma planilha que fecha ao centavo, um painel claro e a rotina para continuar sem depender de ninguém.</p>
         <div class="grupo-botoes">
-          <a href="#contato" class="botao botao--principal">Agendar conversa gratuita</a>
-          <a href="#contato" class="botao botao--secundario">Baixar o kit gratuito</a>
+          <a href="#contato" class="botao botao--principal">Agendar conversa gratuita de 10 min</a>
+          <a href="https://wa.me/5511994290680?text=Ol%C3%A1%2C%20Maria%20Alice!%20Quero%20receber%20o%20kit%20gratuito%20de%20or%C3%A7amento%20familiar." target="_blank" rel="noopener" class="botao botao--secundario">Pedir o kit gratuito</a>
         </div>
       </div>
       <div class="hero__imagem">
@@ -140,7 +140,7 @@
       <div class="passos">
         <div class="passo">
           <h4>Conversa inicial gratuita</h4>
-          <p>30 minutos para entender a rotina da casa, quantos bancos e cartões entram e qual pacote faz sentido.</p>
+          <p>10 minutos para entender a rotina da casa, quantos bancos e cartões entram e qual pacote faz sentido. Antes, você responde um pré-formulário de 2 minutos.</p>
         </div>
         <div class="passo">
           <h4>Montagem</h4>
@@ -249,7 +249,7 @@
             <li>Prompts prontos</li>
             <li>Envio por e-mail no mesmo dia</li>
           </ul>
-          <a href="#contato" class="botao botao--secundario">Quero o kit gratuito</a>
+          <a href="https://wa.me/5511994290680?text=Ol%C3%A1%2C%20Maria%20Alice!%20Quero%20receber%20o%20kit%20gratuito%20de%20or%C3%A7amento%20familiar." target="_blank" rel="noopener" class="botao botao--secundario">Quero o kit gratuito</a>
         </div>
 
         <div class="cartao-pacote cartao-pacote--destaque">
@@ -263,7 +263,7 @@
             <li>Suporte por mensagem por 60 dias</li>
             <li>Prazo total: cerca de 2 meses</li>
           </ul>
-          <a href="#contato" class="botao botao--principal">Agendar conversa gratuita</a>
+          <a href="#contato" class="botao botao--principal">Agendar conversa gratuita de 10 min</a>
         </div>
 
         <div class="cartao-pacote">
@@ -407,49 +407,98 @@
     </div>
   </section>
 
-  <!-- CHAMADA FINAL + FORMULÁRIO -->
+  <!-- CHAMADA FINAL + PRÉ-FORMULÁRIO -->
   <section class="secao secao--final" id="contato">
     <div class="container">
       <div class="grade-final">
         <div>
           <span class="rotulo">Vamos conversar?</span>
-          <h2>Agende uma conversa inicial gratuita de 30 minutos</h2>
-          <p>Conte um pouco da rotina da sua casa e a Maria Alice indica o pacote certo para você. Se preferir, peça o kit gratuito e comece sozinha.</p>
+          <h2>Conte sua situação em 2 minutos e agende uma conversa de 10</h2>
+          <p>Responda o pré-formulário ao lado. Ao enviar, o seu WhatsApp abre com as respostas já escritas — é só tocar em enviar. Assim a Maria Alice chega na conversa de 10 minutos sabendo da sua rotina e já indica o pacote certo.</p>
           <ul class="lista-entrega">
-            <li>Atendimento 100% online, para todo o Brasil.</li>
-            <li>Segunda a sexta, das 9h às 18h. <span style="color:var(--cor-cinza-texto);">[PREENCHER — confirmar horário]</span></li>
-            <li>WhatsApp: <span style="color:var(--cor-cinza-texto);">[PREENCHER]</span></li>
-            <li>E-mail: <span style="color:var(--cor-cinza-texto);">[PREENCHER]</span></li>
+            <li>Conversa gratuita, 100% online, para todo o Brasil.</li>
+            <li>Segunda a sexta, das 9h às 18h.</li>
+            <li>WhatsApp: <a href="https://wa.me/5511994290680" target="_blank" rel="noopener">(11) 99429-0680</a></li>
+            <li>E-mail: <a href="mailto:lilice.antonialli@gmail.com">lilice.antonialli@gmail.com</a></li>
           </ul>
+          <p class="nota-formulario">Não pedimos valores, renda, senhas nem dados bancários. As respostas não ficam guardadas neste site: vão direto do seu WhatsApp para o da Maria Alice.</p>
         </div>
 
-        <form class="formulario-contato" id="formulario-contato" action="[PREENCHER — endpoint do Formspree ou Web3Forms]" method="POST">
+        <form class="formulario-contato" id="formulario-contato" novalidate>
           <div class="campo-formulario">
-            <label for="campo-nome">Nome</label>
-            <input type="text" id="campo-nome" name="nome" autocomplete="name" required>
+            <label for="campo-nome">Seu nome</label>
+            <input type="text" id="campo-nome" name="nome" autocomplete="given-name" required>
           </div>
           <div class="campo-formulario">
-            <label for="campo-contato">WhatsApp ou e-mail</label>
-            <input type="text" id="campo-contato" name="contato" autocomplete="email" required>
+            <label for="campo-cidade">Cidade/UF <span class="opcional">(opcional)</span></label>
+            <input type="text" id="campo-cidade" name="cidade" autocomplete="address-level2">
           </div>
           <div class="campo-formulario">
             <label for="campo-perfil">O orçamento é</label>
             <select id="campo-perfil" name="perfil" required>
               <option value="">Selecione</option>
-              <option value="individual">Só meu</option>
-              <option value="casal">Do casal</option>
-              <option value="pj">Tenho empresa ou consultório junto</option>
+              <option>Só meu</option>
+              <option>Do casal</option>
+              <option>Tem empresa ou consultório junto</option>
             </select>
           </div>
           <div class="campo-formulario">
-            <label for="campo-dor">O que mais te incomoda hoje no dinheiro da casa?</label>
-            <textarea id="campo-dor" name="dor" required></textarea>
+            <label for="campo-contas">Contas e cartões, somando todos</label>
+            <select id="campo-contas" name="contas" required>
+              <option value="">Selecione</option>
+              <option>1 a 2</option>
+              <option>3 a 5</option>
+              <option>Mais de 5</option>
+            </select>
+          </div>
+          <fieldset class="campo-formulario campo-opcoes">
+            <legend>O que mais te incomoda hoje? <span class="opcional">(pode marcar mais de um)</span></legend>
+            <label><input type="checkbox" name="dor" value="Falta dinheiro no fim do mês"> Falta dinheiro no fim do mês</label>
+            <label><input type="checkbox" name="dor" value="Não sei para onde vai o dinheiro"> Não sei para onde vai o dinheiro</label>
+            <label><input type="checkbox" name="dor" value="Susto com a fatura do cartão"> Susto com a fatura do cartão</label>
+            <label><input type="checkbox" name="dor" value="Muitas parcelas"> Muitas parcelas</label>
+            <label><input type="checkbox" name="dor" value="Misturo empresa e casa"> Misturo empresa e casa</label>
+            <label><input type="checkbox" name="dor" value="Desencontro com quem divide o dinheiro"> Desencontro com quem divide o dinheiro</label>
+          </fieldset>
+          <div class="campo-formulario">
+            <label for="campo-tentou">Já tentou organizar antes?</label>
+            <select id="campo-tentou" name="tentou">
+              <option value="">Selecione</option>
+              <option>Nunca tentei</option>
+              <option>Tentei planilha</option>
+              <option>Tentei aplicativo</option>
+              <option>Tentei planilha e aplicativo</option>
+            </select>
+          </div>
+          <div class="campo-formulario">
+            <label for="campo-origem">Como conheceu a M.A.?</label>
+            <select id="campo-origem" name="origem">
+              <option value="">Selecione</option>
+              <option>Instagram</option>
+              <option>Indicação</option>
+              <option>Google</option>
+              <option>Curso ou palestra</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="campo-formulario">
+            <label for="campo-horario">Melhor horário para a conversa de 10 minutos</label>
+            <select id="campo-horario" name="horario" required>
+              <option value="">Selecione</option>
+              <option>Manhã (9h às 12h)</option>
+              <option>Tarde (12h às 18h)</option>
+              <option>Tanto faz</option>
+            </select>
+          </div>
+          <div class="campo-formulario">
+            <label for="campo-obs">Quer contar mais alguma coisa? <span class="opcional">(opcional)</span></label>
+            <textarea id="campo-obs" name="obs" maxlength="500" placeholder="Ex.: queremos parar de discutir sobre a fatura do cartão. Não precisa informar valores."></textarea>
           </div>
           <div class="campo-consentimento">
             <input type="checkbox" id="campo-consentimento" name="consentimento" required>
-            <label for="campo-consentimento">Autorizo a M.A. Consultoria a usar meu nome e contato apenas para retornar esta conversa, conforme a <a href="privacidade.html">política de privacidade</a>.</label>
+            <label for="campo-consentimento">Autorizo a M.A. Consultoria a usar estas respostas apenas para retornar o contato, conforme a <a href="privacidade.html">política de privacidade</a>.</label>
           </div>
-          <button type="submit" class="botao botao--principal">Quero agendar a conversa gratuita</button>
+          <button type="submit" class="botao botao--principal">Enviar pelo WhatsApp</button>
           <p class="mensagem-formulario" id="mensagem-formulario" role="status"></p>
         </form>
       </div>
@@ -463,16 +512,14 @@
     <div class="rodape__grade">
       <div class="rodape__logo">
         <img src="imagens/01_logo_MA_fundo_azul_marinho.jpg" alt="M.A. Consultoria">
-        <p>M.A. Estratégia &amp; Negócios <span style="opacity:0.7;">[CONFIRMAR grafia exata e tipo societário]</span></p>
+        <p>M.A. Estratégia &amp; Negócios</p>
       </div>
       <div>
         <h4>Contato</h4>
         <ul>
-          <li>WhatsApp: [PREENCHER]</li>
-          <li>E-mail: [PREENCHER]</li>
-          <li>Instagram: [PREENCHER]</li>
-          <li>LinkedIn: [PREENCHER]</li>
-          <li>Cidade/UF: [PREENCHER]</li>
+          <li>WhatsApp: <a href="https://wa.me/5511994290680" target="_blank" rel="noopener">(11) 99429-0680</a></li>
+          <li>E-mail: <a href="mailto:lilice.antonialli@gmail.com">lilice.antonialli@gmail.com</a></li>
+          <li>Atendimento online para todo o Brasil</li>
         </ul>
       </div>
       <div>
@@ -492,7 +539,7 @@
     </div>
     <div class="rodape__aviso">
       <p>Este trabalho é a implantação de um método de organização de dados financeiros que o próprio cliente controla. Não constitui recomendação de investimento, consultoria de valores mobiliários nem assessoria tributária. A M.A. Consultoria não armazena dados bancários de clientes.</p>
-      <p>&copy; <span id="ano-atual">2026</span> M.A. Consultoria. Todos os direitos reservados. CNPJ: [PREENCHER]</p>
+      <p>&copy; <span id="ano-atual">2026</span> M.A. Consultoria. Todos os direitos reservados.</p>
     </div>
   </div>
 </footer>

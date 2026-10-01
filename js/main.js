@@ -28,44 +28,59 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Envio do formulário de contato
+  // Pré-formulário: monta a mensagem e abre o WhatsApp da pessoa com as respostas.
+  // Nada é enviado para servidor nenhum — quem envia é a própria pessoa, pelo WhatsApp dela.
+  var WHATSAPP = '5511994290680';
   var formulario = document.getElementById('formulario-contato');
   var mensagem = document.getElementById('mensagem-formulario');
 
   if (formulario && mensagem) {
     formulario.addEventListener('submit', function (evento) {
-      var destino = formulario.getAttribute('action') || '';
+      evento.preventDefault();
 
-      // Enquanto o endpoint não for configurado, avisa em vez de tentar enviar.
-      if (destino.indexOf('[PREENCHER') !== -1 || destino === '') {
-        evento.preventDefault();
-        mensagem.textContent = 'Formulário ainda não está conectado a um serviço de envio. Fale pelo WhatsApp enquanto isso.';
-        mensagem.setAttribute('data-estado', 'erro');
-        return;
+      var obrigatorios = formulario.querySelectorAll('[required]');
+      for (var i = 0; i < obrigatorios.length; i++) {
+        var campo = obrigatorios[i];
+        var vazio = campo.type === 'checkbox' ? !campo.checked : !campo.value.trim();
+        if (vazio) {
+          mensagem.textContent = campo.type === 'checkbox'
+            ? 'Marque a autorização para podermos retornar o contato.'
+            : 'Falta preencher um campo obrigatório.';
+          mensagem.setAttribute('data-estado', 'erro');
+          campo.focus();
+          return;
+        }
       }
 
-      evento.preventDefault();
-      mensagem.textContent = 'Enviando...';
-      mensagem.removeAttribute('data-estado');
+      function valor(nome) {
+        var el = formulario.elements[nome];
+        return el && el.value ? el.value.trim() : '';
+      }
+      var dores = Array.prototype.map.call(
+        formulario.querySelectorAll('input[name="dor"]:checked'),
+        function (el) { return el.value; }
+      );
 
-      fetch(destino, {
-        method: 'POST',
-        body: new FormData(formulario),
-        headers: { 'Accept': 'application/json' }
-      })
-        .then(function (resposta) {
-          if (resposta.ok) {
-            mensagem.textContent = 'Recebemos seus dados! A Maria Alice vai te chamar em breve.';
-            mensagem.setAttribute('data-estado', 'sucesso');
-            formulario.reset();
-          } else {
-            throw new Error('Falha no envio');
-          }
-        })
-        .catch(function () {
-          mensagem.textContent = 'Não foi possível enviar agora. Tente novamente ou fale pelo WhatsApp.';
-          mensagem.setAttribute('data-estado', 'erro');
-        });
+      var linhas = [
+        'Olá, Maria Alice! Preenchi o pré-formulário do site da M.A. Consultoria:',
+        '',
+        '• Nome: ' + valor('nome'),
+        valor('cidade') ? '• Cidade: ' + valor('cidade') : '',
+        '• Orçamento: ' + valor('perfil'),
+        '• Contas e cartões: ' + valor('contas'),
+        dores.length ? '• O que mais incomoda: ' + dores.join('; ') : '',
+        valor('tentou') ? '• Já tentou: ' + valor('tentou') : '',
+        valor('origem') ? '• Conheci a M.A. por: ' + valor('origem') : '',
+        '• Melhor horário para a conversa de 10 min: ' + valor('horario'),
+        valor('obs') ? '• Mais: ' + valor('obs') : ''
+      ].filter(function (l, idx) { return l !== '' || idx === 1; });
+
+      var link = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(linhas.join('\n'));
+      var janela = window.open(link, '_blank', 'noopener');
+      if (!janela) { window.location.href = link; }
+
+      mensagem.innerHTML = 'Abrimos o seu WhatsApp com as respostas — é só tocar em <strong>enviar</strong>. Não abriu? <a href="' + link + '" target="_blank" rel="noopener">Clique aqui</a>.';
+      mensagem.setAttribute('data-estado', 'sucesso');
     });
   }
 });
