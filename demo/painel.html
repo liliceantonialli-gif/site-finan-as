@@ -305,6 +305,9 @@ tr.tt td{color:var(--muted);font-style:italic}
 .ma-back{color:var(--nav-ink);text-decoration:none;font-size:13px}.ma-back:hover{color:var(--nav-hi)}
 .ma-top{display:none;text-decoration:none;background:#EF7420;border-color:#EF7420;color:#17263D}
 @media (max-width:900px){.ma-top{display:inline-flex}}
+.nota-demo{border-color:color-mix(in srgb,var(--gold) 45%,var(--line));background:color-mix(in srgb,var(--gold) 6%,var(--surface))}
+.nota-demo h3{font-size:15.5px;margin:4px 0 6px}
+.nota-demo p{margin:0 0 6px}.nota-demo ul{margin:0 0 6px;padding-left:18px}.nota-demo li{margin:2px 0}
 @media (prefers-reduced-motion:reduce){.msg .state::before{animation:none}}
 </style>
 
@@ -454,7 +457,7 @@ tr.tt td{color:var(--muted);font-style:italic}
         <div class="askwrap">
           <div class="card chat">
             <div class="log" id="log" aria-live="polite">
-              <div class="hello" id="hello"><span class="ic"><svg class="i" style="width:24px;height:24px"><use href="#i-chat"/></svg></span><h3>Pergunte do seu jeito</h3><p>O assistente consulta os lançamentos conciliados desta família fictícia e responde com os números, seguindo as regras do método.</p></div>
+              <div class="hello" id="hello"><span class="ic"><svg class="i" style="width:24px;height:24px"><use href="#i-chat"/></svg></span><h3>Pergunte do seu jeito</h3><p>O assistente consulta os lançamentos conciliados desta família fictícia e responde com os números, seguindo as regras do método.</p><p class="fine" style="margin-top:6px">Versão de demonstração: respostas mais simples que no painel completo.</p></div>
             </div>
             <form class="composer" id="askForm">
               <label for="q" hidden>Sua pergunta</label>
@@ -464,13 +467,26 @@ tr.tt td{color:var(--muted);font-style:italic}
             </form>
           </div>
           <div class="side-ask">
+            <div class="card nota-demo">
+              <span class="eyebrow">Esta é uma demonstração</span>
+              <h3>No painel da sua família, as perguntas vão além</h3>
+              <p class="fine">Aqui as respostas usam um assistente gratuito e só os dados fictícios desta família, por isso são mais simples e têm limite diário de uso.</p>
+              <p class="fine">Na implantação, as perguntas são respondidas pelo Claude, na sua própria conta, com:</p>
+              <ul class="fine">
+                <li>todo o histórico da sua família, mês a mês;</li>
+                <li>as regras que só a sua casa tem (rateios, reembolsos, empresa ou consultório);</li>
+                <li>respostas mais detalhadas, comparações e sugestões de ajuste.</li>
+              </ul>
+              <a class="ma-cta" href="../index.html#contato" style="margin-top:6px">Quero o painel da minha família</a>
+            </div>
             <div class="card"><h3>Sugestões</h3><div id="sugs"></div></div>
             <div class="card">
-              <h3>Resposta</h3>
+              <h3>Período das perguntas</h3>
               
-              <p class="fine">"Neste período" = <b id="askPer"></b>, o período escolhido no topo.</p>
-              <p class="fine" style="margin-top:8px" id="askNote">Demonstração: as respostas usam só os dados fictícios deste painel. No painel da sua família, as perguntas são sobre os seus números.</p>
+              <p class="fine">Período escolhido: <b id="askPer"></b>.</p>
+              <p class="fine" id="askNote" style="margin-top:2px">"Neste período" segue o período escolhido no topo.</p>
             </div>
+            
           </div>
         </div>
       </section>
