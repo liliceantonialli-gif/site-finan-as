@@ -55,9 +55,66 @@ document.addEventListener('DOMContentLoaded', function () {
     mostrar(abas[0]);
   }
 
+  var WHATSAPP = '5511994290680';
+
+  // Kit gratuito: abre o formulário curto e envia o pedido pelo WhatsApp da pessoa.
+  // Nada fica guardado no site.
+  var dialogoKit = document.getElementById('dialogo-kit');
+  var formKit = document.getElementById('formulario-kit');
+  var msgKit = document.getElementById('mensagem-kit');
+  if (dialogoKit && formKit) {
+    document.querySelectorAll('[data-abrir-kit]').forEach(function (botao) {
+      botao.addEventListener('click', function () {
+        msgKit.textContent = '';
+        msgKit.removeAttribute('data-estado');
+        if (typeof dialogoKit.showModal === 'function') { dialogoKit.showModal(); }
+        else { dialogoKit.setAttribute('open', ''); }
+        document.getElementById('kit-nome').focus();
+      });
+    });
+    dialogoKit.querySelectorAll('[data-fechar-kit]').forEach(function (b) {
+      b.addEventListener('click', function () { dialogoKit.close ? dialogoKit.close() : dialogoKit.removeAttribute('open'); });
+    });
+    // fecha ao clicar fora do cartão
+    dialogoKit.addEventListener('click', function (e) { if (e.target === dialogoKit && dialogoKit.close) dialogoKit.close(); });
+
+    formKit.addEventListener('submit', function (evento) {
+      evento.preventDefault();
+      var nome = formKit.elements.nome.value.trim();
+      var email = formKit.elements.email.value.trim();
+      var whats = formKit.elements.whatsapp.value.trim();
+      var digitos = whats.replace(/\D/g, '');
+      var erro = null, campo = null;
+      if (!nome) { erro = 'Escreva o seu nome.'; campo = formKit.elements.nome; }
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { erro = 'Confira o e-mail: é para ele que o kit vai.'; campo = formKit.elements.email; }
+      else if (digitos.length < 10 || digitos.length > 13) { erro = 'Confira o WhatsApp, com DDD.'; campo = formKit.elements.whatsapp; }
+      if (erro) {
+        msgKit.textContent = erro;
+        msgKit.setAttribute('data-estado', 'erro');
+        campo.focus();
+        return;
+      }
+      var autorizou = formKit.elements.consentimento.checked;
+      var texto = [
+        'Olá, Maria Alice! Quero receber o kit gratuito.',
+        '',
+        '• Nome: ' + nome,
+        '• E-mail: ' + email,
+        '• WhatsApp: ' + whats,
+        autorizou
+          ? '• Autorizo a M.A. Consultoria a me enviar conteúdos. Posso sair da lista quando quiser.'
+          : '• Quero só o kit, sem receber outros conteúdos.'
+      ].join('\n');
+      var link = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(texto);
+      var janela = window.open(link, '_blank', 'noopener');
+      if (!janela) { window.location.href = link; }
+      msgKit.innerHTML = 'Abrimos o seu WhatsApp com o pedido: é só tocar em <strong>enviar</strong>. Não abriu? <a href="' + link + '" target="_blank" rel="noopener">Clique aqui</a>.';
+      msgKit.setAttribute('data-estado', 'sucesso');
+    });
+  }
+
   // Pré-formulário: monta a mensagem e abre o WhatsApp da pessoa com as respostas.
   // Nada é enviado para servidor nenhum — quem envia é a própria pessoa, pelo WhatsApp dela.
-  var WHATSAPP = '5511994290680';
   var formulario = document.getElementById('formulario-contato');
   var mensagem = document.getElementById('mensagem-formulario');
 

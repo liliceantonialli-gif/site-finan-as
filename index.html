@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261004b">
+<link rel="stylesheet" href="css/style.css?v=20261004c">
 </head>
 <body>
 
@@ -22,7 +22,7 @@
       <a href="#como-funciona">Como funciona</a>
       <a href="#galeria">Demonstração</a>
       <a href="#quem-sou">Quem sou</a>
-      <a href="#pacotes">Pacotes</a>
+      <a href="#pacotes">Preços</a>
       <a href="#faq">Dúvidas</a>
       <a href="#contato" class="botao botao--principal">Agendar conversa</a>
     </nav>
@@ -290,69 +290,83 @@
   <!-- PACOTES E PREÇOS -->
   <section class="secao" id="pacotes">
     <div class="container">
-      <div class="secao__cabecalho">
-        <span class="rotulo">Pacotes e preços</span>
-        <h2>Preço fechado, sem mensalidade</h2>
-        <p>Na conversa de 10 minutos, indico o pacote que combina com a rotina da sua casa.</p>
-      </div>
+      <div class="escada">
+        <div class="secao__cabecalho escada__cabecalho">
+          <span class="rotulo">Pacotes e preços</span>
+          <h2>Três degraus, no seu ritmo</h2>
+          <p>Comece de graça, monte por conta própria ou faça comigo. Você sobe o degrau que fizer sentido para a sua casa.</p>
+          <p class="escada__ajuda">Na dúvida, a <a href="#contato">conversa gratuita de 10 minutos</a> ajuda a escolher.</p>
+        </div>
 
-      <div class="grade-pacotes">
-        <div class="cartao-pacote cartao-pacote--destaque">
-          <span class="cartao-pacote__perfil">1 banco e até 2 cartões</span>
-          <h3>Implantação Essencial</h3>
-          <div class="cartao-pacote__preco">R$ 1.490</div>
-          <p>Para a casa com rotina mais simples, em que quase tudo passa por uma conta e um ou dois cartões.</p>
-          <ul>
-            <li>Montagem completa na sua conta</li>
-            <li>2 fechamentos acompanhados</li>
-            <li>Suporte por mensagem por 60 dias</li>
-            <li>Prazo total: cerca de 2 meses</li>
+        <!-- DEGRAU 1 -->
+        <article class="degrau degrau--1">
+          <p class="degrau__passo"><span class="degrau__numero">1</span>Comece grátis</p>
+          <h3>Kit gratuito</h3>
+          <p class="degrau__preco">Grátis</p>
+          <p>Um guia rápido e uma planilha para você descobrir, em 15 minutos, para onde foi o dinheiro do último mês.</p>
+          <button type="button" class="botao botao--secundario" data-abrir-kit>Quero o kit</button>
+        </article>
+
+        <!-- DEGRAU 2 -->
+        <article class="degrau degrau--2">
+          <p class="degrau__passo"><span class="degrau__numero">2</span>Monte por conta própria</p>
+          <h3>Kit Faça Você Mesmo</h3>
+          <p class="degrau__preco">R$ 47</p>
+          <p>Para quem quer montar o método por conta própria, no seu tempo.</p>
+          <ul class="degrau__lista">
+            <li>Guia completo do método</li>
+            <li>Planilha completa: cartões, parcelas e metas</li>
+            <li>Os 3 prompts prontos</li>
+            <li>Videoaula gravada</li>
           </ul>
+          <p class="degrau__abatimento">Os R$ 47 são abatidos se você contratar a implantação em até 30 dias.</p>
+          <!-- PREENCHER: trocar o endereço abaixo pelo link de pagamento do kit. Enquanto isso, o botão abre o WhatsApp. -->
+          <a href="https://wa.me/5511994290680?text=Ol%C3%A1%2C%20Maria%20Alice!%20Quero%20comprar%20o%20Kit%20Fa%C3%A7a%20Voc%C3%AA%20Mesmo%20(R%24%2047)." target="_blank" rel="noopener" class="botao botao--secundario" id="link-kit-47">Comprar o kit</a>
+        </article>
+
+        <!-- DEGRAU 3 -->
+        <article class="degrau degrau--3">
+          <p class="degrau__passo"><span class="degrau__numero">3</span>Faça comigo</p>
+          <h3>Implantação guiada</h3>
+          <p class="degrau__selo">Turma fundadora · 5 vagas</p>
+          <p>Em encontros online, monto o método com você, na sua conta, até você fechar o mês por conta própria.</p>
+
+          <div class="plano">
+            <div class="plano__topo">
+              <h4>Essencial</h4>
+              <p class="plano__perfil">1 banco e até 2 cartões</p>
+            </div>
+            <p class="plano__preco"><s>de R$ 1.490</s> <strong>R$ 890</strong> <span>ou 3x de R$ 297</span></p>
+            <ul class="degrau__lista">
+              <li>Montagem na sua conta</li>
+              <li>2 fechamentos acompanhados</li>
+              <li>Suporte por mensagem por 60 dias</li>
+            </ul>
+          </div>
+
+          <div class="plano">
+            <div class="plano__topo">
+              <h4>Completa</h4>
+              <p class="plano__perfil">Vários bancos e cartões, parcelamentos e despesas divididas</p>
+            </div>
+            <p class="plano__preco"><s>de R$ 2.490</s> <strong>R$ 1.490</strong> <span>ou 3x de R$ 497</span></p>
+            <ul class="degrau__lista">
+              <li>Montagem na sua conta</li>
+              <li>3 fechamentos acompanhados</li>
+              <li>Revisão de metas</li>
+              <li>Suporte por mensagem por 90 dias</li>
+            </ul>
+          </div>
+
+          <p class="degrau__nota">Para a turma fundadora, peço um depoimento e uma conversa de feedback após o segundo fechamento.</p>
+
+          <ul class="degrau__outros">
+            <li><span>Sessão avulsa (1 hora)</span><strong>R$ 200</strong></li>
+            <li><span>Profissionais liberais e da saúde<small>Casa + consultório ou PJ</small></span><strong>Sob consulta</strong></li>
+          </ul>
+
           <a href="#contato" class="botao botao--principal">Agendar conversa gratuita</a>
-        </div>
-
-        <div class="cartao-pacote">
-          <span class="cartao-pacote__perfil">Vários bancos e cartões</span>
-          <h3>Implantação Completa</h3>
-          <div class="cartao-pacote__preco">R$ 2.490</div>
-          <p>Para rotinas com parcelamentos e despesas divididas, como contas dos pais rateadas entre irmãos.</p>
-          <ul>
-            <li>Montagem completa na sua conta</li>
-            <li>3 fechamentos acompanhados</li>
-            <li>Revisão de metas</li>
-            <li>Suporte por mensagem por 90 dias</li>
-          </ul>
-          <a href="#contato" class="botao botao--secundario">Agendar conversa gratuita</a>
-        </div>
-
-        <div class="cartao-pacote">
-          <span class="cartao-pacote__perfil">Casa + consultório ou PJ</span>
-          <h3>Profissionais liberais</h3>
-          <div class="cartao-pacote__preco">Sob consulta</div>
-          <p>Para médicos e outros profissionais que precisam separar pró-labore, conta da empresa e orçamento da casa.</p>
-          <ul>
-            <li>Escopo próprio, definido na conversa inicial</li>
-            <li>Separação clara entre PF e PJ</li>
-          </ul>
-          <a href="#contato" class="botao botao--secundario">Falar sobre meu caso</a>
-        </div>
-      </div>
-
-      <div class="grade-extras">
-        <div class="cartao-extra">
-          <div>
-            <h3>Kit gratuito <span class="cartao-extra__preco">Grátis</span></h3>
-            <p>Guia do método em PDF, planilha-modelo e prompts prontos, para quem quer tentar por conta própria antes de contratar.</p>
-          </div>
-          <a href="https://wa.me/5511994290680?text=Ol%C3%A1%2C%20Maria%20Alice!%20Quero%20receber%20o%20kit%20gratuito%20de%20or%C3%A7amento%20familiar." target="_blank" rel="noopener" class="botao botao--secundario">Pedir o kit</a>
-        </div>
-        <div class="cartao-extra">
-          <div>
-            <h3>Sessão avulsa <span class="cartao-extra__preco">R$ 250 / 1 hora</span></h3>
-            <p>Para quem já fez a implantação: revisão, dúvidas ou aquele mês que não fechou e você não achou a linha.</p>
-          </div>
-          <a href="#contato" class="botao botao--secundario">Agendar sessão</a>
-        </div>
+        </article>
       </div>
 
       <div class="aviso-custos">
@@ -361,9 +375,36 @@
           <li>Assinatura de IA com Projetos (ex.: Claude Pro), cerca de US$ 20 por mês, cobrada em dólar, no seu nome.</li>
           <li>Opcional: conexão automática com o banco via Open Finance (ex.: Banco MCP, a partir de R$ 19,90 por mês para 1 banco). Sem ela, o método funciona com os PDFs de extrato e fatura.</li>
         </ul>
-        <p>Formas de pagamento: Pix ou cartão. 50% na contratação e 50% após o primeiro fechamento, ou em até 3x.</p>
+        <p>Formas de pagamento da implantação: Pix ou cartão, à vista ou em 3x.</p>
       </div>
     </div>
+
+    <!-- Formulário do kit gratuito (abre por cima da página) -->
+    <dialog class="dialogo-kit" id="dialogo-kit" aria-labelledby="titulo-kit">
+      <form class="formulario-kit" id="formulario-kit" novalidate>
+        <button type="button" class="dialogo-kit__fechar" data-fechar-kit aria-label="Fechar">×</button>
+        <h3 id="titulo-kit">Receber o kit gratuito</h3>
+        <p class="formulario-kit__intro">Preencha e toque em enviar: o seu WhatsApp abre com o pedido pronto, e o kit chega no seu e-mail.</p>
+        <div class="campo-formulario">
+          <label for="kit-nome">Nome</label>
+          <input type="text" id="kit-nome" name="nome" autocomplete="name" required>
+        </div>
+        <div class="campo-formulario">
+          <label for="kit-email">E-mail</label>
+          <input type="email" id="kit-email" name="email" autocomplete="email" inputmode="email" required>
+        </div>
+        <div class="campo-formulario">
+          <label for="kit-whatsapp">WhatsApp</label>
+          <input type="tel" id="kit-whatsapp" name="whatsapp" autocomplete="tel" inputmode="tel" placeholder="(11) 90000-0000" required>
+        </div>
+        <div class="campo-consentimento">
+          <input type="checkbox" id="kit-consentimento" name="consentimento">
+          <label for="kit-consentimento">Autorizo a M.A. Consultoria a me enviar conteúdos. Posso sair da lista quando quiser. <a href="privacidade.html" target="_blank" rel="noopener">Política de privacidade</a></label>
+        </div>
+        <button type="submit" class="botao botao--principal">Enviar pedido do kit</button>
+        <p class="mensagem-formulario" id="mensagem-kit" role="status"></p>
+      </form>
+    </dialog>
   </section>
 
   <!-- SEUS DADOS FICAM COM VOCÊ -->
@@ -434,7 +475,7 @@
         </details>
         <details class="item-faq">
           <summary>Posso testar antes?</summary>
-          <p>Sim: navegue pelo <a href="demo/painel.html" target="_blank" rel="noopener">painel de demonstração</a> ou peça o kit gratuito e tente por conta própria.</p>
+          <p>Sim. Navegue pelo <a href="demo/painel.html" target="_blank" rel="noopener">painel de demonstração</a>, peça o kit gratuito ou monte por conta própria com o Kit Faça Você Mesmo (R$ 47), que é abatido se você contratar a implantação em até 30 dias.</p>
         </details>
         <details class="item-faq">
           <summary>Atende fora da minha cidade?</summary>
@@ -564,7 +605,7 @@
         <ul>
           <li><a href="#como-funciona">Como funciona</a></li>
           <li><a href="demo/painel.html" target="_blank" rel="noopener">Painel de demonstração</a></li>
-          <li><a href="#pacotes">Pacotes</a></li>
+          <li><a href="#pacotes">Preços</a></li>
           <li><a href="#faq">Dúvidas</a></li>
           <li><a href="privacidade.html">Política de privacidade</a></li>
         </ul>
@@ -581,7 +622,7 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=20261004b"></script>
-<script src="chat.js?v=20261004b"></script>
+<script src="js/main.js?v=20261004c"></script>
+<script src="chat.js?v=20261004c"></script>
 </body>
 </html>

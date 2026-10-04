@@ -760,3 +760,155 @@ button { font-family: inherit; cursor: pointer; }
   .visor__tela--rolagem .rolagem img { width: 760px; max-width: none; }
   .dica-rolagem { display: inline; }
 }
+
+/* =====================================================================
+   ESCADA DE OFERTAS (3 degraus)
+   Os cartões se alinham pela base: cada degrau começa mais alto que o anterior.
+   ===================================================================== */
+.escada {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.3fr;
+  grid-template-rows: auto auto;
+  gap: 1.4rem;
+  align-items: end;
+}
+/* o título ocupa o espaço acima dos dois primeiros degraus */
+.escada__cabecalho {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  align-self: start;
+  text-align: left;
+  margin: 0;
+  max-width: 34rem;
+}
+.escada__cabecalho p { color: var(--cor-cinza-texto); }
+.degrau--1 { grid-column: 1; grid-row: 2; }
+.degrau--2 { grid-column: 2; grid-row: 2; }
+.degrau--3 { grid-column: 3; grid-row: 1 / 3; }
+.degrau__outros small { display: block; font-size: 0.82rem; color: var(--cor-cinza-texto); }
+.degrau {
+  background: var(--cor-branco);
+  border-radius: var(--raio-cartao);
+  box-shadow: var(--sombra-cartao);
+  padding: 1.7rem 1.6rem 1.8rem;
+  border-top: 4px solid var(--cor-laranja);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.degrau > p { color: var(--cor-cinza-texto); font-size: 0.97rem; margin: 0 0 0.9rem; }
+.degrau h3 { margin: 0 0 0.1rem; }
+.degrau .botao { margin-top: 0.6rem; align-self: stretch; }
+.degrau__passo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.92rem !important;
+  font-weight: 600;
+  color: #C45A12 !important;
+  margin: 0 0 0.7rem !important;
+}
+.degrau__numero {
+  width: 1.8rem; height: 1.8rem; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--cor-azul-marinho);
+  color: var(--cor-creme);
+  font-family: var(--fonte-titulo);
+  font-size: 0.95rem;
+}
+.degrau .degrau__preco {
+  font-family: var(--fonte-titulo);
+  font-size: 1.9rem;
+  color: var(--cor-azul-marinho);
+  margin: 0.2rem 0 0.7rem;
+}
+.degrau__lista { display: grid; gap: 0.45rem; margin: 0 0 1rem; }
+.degrau__lista li { padding-left: 1.3rem; position: relative; font-size: 0.95rem; }
+.degrau__lista li::before { content: "✓"; position: absolute; left: 0; color: var(--cor-verde-fechou); font-weight: 700; }
+.degrau .degrau__abatimento {
+  background: var(--cor-creme);
+  border-left: 3px solid var(--cor-laranja);
+  border-radius: 0 8px 8px 0;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.92rem;
+  color: var(--cor-azul-marinho);
+  font-weight: 500;
+}
+
+/* degrau 3: a implantação, em destaque */
+.degrau--3 { border-top-color: var(--cor-azul-marinho); box-shadow: 0 18px 44px rgba(23,38,61,0.15); }
+.degrau .degrau__selo {
+  align-self: flex-start;
+  background: var(--cor-azul-marinho);
+  color: var(--cor-creme);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  margin: 0.4rem 0 0.9rem;
+}
+.plano {
+  border-top: 1px solid rgba(23,38,61,0.12);
+  padding-top: 1rem;
+  margin-top: 0.2rem;
+}
+.plano__topo { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.plano h4 { font-size: 1.12rem; margin: 0; }
+.plano__perfil { margin: 0; font-size: 0.88rem; color: var(--cor-cinza-texto); }
+.plano__preco { margin: 0.5rem 0 0.7rem; display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.plano__preco s { color: var(--cor-cinza-texto); font-size: 0.92rem; }
+.plano__preco strong { font-family: var(--fonte-titulo); font-size: 1.75rem; font-weight: 700; color: var(--cor-azul-marinho); }
+.plano__preco span { font-size: 0.9rem; color: var(--cor-cinza-texto); }
+.degrau .degrau__nota { font-size: 0.85rem; font-style: italic; margin: 0.2rem 0 1rem; }
+.degrau__outros { display: grid; margin: 0 0 0.4rem; border-top: 1px solid rgba(23,38,61,0.12); }
+.degrau__outros li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding: 0.65rem 0; border-bottom: 1px solid rgba(23,38,61,0.12); font-size: 0.95rem;
+}
+.degrau__outros strong { white-space: nowrap; color: var(--cor-azul-marinho); }
+
+/* formulário do kit gratuito */
+.dialogo-kit {
+  border: none;
+  border-radius: var(--raio-cartao);
+  padding: 0;
+  width: min(440px, calc(100% - 2rem));
+  box-shadow: 0 30px 80px rgba(23,38,61,0.35);
+  color: var(--cor-azul-marinho);
+}
+.dialogo-kit::backdrop { background: rgba(23,38,61,0.55); }
+.formulario-kit { position: relative; display: grid; gap: 0.9rem; padding: 1.8rem 1.6rem 1.4rem; background: var(--cor-creme); }
+.formulario-kit h3 { margin: 0; padding-right: 2rem; }
+.formulario-kit__intro { margin: 0; font-size: 0.93rem; color: var(--cor-cinza-texto); }
+.dialogo-kit__fechar {
+  position: absolute; top: 0.8rem; right: 0.8rem;
+  width: 2.2rem; height: 2.2rem; border-radius: 50%;
+  border: 1px solid rgba(23,38,61,0.2); background: var(--cor-branco);
+  font-size: 1.3rem; line-height: 1; color: var(--cor-azul-marinho);
+}
+.dialogo-kit__fechar:focus-visible { outline: 3px solid var(--cor-laranja); outline-offset: 2px; }
+
+@media (max-width: 960px) {
+  .escada { grid-template-columns: 1fr 1fr; }
+  .escada__cabecalho { grid-column: 1 / -1; text-align: center; margin-inline: auto; max-width: 62ch; }
+  .degrau--3 { grid-column: 1 / -1; grid-row: 3; display: grid; grid-template-columns: 1fr 1fr; column-gap: 2rem; }
+  .degrau--3 > :not(.plano) { grid-column: 1 / -1; }
+  .degrau--3 .degrau__selo { justify-self: start; }
+}
+@media (max-width: 640px) {
+  .escada { grid-template-columns: 1fr; }
+  .degrau--1, .degrau--2, .degrau--3 { grid-column: 1; grid-row: auto; }
+  .degrau--3 { display: flex; }
+}
+.escada__ajuda { font-size: 0.95rem; }
+.escada__ajuda a { font-weight: 600; text-decoration: underline; }
+
+/* menu do topo em telas médias: cabe numa linha */
+.menu-principal a { white-space: nowrap; }
+@media (max-width: 1100px) and (min-width: 861px) {
+  .menu-principal { gap: 1.1rem; }
+  .menu-principal a:not(.botao) { font-size: 0.9rem; }
+  .menu-principal .botao { padding: 0.75rem 1.2rem; }
+  .cabecalho__logo img { height: 56px; }
+}
