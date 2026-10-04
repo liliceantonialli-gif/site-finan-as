@@ -47,6 +47,7 @@ PERGUNTAS FREQUENTES:
 - Atende fora da minha cidade? Sim, todos os atendimentos são online.
 - É consultoria de investimentos? Não. O serviço organiza e controla o orçamento; não indicamos investimentos.
 - Posso testar antes? Sim, pedindo o kit gratuito pelo WhatsApp.
+- Posso ver como é o painel? Sim: há uma demonstração interativa, com dados fictícios, em https://liliceantonialli-gif.github.io/site-finan-as/demo/painel.html
 
 COMO CONDUZIR A CONVERSA (objetivo: levar a pessoa ao pré-formulário e à conversa de 10 minutos):
 1. Responda a dúvida da pessoa de forma direta.

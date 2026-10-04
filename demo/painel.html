@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de demonstração — M.A. Consultoria</title>
+<style>
+:root{
+  color-scheme: light;
+  --surface:#fcfcfb; --plane:#f9f9f7; --card:#ffffff;
+  --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,.10);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100;
+  --s5:#e87ba4; --s6:#008300; --s7:#4a3aa7; --s8:#e34948;
+  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --pos:#006300;
+  --seq1:#cde2fb; --seq2:#9ec5f4; --seq4:#3987e5; --seq6:#184f95;
+}
+@media (prefers-color-scheme: dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme: dark;
+    --surface:#1a1a19; --plane:#0d0d0d; --card:#1a1a19;
+    --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+    --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+    --pos:#0ca30c;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--plane); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.5;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 20px 72px}
+header h1{font-size:23px;margin:0 0 4px;letter-spacing:-.01em}
+header p{margin:0;color:var(--ink2);font-size:13.5px}
+.badge{display:inline-block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink2);border:1px solid var(--border);border-radius:99px;padding:2px 9px;margin-bottom:10px}
+.validade{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;margin-top:12px;
+  background:var(--card);border:1px solid var(--border);border-left:3px solid var(--s1);
+  border-radius:0 10px 10px 0;padding:10px 15px;font-size:13px;color:var(--ink2)}
+.validade b{color:var(--ink)}
+.validade code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;
+  background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-top:16px}
+.card>h2{font-size:15px;margin:0 0 2px;letter-spacing:-.005em}
+.card>h2+.sub{font-size:12.5px;color:var(--muted);margin:0 0 16px}
+/* filtros */
+.filters{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;
+  background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-top:18px}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+select,input[type=search]{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--border);border-radius:8px;padding:7px 10px;min-width:150px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-size:12.5px;cursor:pointer;border:1px solid var(--border);background:var(--surface);
+  color:var(--ink2);border-radius:99px;padding:5px 11px}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink2);cursor:pointer;padding-bottom:7px}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:16px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px 17px}
+.kpi .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.kpi .val{font-size:26px;font-weight:600;letter-spacing:-.02em;margin-top:5px}
+.kpi .note{font-size:12px;color:var(--ink2);margin-top:3px}
+.kpi.ent .val{color:var(--s3)} .kpi.sai .val{color:var(--s2)}
+.pos{color:var(--pos)} .neg{color:var(--crit)}
+.aviso{margin-top:16px;border:1px solid var(--border);border-left:3px solid var(--warn);background:var(--card);
+  border-radius:0 10px 10px 0;padding:11px 15px;font-size:13.5px;color:var(--ink2)}
+.aviso b{color:var(--ink)}
+.extra-list{display:flex;flex-direction:column;gap:8px}
+.extra-item{display:grid;grid-template-columns:78px 1fr auto;gap:12px;align-items:baseline;
+  font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--grid)}
+.extra-item:last-child{border-bottom:none}
+.extra-item .mm{color:var(--muted);font-size:12.5px}
+.extra-item .cc{color:var(--ink2)}
+.extra-item .cc b{color:var(--ink);font-weight:600}
+.extra-item .vv{font-variant-numeric:tabular-nums;color:var(--s7);font-weight:600;white-space:nowrap}
+.card.destaque{border-left:3px solid var(--s7)}
+/* compromissos */
+.hero{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-top:16px}
+.hero .q{font-size:13.5px;color:var(--ink2)}
+.hero .n{font-size:34px;font-weight:600;letter-spacing:-.025em;margin:6px 0 2px}
+.hero .sub2{font-size:13.5px;color:var(--ink2)}
+.livre{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:14px}
+.livre>div{border-top:2px solid var(--border);padding-top:9px}
+.livre .small{margin-top:2px}
+.filtros-comp{margin-top:18px}
+.filtros-comp .toggle{padding-bottom:0}
+.livre .r{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.livre .v{font-size:19px;font-weight:600;margin-top:3px}
+.alivio{display:grid;grid-template-columns:minmax(150px,1fr) 110px 120px 130px;gap:12px;align-items:center;
+  font-size:13.5px;padding:9px 0;border-bottom:1px solid var(--grid)}
+.alivio:last-child{border-bottom:none}
+.alivio .num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.alivio .quando{color:var(--ink2)}
+.alivio b.ok{color:var(--pos)}
+@media (max-width:640px){ .alivio{grid-template-columns:1fr;gap:3px} .alivio .num{text-align:left} }
+/* matriz categoria x mes (heatmap sequencial de um tom so) */
+.mtx-wrap{overflow:auto;max-height:640px;border:1px solid var(--border);border-radius:10px}
+table.mtx{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px}
+table.mtx th{position:sticky;top:0;z-index:2;background:var(--card);cursor:default}
+table.mtx th.cat,table.mtx td.cat{position:sticky;left:0;z-index:1;background:var(--card);text-align:left;
+  min-width:180px;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table.mtx th.cat{z-index:3}
+table.mtx td{text-align:right;font-variant-numeric:tabular-nums;padding:6px 9px;border-bottom:1px solid var(--grid);white-space:nowrap}
+table.mtx tr{cursor:pointer}
+table.mtx tr:hover td.cat{text-decoration:underline}
+table.mtx tr.sel td.cat{font-weight:600;color:var(--ink)}
+table.mtx tr.sel td{background-image:linear-gradient(transparent,transparent)}
+.h0{background:transparent;color:var(--muted)}
+table.mtx td.inc{opacity:.45;font-style:italic}
+.h1{background:var(--hm1);color:var(--hmT)} .h2{background:var(--hm2);color:var(--hmT)}
+.h3{background:var(--hm3);color:var(--hmT)} .h4{background:var(--hm4);color:var(--hmB)}
+.h5{background:var(--hm5);color:var(--hmB)}
+:root{--hm1:#cde2fb;--hm2:#9ec5f4;--hm3:#6da7ec;--hm4:#3987e5;--hm5:#1c5cab;--hmT:#0b0b0b;--hmB:#ffffff}
+@media (prefers-color-scheme: dark){:root:where(:not([data-theme="light"])){
+  --hm1:#104281;--hm2:#184f95;--hm3:#256abf;--hm4:#3987e5;--hm5:#86b6ef;--hmT:#ffffff;--hmB:#0b0b0b;
+  --seq2:#184f95}}
+.mtx-leg{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);margin:10px 0 0}
+.mtx-leg i{width:26px;height:12px;display:inline-block;border-radius:2px}
+/* metas editaveis */
+.metaIn{font:inherit;font-size:13px;width:104px;text-align:right;font-variant-numeric:tabular-nums;
+  border:1px solid var(--border);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 7px}
+.metaIn:focus{outline:2px solid var(--s1);outline-offset:1px}
+.metaIn.edited{border-color:var(--s4);background:color-mix(in srgb,var(--s4) 12%,var(--surface))}
+.btnrow{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:14px 0 4px}
+.btn{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--border);background:var(--surface);
+  color:var(--ink);border-radius:8px;padding:7px 13px}
+.btn:hover{border-color:var(--ink2)}
+.btn.pri{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.btn[disabled]{opacity:.45;cursor:default}
+/* tabs */
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-top:26px}
+.tab{font:inherit;font-size:14px;cursor:pointer;background:none;border:none;border-bottom:2px solid transparent;
+  color:var(--ink2);padding:9px 13px;margin-bottom:-1px}
+.tab[aria-selected=true]{color:var(--ink);border-bottom-color:var(--s1);font-weight:600}
+.panel[hidden]{display:none}
+/* charts */
+.chartbox{overflow-x:auto}
+svg{display:block;max-width:100%}
+svg text{font-family:inherit}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);margin:2px 0 12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+/* barras de categoria */
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(140px,215px) 1fr auto;gap:12px;align-items:center;font-size:13.5px}
+.bar .nm{color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .track{display:block;background:var(--grid);border-radius:4px;height:16px;position:relative;overflow:hidden}
+.bar .fill{display:block;height:100%;min-width:3px;border-radius:0 4px 4px 0;background:var(--s1)}
+.bar .vl{display:block;font-variant-numeric:tabular-nums;color:var(--ink);min-width:96px;text-align:right}
+/* metas */
+.meta{display:grid;grid-template-columns:minmax(150px,230px) 1fr 190px 132px;gap:12px;align-items:center;
+  font-size:13.5px;padding:7px 0;border-bottom:1px solid var(--grid)}
+.meta:last-child{border-bottom:none}
+.meta .track{display:block;background:var(--grid);border-radius:4px;height:16px;position:relative;overflow:visible}
+.meta .fill{display:block;height:100%;min-width:3px;border-radius:0 4px 4px 0}
+.meta .tick{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.7}
+.meta .tick::after{content:'meta';position:absolute;left:4px;top:-15px;font-size:9.5px;color:var(--muted);letter-spacing:.04em}
+.meta:not(:first-of-type) .tick::after{content:''}
+.meta .num{font-variant-numeric:tabular-nums;text-align:right;color:var(--ink2);white-space:nowrap}
+.st{font-size:12px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.st b{font-weight:600}
+.dot{width:9px;height:9px;border-radius:99px;display:inline-block;flex:none}
+/* tabela */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--grid);vertical-align:top}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
+  position:sticky;top:0;background:var(--card);cursor:pointer;white-space:nowrap}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl-wrap{max-height:620px;overflow:auto;border:1px solid var(--border);border-radius:10px}
+.muted{color:var(--muted)}
+.small{font-size:12.5px;color:var(--ink2)}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--surface);font-size:12.5px;
+  padding:7px 10px;border-radius:7px;opacity:0;transition:opacity .1s;z-index:9;max-width:260px;line-height:1.35}
+.guia h3{font-size:14.5px;margin:20px 0 6px}
+.guia p,.guia li{font-size:14px;color:var(--ink2)}
+.guia ol,.guia ul{padding-left:20px}
+.guia .box{border-left:3px solid var(--s4);background:var(--surface);padding:11px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+@media (max-width:640px){
+  .bar{grid-template-columns:1fr;gap:3px} .bar .vl{text-align:left}
+  .meta{grid-template-columns:1fr;gap:4px} .meta .num{text-align:left}
+  .kpi .val{font-size:22px}
+}
+</style>
+<link rel="icon" type="image/png" href="../imagens/01_icone_MA_azul_marinho.png">
+<meta name="description" content="Demonstração interativa do painel de orçamento familiar entregue na implantação da M.A. Consultoria. Dados fictícios.">
+<style>
+.ma-barra{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px 16px;background:#17263D;color:#F7F2EC;font:500 14px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.ma-barra a{color:#F7F2EC;text-decoration:none}
+.ma-logo{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:.02em}
+.ma-logo img{width:30px;height:30px;border-radius:6px}
+.ma-barra__acoes{display:flex;align-items:center;gap:14px}
+.ma-voltar:hover{text-decoration:underline}
+.ma-cta{background:#EF7420;color:#17263D!important;font-weight:700;padding:8px 14px;border-radius:999px;white-space:nowrap}
+.ma-cta:hover{filter:brightness(1.06)}
+@media (max-width:560px){.ma-logo span,.ma-voltar{display:none}}
+</style>
+</head>
+<body>
+<div class="ma-barra">
+  <a class="ma-logo" href="../index.html" aria-label="Voltar ao site da M.A. Consultoria"><img src="../imagens/01_icone_MA_creme.png" alt=""> <span>M.A. Consultoria</span></a>
+  <span class="ma-barra__acoes">
+    <a class="ma-voltar" href="../index.html">← Voltar ao site</a>
+    <a class="ma-cta" href="../index.html#contato">Quero um painel assim</a>
+  </span>
+</div>
+<div class="wrap">
+<header>
+  <div class="badge">Demonstração · dados fictícios</div>
+  <h1>Orçamento da Família Silva</h1>
+  <p>Extratos e faturas conciliados · dados de <span id="periodo"></span></p>
+  <div class="validade">
+    <span><b>Isto é uma demonstração.</b> A Família Silva não existe: todos os números são fictícios.</span>
+    <span>Fique à vontade para clicar: troque o mês, ligue e desligue os filtros e passeie pelas abas. É assim que fica o painel da sua família depois da implantação — com os seus números.</span>
+  </div>
+</header>
+
+<div class="filters">
+  <div class="f"><label for="fmes">Mês (regime de caixa)</label>
+    <select id="fmes"></select></div>
+  <div class="f"><label>Origem</label><div class="chips" id="forigem"></div></div>
+  <div class="f"><label>Natureza do dinheiro</label><div class="chips" id="fnatureza">
+    <button class="chip" aria-pressed="true" data-n="consumo">Consumo da família</button>
+    <button class="chip" aria-pressed="false" data-n="repasse">Acertos e repasses</button>
+  </div></div>
+  <label class="toggle"><input type="checkbox" id="ftransf"> Incluir transferências e pagamento de fatura</label>
+  <label class="toggle"><input type="checkbox" id="fextra" checked> Separar lançamentos extraordinários</label>
+</div>
+
+<div id="aviso"></div>
+<div class="kpis" id="kpis"></div>
+
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" data-p="p1" aria-selected="true">Visão do mês</button>
+  <button class="tab" role="tab" data-p="p2" aria-selected="false">Evolução</button>
+  <button class="tab" role="tab" data-p="p3" aria-selected="false">Metas</button>
+  <button class="tab" role="tab" data-p="p4" aria-selected="false">Lançamentos</button>
+  <button class="tab" role="tab" data-p="p6" aria-selected="false">Compromissos</button>
+  <button class="tab" role="tab" data-p="p5" aria-selected="false">Como ler</button>
+</div>
+<div class="panel" id="p1">
+  <div id="cardExtra"></div>
+  <div class="card">
+    <h2>Para onde foi o dinheiro</h2>
+    <p class="sub">Despesas do período selecionado, da maior para a menor. Passe o mouse para ver quanto é do cartão e quanto é da conta.</p>
+    <div class="bars" id="barsCat"></div>
+  </div>
+  <div class="card">
+    <h2>Quanto entrou por fonte</h2>
+    <p class="sub">Receitas do período. Se uma fonte sumiu, provavelmente falta carregar uma das origens do mês.</p>
+    <div class="bars" id="barsRec"></div>
+  </div>
+</div>
+
+<div class="panel" id="p2" hidden>
+  <div class="card">
+    <h2>Entradas, saídas e resultado por mês</h2>
+    <p class="sub">Cada mês é o regime de caixa: a fatura entra no mês em que ela vence, não no mês das compras.</p>
+    <div class="legend">
+      <span><i style="background:var(--s3)"></i>Entradas</span>
+      <span><i style="background:var(--s2)"></i>Saídas</span>
+      <span><i style="background:var(--s1)"></i>Resultado (linha)</span>
+      <span class="muted" id="notaInc"></span>
+    </div>
+    <div class="chartbox"><svg id="svgEvol" role="img" aria-label="Entradas, saídas e resultado por mês"></svg></div>
+  </div>
+  <div class="card">
+    <h2>Tabela do mesmo gráfico</h2>
+    <p class="sub">Mesmos números em texto — útil para conferir contra a planilha.</p>
+    <div class="tbl-wrap"><table id="tblEvol"></table></div>
+  </div>
+  <div class="card">
+    <h2>Comportamento mês a mês, categoria por categoria</h2>
+    <p class="sub">Cada linha é uma categoria e o tom mede a <b>variação dentro daquela linha</b> — do mês mais baixo ao mais alto da própria categoria. A coluna <b>Osc.</b> diz quanto o maior mês foi maior que o menor: categoria "estável" varia menos de 15% e não recebe gradiente. Meses marcados com <b>*</b> ainda não fecharam: aparecem em cinza claro e ficam fora da média e da oscilação. Clique numa linha para abrir o detalhe.</p>
+    <div class="mtx-wrap"><table class="mtx" id="mtx"></table></div>
+    <div class="mtx-leg"><span>mês mais baixo da categoria</span>
+      <i style="background:var(--hm1)"></i><i style="background:var(--hm2)"></i><i style="background:var(--hm3)"></i><i style="background:var(--hm4)"></i><i style="background:var(--hm5)"></i>
+      <span>mês mais alto da categoria</span></div>
+    <div id="catDet"></div>
+  </div>
+</div>
+
+<div class="panel" id="p3" hidden>
+  <div class="card">
+    <h2>Meta mensal por categoria</h2>
+    <p class="sub">A barra é o realizado no mês selecionado; o traço escuro é a meta. Escolha um mês específico no filtro acima para a leitura fazer sentido.</p>
+    <div class="bars" id="metasList"></div>
+    <div class="btnrow">
+      <button class="btn pri" id="btnBaixaMetas">Baixar metas para atualizar a planilha</button>
+      <button class="btn" id="btnResetMetas">Restaurar metas da planilha</button>
+      <span class="small" id="metasStatus"></span>
+    </div>
+    <p class="small">As metas podem ser editadas aqui mesmo, direto nos campos. A edição fica salva neste navegador,
+      mas <b>não escreve na planilha sozinha</b> — o navegador não tem permissão para isso. Para levar as metas de volta
+      ao Excel: clique em "Baixar metas", salve o arquivo <code>metas_editadas.json</code> na pasta do orçamento e
+      peça ao Claude "aplica as metas editadas na planilha" (ou rode <code>aplica_metas.py</code>).</p>
+  </div>
+</div>
+
+<div class="panel" id="p4" hidden>
+  <div class="card">
+    <h2>Lançamentos</h2>
+    <p class="sub">Todos os lançamentos do filtro. Clique no cabeçalho para ordenar.</p>
+    <div class="f" style="margin-bottom:12px"><label for="busca">Buscar na descrição ou categoria</label>
+      <input type="search" id="busca" placeholder="ex.: mercado, uber, escola" style="min-width:280px"></div>
+    <div class="small" id="contaLanc" style="margin-bottom:8px"></div>
+    <div class="tbl-wrap"><table id="tblLanc"></table></div>
+  </div>
+</div>
+
+<div class="panel" id="p6" hidden>
+  <div class="card filtros-comp">
+    <div class="f">
+      <label>Mês do compromisso</label>
+      <div class="chips" id="chipsComp"></div>
+    </div>
+    <label class="toggle" style="margin-top:10px">
+      <input type="checkbox" id="cAcertos">
+      Incluir acertos familiares (você adianta e recebe de volta)
+    </label>
+  </div>
+
+  <div id="heroComp"></div>
+
+  <div class="card">
+    <h2>Compromisso por mês</h2>
+    <p class="sub">Só o que já foi assumido — parcelas e financiamentos. Nada estimado. Clique numa barra para filtrar.</p>
+    <div class="legend">
+      <span><i style="background:var(--s1)"></i>Parcelas de cartão</span>
+      <span><i style="background:var(--s7)"></i>Financiamentos</span>
+    </div>
+    <div class="chartbox"><svg id="svgComp" role="img" aria-label="Compromissos por mês"></svg></div>
+    <div class="small muted" id="notaComp" style="margin-top:8px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Quando alivia</h2>
+    <p class="sub">A ordem em que cada compromisso sai do caminho, e quanto devolve por mês.</p>
+    <div id="alivioList"></div>
+  </div>
+
+  <div class="card">
+    <h2>Parcela por parcela</h2>
+    <div class="small" id="contaComp" style="margin-bottom:8px"></div>
+    <div class="tbl-wrap"><table id="tblComp"></table></div>
+  </div>
+</div>
+
+<div class="panel guia" id="p5" hidden>
+  <div class="card">
+    <h2>Como ler este painel</h2>
+    <p class="sub">As sete ideias que fazem a conta fechar. Se você entender estas, entendeu o método.</p>
+
+    <h3>1. O mês é o mês em que o dinheiro sai da conta</h3>
+    <p>Isso se chama <b>regime de caixa</b>. A fatura fechada em agosto com compras de julho entra em agosto, porque foi em agosto que o dinheiro saiu. É o oposto do regime de competência (que a contabilidade usa). Para a família, caixa é o que importa: é o que esvazia a conta.</p>
+
+    <h3>2. Pagamento de fatura não é despesa</h3>
+    <p>Se você somar as compras do cartão <i>e</i> o pagamento da fatura no extrato, conta tudo duas vezes. Por isso o painel exclui, por padrão, tudo que é <b>transferência</b>: pagamento de fatura, transferência entre contas do casal e aplicação/resgate de investimento. O botão no topo liga e desliga isso — ligue uma vez só para ver o tamanho do estrago.</p>
+
+    <h3>3. Dinheiro que passa não é dinheiro que é seu</h3>
+    <p>Uma parte do que entra e sai da conta é <b>repasse</b>: você paga o plano de saúde dos seus pais e eles
+    te devolvem; a empresa deposita e você repassa. Isso infla entradas e saídas sem ter nada a ver com o padrão
+    de vida da família. O filtro <b>Natureza do dinheiro</b> separa as duas coisas — comece sempre por
+    "Consumo da família" e só ligue "Acertos e repasses" quando quiser conferir se o acerto fechou.</p>
+    <div class="box">No orçamento desta família, jan a jun fecha em −R$ 6.731 com tudo junto e em −R$ 3.066
+    só com consumo. Fevereiro chega a inverter de sinal: parece −R$ 7.021 e é +R$ 1.020. O "prejuízo" era repasse.</div>
+
+    <h3>4. Extraordinário não entra na média</h3>
+    <p>Um lançamento único e grande — comprar ou quitar um carro, resgatar previdência, vender um bem — não é
+    renda nem consumo: é <b>patrimônio mudando de forma</b>. Se ele entra na média, destrói a leitura da categoria.
+    O painel separa automaticamente qualquer entrada ou saída isolada de R$ 3.000 ou mais que valha 3× ou mais a
+    mediana mensal da própria categoria, e mostra todas num cartão à parte.</p>
+    <div class="box">Junho de 2026 é o exemplo perfeito: um resgate de PGBL de R$ 78.640,70 (entrada) pagou a
+    quitação do financiamento do carro de R$ 62.447,81 (saída). Com os dois dentro, junho fecha em +R$ 3.984 e
+    a taxa de poupança aparenta 3,2%. Com os dois separados, junho fecha em <b>−R$ 9.924</b> — que é a verdade
+    sobre o mês corrente. Os dois eventos se anulam; o que ficou foi o rombo do dia a dia, escondido atrás deles.</div>
+
+    <h3>5. Conciliar é bater totais, não conferir linha por linha</h3>
+    <p><b>Conciliação</b> é provar que a extração está completa. Três amarrações fecham ao centavo:</p>
+    <ul>
+      <li>Total da fatura no PDF = soma dos lançamentos daquele cartão no mês.</li>
+      <li>Total da fatura = valor debitado na conta na data do vencimento.</li>
+      <li>Saldo inicial + entradas − saídas = saldo final do extrato.</li>
+    </ul>
+    <div class="box">Se a diferença não é zero, não adianta seguir: falta lançamento ou tem lançamento duplicado. Esse é o passo que a maioria das famílias pula — e é o que separa um orçamento confiável de um palpite bem formatado.</div>
+
+    <h3>6. Categoria é decisão, não digitação</h3>
+    <p>O <b>De-Para</b> é a tabela que diz "descrição contém X → categoria Y". Toda vez que você classifica algo novo, a regra entra ali e nunca mais precisa ser decidida. No começo dá trabalho; no terceiro mês, 90% se classifica sozinho.</p>
+
+    <h3>7. Meta é teto, não previsão</h3>
+    <p>A meta não é o quanto você acha que vai gastar — é o quanto você decidiu que pode gastar. A soma das metas tem que caber na renda, sobrando a poupança. Se não cabe, o problema não é a planilha.</p>
+
+    <h3>A rotina do mês, em 30 minutos</h3>
+    <ol>
+      <li>Baixar os PDFs: extrato de cada conta e fatura de cada cartão.</li>
+      <li>Extrair os lançamentos e conferir os totais contra o próprio PDF.</li>
+      <li>Remover duplicatas do que já estava carregado.</li>
+      <li>Classificar pelo De-Para; decidir só o que é novo.</li>
+      <li>Rodar as três amarrações. Se não fechou, voltar ao passo 2.</li>
+      <li>Abrir este painel em "Consumo da família", conferir o cartão de extraordinários e olhar
+          meta × realizado. Escolher um ajuste — um só — para o mês seguinte.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Por que o painel e a aba Dashboard do Excel podem mostrar números diferentes</h2>
+    <p class="sub">Existe um jeito de fazer os dois baterem ao centavo — e uma diferença que é de propósito.</p>
+
+    <p><b>Para bater exatamente com o Dashboard:</b> deixe o filtro em "Consumo da família",
+    <b>desmarque</b> "Separar lançamentos extraordinários" e mantenha "Incluir transferências"
+    desmarcado. Nessa configuração entradas e saídas de todos os meses fechados batem ao centavo
+    com as linhas <i>Total Entradas</i> e <i>Total Despesas</i> da planilha.</p>
+
+    <p><b>A diferença que sobra quando você volta a marcar "Separar extraordinários"</b> é
+    exatamente o valor dos lançamentos listados no cartão de extraordinários daquele mês —
+    o resgate de previdência, a quitação do financiamento. O Excel soma tudo; o painel tira
+    esses eventos únicos para você enxergar o padrão do mês normal. Nenhum dos dois está errado:
+    são perguntas diferentes. "Quanto passou pela conta" é o Excel. "Como é um mês comum aqui em
+    casa" é o painel.</p>
+
+    <p class="small muted">Três regras fazem os dois conversarem, e vale saber que existem:
+    <b>(1)</b> um valor positivo dentro de uma categoria de despesa é <b>estorno</b> — reembolso,
+    devolução, passagem cancelada — e abate daquela despesa em vez de virar entrada;
+    <b>(2)</b> os acertos com os irmãos entram por uma linha só, o <b>líquido</b>, igual à linha
+    "Contribuição p/ contas dos Pais" do Excel: só o que sobrou de fato saindo do bolso da família;
+    <b>(3)</b> transferências entre contas próprias e pagamento de fatura ficam de fora dos dois,
+    porque contariam o mesmo dinheiro duas vezes.</p>
+  </div>
+</div>
+
+<p class="small" style="margin-top:26px">Arquivo local e autocontido: os dados estão dentro do próprio HTML e nada é enviado para a internet.</p>
+</div>
+<div class="tip" id="tip"></div>
+<script>
+const D = {"parcelas":[{"o":"Cartão Ana","x":"MAGALU GELADEIRA 04/06","p":"4/6","v":308.9,"m":"2026-07","c":"Compras Online/Diversos","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"MAGALU GELADEIRA 05/06","p":"5/6","v":308.9,"m":"2026-08","c":"Compras Online/Diversos","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"MAGALU GELADEIRA 06/06","p":"6/6","v":308.9,"m":"2026-09","c":"Compras Online/Diversos","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"ESCOLA MATERIAL 03/05","p":"3/5","v":189.0,"m":"2026-07","c":"Educação/Escola","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"ESCOLA MATERIAL 04/05","p":"4/5","v":189.0,"m":"2026-08","c":"Educação/Escola","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"ESCOLA MATERIAL 05/05","p":"5/5","v":189.0,"m":"2026-09","c":"Educação/Escola","t":"Despesa","f":"cartao"},{"o":"Cartão Bruno","x":"PNEUS AUTOCENTER 02/04","p":"2/4","v":420.0,"m":"2026-07","c":"Veículos/Transporte","t":"Despesa","f":"cartao"},{"o":"Cartão Bruno","x":"PNEUS AUTOCENTER 03/04","p":"3/4","v":420.0,"m":"2026-08","c":"Veículos/Transporte","t":"Despesa","f":"cartao"},{"o":"Cartão Bruno","x":"PNEUS AUTOCENTER 04/04","p":"4/4","v":420.0,"m":"2026-09","c":"Veículos/Transporte","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"PACOTE VIAGEM PORTO 05/10","p":"5/10","v":356.4,"m":"2026-07","c":"Viagens/Turismo","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"PACOTE VIAGEM PORTO 06/10","p":"6/10","v":356.4,"m":"2026-08","c":"Viagens/Turismo","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"PACOTE VIAGEM PORTO 07/10","p":"7/10","v":356.4,"m":"2026-09","c":"Viagens/Turismo","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"PACOTE VIAGEM PORTO 08/10","p":"8/10","v":356.4,"m":"2026-10","c":"Viagens/Turismo","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"PACOTE VIAGEM PORTO 09/10","p":"9/10","v":356.4,"m":"2026-11","c":"Viagens/Turismo","t":"Despesa","f":"cartao"},{"o":"Cartão Ana","x":"PACOTE VIAGEM PORTO 10/10","p":"10/10","v":356.4,"m":"2026-12","c":"Viagens/Turismo","t":"Despesa","f":"cartao"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"19/36","v":987.4,"m":"2026-08","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"20/36","v":987.4,"m":"2026-09","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"21/36","v":987.4,"m":"2026-10","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"22/36","v":987.4,"m":"2026-11","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"23/36","v":987.4,"m":"2026-12","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"24/36","v":987.4,"m":"2027-01","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"25/36","v":987.4,"m":"2027-02","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"26/36","v":987.4,"m":"2027-03","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"27/36","v":987.4,"m":"2027-04","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"28/36","v":987.4,"m":"2027-05","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"29/36","v":987.4,"m":"2027-06","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"30/36","v":987.4,"m":"2027-07","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"31/36","v":987.4,"m":"2027-08","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"32/36","v":987.4,"m":"2027-09","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"33/36","v":987.4,"m":"2027-10","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"34/36","v":987.4,"m":"2027-11","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"35/36","v":987.4,"m":"2027-12","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"},{"o":"Conta Corrente (Bruno)","x":"FINANCIAMENTO VEICULO","p":"36/36","v":987.4,"m":"2028-01","c":"Veículos/Transporte","t":"Despesa","f":"financiamento"}],"gerado":"07/09/2026 00:37","titulo":"Orçamento da Família Silva","teto":14500,"meses":["2026-01","2026-02","2026-03","2026-04","2026-05","2026-06"],"metas":{"Moradia - Aluguel":2400,"Supermercado":1600,"Educação/Escola":1450,"Restaurantes/Delivery":600,"Veículos/Transporte":700,"Plano de Saúde":820,"Moradia - Energia":280,"Moradia - Água":110,"Moradia - Internet/TV":160,"Assinaturas/Telefonia":190,"Farmácia/Saúde":220,"Lazer/Entretenimento":350,"Vestuário/Compras":300,"Beleza/Cuidados Pessoais":180,"Pets":150,"Presentes":120,"Compras Online/Diversos":250,"Impostos/Taxas/Tarifas":130,"Seguros":240},"tipos":{"Receita - Salário Ana":"Receita","Receita - Salário Bruno":"Receita","Rendimentos de Aplicação":"Receita","Moradia - Aluguel":"Despesa","Moradia - Energia":"Despesa","Moradia - Água":"Despesa","Moradia - Internet/TV":"Despesa","Supermercado":"Despesa","Restaurantes/Delivery":"Despesa","Farmácia/Saúde":"Despesa","Plano de Saúde":"Despesa","Educação/Escola":"Despesa","Veículos/Transporte":"Despesa","Vestuário/Compras":"Despesa","Lazer/Entretenimento":"Despesa","Assinaturas/Telefonia":"Despesa","Beleza/Cuidados Pessoais":"Despesa","Pets":"Despesa","Presentes":"Despesa","Impostos/Taxas/Tarifas":"Despesa","Seguros":"Despesa","Compras Online/Diversos":"Despesa","Pagamento de Fatura (conciliação)":"Transferência","Transferência entre contas do casal":"Transferência","Investimentos (aplicação/resgate)":"Transferência","Acerto Família - Plano de Saúde da Avó":"Acerto","Acerto Família - Reembolso Irmã":"Acerto","Aquisição/Venda de Bem":"Despesa"},"lanc":[{"o":"Conta Corrente (Ana)","d":"2026-01-05","m":"2026-01","x":"CREDITO SALARIO ANA","p":"","v":6901.59,"c":"Receita - Salário Ana","t":"Receita"},{"o":"Conta Corrente (Bruno)","d":"2026-01-05","m":"2026-01","x":"CREDITO SALARIO BRUNO","p":"","v":5429.56,"c":"Receita - Salário Bruno","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-01-28","m":"2026-01","x":"REND PAGO APLIC AUT MAIS","p":"","v":63.85,"c":"Rendimentos de Aplicação","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-01-20","m":"2026-01","x":"ALUGUEL IMOBILIARIA CENTRO","p":"","v":-2400.0,"c":"Moradia - Aluguel","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-01-20","m":"2026-01","x":"ESCOLA SEMENTE MENSALIDADE","p":"","v":-1450.0,"c":"Educação/Escola","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-01-11","m":"2026-01","x":"PLANO SAUDE FAMILIA","p":"","v":-826.02,"c":"Plano de Saúde","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-01-20","m":"2026-01","x":"ENERGIA ELETRICA","p":"","v":-210.05,"c":"Moradia - Energia","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-01-12","m":"2026-01","x":"SANEAMENTO AGUA","p":"","v":-120.94,"c":"Moradia - Água","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-01-17","m":"2026-01","x":"INTERNET FIBRA 500MB","p":"","v":-158.64,"c":"Moradia - Internet/TV","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-01-17","m":"2026-01","x":"SEGURO AUTO PARCELA","p":"","v":-238.0,"c":"Seguros","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-01-09","m":"2026-01","x":"TARIFA PACOTE DE SERVICOS","p":"","v":-84.33,"c":"Impostos/Taxas/Tarifas","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-19","m":"2026-01","x":"SUPERMERCADO BOM PRECO","p":"","v":-199.49,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-26","m":"2026-01","x":"MERCADO SAO JOSE","p":"","v":-303.59,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-09","m":"2026-01","x":"MERCADO SAO JOSE","p":"","v":-206.54,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-24","m":"2026-01","x":"ATACADAO DIA A DIA","p":"","v":-327.85,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-22","m":"2026-01","x":"SUPERMERCADO BOM PRECO","p":"","v":-321.54,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-21","m":"2026-01","x":"HORTIFRUTI DA ESQUINA","p":"","v":-148.48,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-20","m":"2026-01","x":"SUPERMERCADO BOM PRECO","p":"","v":-224.32,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-29","m":"2026-01","x":"ATACADAO DIA A DIA","p":"","v":-166.08,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-29","m":"2026-01","x":"IFOOD *RESTAURANTE","p":"","v":-46.88,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-29","m":"2026-01","x":"PIZZARIA NAPOLI","p":"","v":-115.51,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-19","m":"2026-01","x":"CAFE COLOMBO","p":"","v":-64.92,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-25","m":"2026-01","x":"PADARIA CENTRAL","p":"","v":-75.02,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-18","m":"2026-01","x":"CAFE COLOMBO","p":"","v":-107.95,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-02","m":"2026-01","x":"PIZZARIA NAPOLI","p":"","v":-83.17,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-16","m":"2026-01","x":"PADARIA CENTRAL","p":"","v":-98.85,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-10","m":"2026-01","x":"IFOOD *RESTAURANTE","p":"","v":-96.96,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-10","m":"2026-01","x":"RESTAURANTE SELF SERVICE","p":"","v":-51.54,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-10","m":"2026-01","x":"IFOOD *LANCHONETE","p":"","v":-44.86,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-05","m":"2026-01","x":"IFOOD *LANCHONETE","p":"","v":-58.34,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-21","m":"2026-01","x":"ACAI DO PARQUE","p":"","v":-75.67,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-27","m":"2026-01","x":"RESTAURANTE SELF SERVICE","p":"","v":-62.5,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-06","m":"2026-01","x":"IFOOD *LANCHONETE","p":"","v":-81.77,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-06","m":"2026-01","x":"POSTO IPIRANGA","p":"","v":-129.07,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-27","m":"2026-01","x":"UBER *TRIP","p":"","v":-111.45,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-17","m":"2026-01","x":"AUTO PECAS SILVA","p":"","v":-147.15,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-23","m":"2026-01","x":"POSTO IPIRANGA","p":"","v":-105.75,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-14","m":"2026-01","x":"UBER *TRIP","p":"","v":-182.18,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-30","m":"2026-01","x":"FARMACIA POPULAR","p":"","v":-108.6,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-22","m":"2026-01","x":"FARMACIA POPULAR","p":"","v":-99.41,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-21","m":"2026-01","x":"DROGARIA SAO PAULO","p":"","v":-118.25,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-28","m":"2026-01","x":"FARMACIA POPULAR","p":"","v":-85.04,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-27","m":"2026-01","x":"SPOTIFY","p":"","v":-60.44,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-15","m":"2026-01","x":"NETFLIX.COM","p":"","v":-62.99,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-30","m":"2026-01","x":"VIVO CELULAR","p":"","v":-28.48,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-23","m":"2026-01","x":"LIVRARIA CULTURA","p":"","v":-107.09,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-17","m":"2026-01","x":"PARQUE AQUATICO","p":"","v":-117.53,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-20","m":"2026-01","x":"LIVRARIA CULTURA","p":"","v":-165.07,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-28","m":"2026-01","x":"LIVRARIA CULTURA","p":"","v":-157.66,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-28","m":"2026-01","x":"RENNER LOJA 21","p":"","v":-179.93,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-10","m":"2026-01","x":"RENNER LOJA 21","p":"","v":-296.82,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-29","m":"2026-01","x":"RENNER LOJA 21","p":"","v":-270.98,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-17","m":"2026-01","x":"LOJA INFANTIL PIMPOLHO","p":"","v":-248.07,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-20","m":"2026-01","x":"BARBEARIA DO ZE","p":"","v":-67.07,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-27","m":"2026-01","x":"SALAO BELA HORA","p":"","v":-56.85,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-01","m":"2026-01","x":"SALAO BELA HORA","p":"","v":-67.27,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-18","m":"2026-01","x":"CLINICA VET SAO FRANCISCO","p":"","v":-71.42,"c":"Pets","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-24","m":"2026-01","x":"PETSHOP AMIGO FIEL","p":"","v":-66.61,"c":"Pets","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-31","m":"2026-01","x":"CLINICA VET SAO FRANCISCO","p":"","v":-115.43,"c":"Pets","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-25","m":"2026-01","x":"AMAZON BR","p":"","v":-92.88,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-14","m":"2026-01","x":"AMAZON BR","p":"","v":-60.39,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-09","m":"2026-01","x":"SHOPEE *PEDIDO","p":"","v":-106.29,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-03","m":"2026-01","x":"SHOPEE *PEDIDO","p":"","v":-90.07,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-12","m":"2026-01","x":"MERCADOLIVRE*","p":"","v":-93.34,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-01-05","m":"2026-01","x":"FLORICULTURA JARDIM","p":"","v":-114.3,"c":"Presentes","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-02-10","m":"2026-02","x":"PAGAMENTO FATURA CARTAO ANA","p":"","v":-4780.33,"c":"Pagamento de Fatura (conciliação)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-02-15","m":"2026-02","x":"PAGAMENTO FATURA CARTAO BRUNO","p":"","v":-1965.39,"c":"Pagamento de Fatura (conciliação)","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-01-06","m":"2026-01","x":"TED PARA CONTA BRUNO","p":"","v":-900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-01-06","m":"2026-01","x":"TED RECEBIDA DE ANA","p":"","v":900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-01-27","m":"2026-01","x":"APLICACAO CDB LIQUIDEZ DIARIA","p":"","v":-700,"c":"Investimentos (aplicação/resgate)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-01-12","m":"2026-01","x":"PLANO SAUDE MARIA APARECIDA","p":"","v":-1180,"c":"Acerto Família - Plano de Saúde da Avó","t":"Acerto"},{"o":"Conta Corrente (Bruno)","d":"2026-01-14","m":"2026-01","x":"PIX RECEBIDO IRMA CLARA","p":"","v":590,"c":"Acerto Família - Reembolso Irmã","t":"Acerto"},{"o":"Conta Corrente (Ana)","d":"2026-02-05","m":"2026-02","x":"CREDITO SALARIO ANA","p":"","v":6842.14,"c":"Receita - Salário Ana","t":"Receita"},{"o":"Conta Corrente (Bruno)","d":"2026-02-05","m":"2026-02","x":"CREDITO SALARIO BRUNO","p":"","v":5480.66,"c":"Receita - Salário Bruno","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-02-28","m":"2026-02","x":"REND PAGO APLIC AUT MAIS","p":"","v":71.28,"c":"Rendimentos de Aplicação","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-02-17","m":"2026-02","x":"ALUGUEL IMOBILIARIA CENTRO","p":"","v":-2400.0,"c":"Moradia - Aluguel","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-02-19","m":"2026-02","x":"ESCOLA SEMENTE MENSALIDADE","p":"","v":-1450.0,"c":"Educação/Escola","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-02-16","m":"2026-02","x":"PLANO SAUDE FAMILIA","p":"","v":-824.79,"c":"Plano de Saúde","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-02-20","m":"2026-02","x":"ENERGIA ELETRICA","p":"","v":-209.89,"c":"Moradia - Energia","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-02-15","m":"2026-02","x":"SANEAMENTO AGUA","p":"","v":-99.44,"c":"Moradia - Água","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-02-16","m":"2026-02","x":"INTERNET FIBRA 500MB","p":"","v":-159.24,"c":"Moradia - Internet/TV","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-02-16","m":"2026-02","x":"SEGURO AUTO PARCELA","p":"","v":-238.0,"c":"Seguros","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-02-16","m":"2026-02","x":"TARIFA PACOTE DE SERVICOS","p":"","v":-47.38,"c":"Impostos/Taxas/Tarifas","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-17","m":"2026-02","x":"SUPERMERCADO BOM PRECO","p":"","v":-160.95,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-10","m":"2026-02","x":"MERCADO SAO JOSE","p":"","v":-170.64,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-09","m":"2026-02","x":"MERCADO SAO JOSE","p":"","v":-310.01,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-27","m":"2026-02","x":"HORTIFRUTI DA ESQUINA","p":"","v":-268.86,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-06","m":"2026-02","x":"HORTIFRUTI DA ESQUINA","p":"","v":-198.97,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-19","m":"2026-02","x":"SUPERMERCADO BOM PRECO","p":"","v":-145.73,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-19","m":"2026-02","x":"MERCADO SAO JOSE","p":"","v":-144.23,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-01","m":"2026-02","x":"CAFE COLOMBO","p":"","v":-72.57,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-01","m":"2026-02","x":"BURGER DA PRACA","p":"","v":-66.02,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-16","m":"2026-02","x":"PADARIA CENTRAL","p":"","v":-108.87,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-17","m":"2026-02","x":"PIZZARIA NAPOLI","p":"","v":-62.54,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-19","m":"2026-02","x":"PADARIA CENTRAL","p":"","v":-60.2,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-05","m":"2026-02","x":"CAFE COLOMBO","p":"","v":-55.36,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-05","m":"2026-02","x":"BURGER DA PRACA","p":"","v":-85.35,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-04","m":"2026-02","x":"PIZZARIA NAPOLI","p":"","v":-66.67,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-22","m":"2026-02","x":"BURGER DA PRACA","p":"","v":-91.15,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-14","m":"2026-02","x":"IFOOD *LANCHONETE","p":"","v":-74.4,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-04","m":"2026-02","x":"IFOOD *LANCHONETE","p":"","v":-48.28,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-18","m":"2026-02","x":"IFOOD *LANCHONETE","p":"","v":-68.14,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-19","m":"2026-02","x":"RESTAURANTE SELF SERVICE","p":"","v":-82.71,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-04","m":"2026-02","x":"RESTAURANTE SELF SERVICE","p":"","v":-42.81,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-26","m":"2026-02","x":"IFOOD *LANCHONETE","p":"","v":-113.59,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-15","m":"2026-02","x":"POSTO IPIRANGA","p":"","v":-158.45,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-25","m":"2026-02","x":"POSTO IPIRANGA","p":"","v":-160.19,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-03","m":"2026-02","x":"AUTO PECAS SILVA","p":"","v":-95.6,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-19","m":"2026-02","x":"ESTACIONAMENTO SHOPPING","p":"","v":-158.04,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-20","m":"2026-02","x":"POSTO IPIRANGA","p":"","v":-136.03,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-15","m":"2026-02","x":"DROGARIA SAO PAULO","p":"","v":-71.37,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-03","m":"2026-02","x":"FARMACIA POPULAR","p":"","v":-99.6,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-05","m":"2026-02","x":"SPOTIFY","p":"","v":-52.29,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-19","m":"2026-02","x":"GOOGLE ONE","p":"","v":-64.81,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-24","m":"2026-02","x":"VIVO CELULAR","p":"","v":-48.48,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-25","m":"2026-02","x":"SPOTIFY","p":"","v":-46.67,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-02","m":"2026-02","x":"SPOTIFY","p":"","v":-66.54,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-23","m":"2026-02","x":"LIVRARIA CULTURA","p":"","v":-134.4,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-27","m":"2026-02","x":"CINEMARK","p":"","v":-127.35,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-03","m":"2026-02","x":"LOJA INFANTIL PIMPOLHO","p":"","v":-175.56,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-03","m":"2026-02","x":"LOJA INFANTIL PIMPOLHO","p":"","v":-99.43,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-11","m":"2026-02","x":"CENTAURO","p":"","v":-104.01,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-26","m":"2026-02","x":"SALAO BELA HORA","p":"","v":-44.96,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-25","m":"2026-02","x":"SALAO BELA HORA","p":"","v":-49.38,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-11","m":"2026-02","x":"BARBEARIA DO ZE","p":"","v":-88.38,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-02","m":"2026-02","x":"CLINICA VET SAO FRANCISCO","p":"","v":-48.72,"c":"Pets","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-07","m":"2026-02","x":"CLINICA VET SAO FRANCISCO","p":"","v":-44.58,"c":"Pets","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-18","m":"2026-02","x":"MERCADOLIVRE*","p":"","v":-93.91,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-06","m":"2026-02","x":"AMAZON BR","p":"","v":-87.46,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-06","m":"2026-02","x":"MAGALU","p":"","v":-97.21,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-23","m":"2026-02","x":"MAGALU","p":"","v":-98.58,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-02-06","m":"2026-02","x":"MERCADOLIVRE*","p":"","v":-83.9,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-02-02","m":"2026-02","x":"LOJA DE PRESENTES","p":"","v":-180.84,"c":"Presentes","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-18","m":"2026-02","x":"MAGALU GELADEIRA","p":"2/6","v":-308.9,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-03-10","m":"2026-03","x":"PAGAMENTO FATURA CARTAO ANA","p":"","v":-3849.56,"c":"Pagamento de Fatura (conciliação)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-03-15","m":"2026-03","x":"PAGAMENTO FATURA CARTAO BRUNO","p":"","v":-1674.11,"c":"Pagamento de Fatura (conciliação)","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-02-06","m":"2026-02","x":"TED PARA CONTA BRUNO","p":"","v":-900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-02-06","m":"2026-02","x":"TED RECEBIDA DE ANA","p":"","v":900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-02-27","m":"2026-02","x":"APLICACAO CDB LIQUIDEZ DIARIA","p":"","v":-790,"c":"Investimentos (aplicação/resgate)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-02-12","m":"2026-02","x":"PLANO SAUDE MARIA APARECIDA","p":"","v":-1180,"c":"Acerto Família - Plano de Saúde da Avó","t":"Acerto"},{"o":"Conta Corrente (Bruno)","d":"2026-02-14","m":"2026-02","x":"PIX RECEBIDO IRMA CLARA","p":"","v":590,"c":"Acerto Família - Reembolso Irmã","t":"Acerto"},{"o":"Conta Corrente (Ana)","d":"2026-03-05","m":"2026-03","x":"CREDITO SALARIO ANA","p":"","v":6834.3,"c":"Receita - Salário Ana","t":"Receita"},{"o":"Conta Corrente (Bruno)","d":"2026-03-05","m":"2026-03","x":"CREDITO SALARIO BRUNO","p":"","v":5449.89,"c":"Receita - Salário Bruno","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-03-28","m":"2026-03","x":"REND PAGO APLIC AUT MAIS","p":"","v":82.7,"c":"Rendimentos de Aplicação","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-03-08","m":"2026-03","x":"ALUGUEL IMOBILIARIA CENTRO","p":"","v":-2400.0,"c":"Moradia - Aluguel","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-03-12","m":"2026-03","x":"ESCOLA SEMENTE MENSALIDADE","p":"","v":-1450.0,"c":"Educação/Escola","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-03-16","m":"2026-03","x":"PLANO SAUDE FAMILIA","p":"","v":-799.92,"c":"Plano de Saúde","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-03-20","m":"2026-03","x":"ENERGIA ELETRICA","p":"","v":-263.51,"c":"Moradia - Energia","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-03-08","m":"2026-03","x":"SANEAMENTO AGUA","p":"","v":-119.24,"c":"Moradia - Água","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-03-13","m":"2026-03","x":"INTERNET FIBRA 500MB","p":"","v":-159.69,"c":"Moradia - Internet/TV","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-03-18","m":"2026-03","x":"SEGURO AUTO PARCELA","p":"","v":-238.0,"c":"Seguros","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-03-19","m":"2026-03","x":"TARIFA PACOTE DE SERVICOS","p":"","v":-42.23,"c":"Impostos/Taxas/Tarifas","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-25","m":"2026-03","x":"MERCADO SAO JOSE","p":"","v":-371.28,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-16","m":"2026-03","x":"SUPERMERCADO BOM PRECO","p":"","v":-257.95,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-18","m":"2026-03","x":"SUPERMERCADO BOM PRECO","p":"","v":-267.69,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-05","m":"2026-03","x":"MERCADO SAO JOSE","p":"","v":-365.96,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-09","m":"2026-03","x":"MERCADO SAO JOSE","p":"","v":-198.7,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-02","m":"2026-03","x":"HORTIFRUTI DA ESQUINA","p":"","v":-274.06,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-23","m":"2026-03","x":"ATACADAO DIA A DIA","p":"","v":-328.86,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-18","m":"2026-03","x":"HORTIFRUTI DA ESQUINA","p":"","v":-330.3,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-20","m":"2026-03","x":"IFOOD *RESTAURANTE","p":"","v":-111.3,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-30","m":"2026-03","x":"IFOOD *RESTAURANTE","p":"","v":-109.61,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-20","m":"2026-03","x":"IFOOD *RESTAURANTE","p":"","v":-70.88,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-31","m":"2026-03","x":"PIZZARIA NAPOLI","p":"","v":-99.65,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-18","m":"2026-03","x":"IFOOD *RESTAURANTE","p":"","v":-125.73,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-08","m":"2026-03","x":"BURGER DA PRACA","p":"","v":-53.4,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-31","m":"2026-03","x":"IFOOD *RESTAURANTE","p":"","v":-126.27,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-10","m":"2026-03","x":"PIZZARIA NAPOLI","p":"","v":-110.23,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-17","m":"2026-03","x":"PADARIA CENTRAL","p":"","v":-58.02,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-22","m":"2026-03","x":"PIZZARIA NAPOLI","p":"","v":-50.62,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-30","m":"2026-03","x":"IFOOD *LANCHONETE","p":"","v":-48.8,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-09","m":"2026-03","x":"RESTAURANTE SELF SERVICE","p":"","v":-50.1,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-01","m":"2026-03","x":"RESTAURANTE SELF SERVICE","p":"","v":-56.17,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-22","m":"2026-03","x":"ACAI DO PARQUE","p":"","v":-64.6,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-31","m":"2026-03","x":"RESTAURANTE SELF SERVICE","p":"","v":-98.22,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-28","m":"2026-03","x":"ACAI DO PARQUE","p":"","v":-56.03,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-14","m":"2026-03","x":"AUTO PECAS SILVA","p":"","v":-134.48,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-31","m":"2026-03","x":"AUTO PECAS SILVA","p":"","v":-73.84,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-19","m":"2026-03","x":"POSTO IPIRANGA","p":"","v":-164.06,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-23","m":"2026-03","x":"ESTACIONAMENTO SHOPPING","p":"","v":-158.06,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-30","m":"2026-03","x":"AUTO PECAS SILVA","p":"","v":-153.65,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-12","m":"2026-03","x":"UBER *TRIP","p":"","v":-185.13,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-16","m":"2026-03","x":"AUTO PECAS SILVA","p":"","v":-195.26,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-05","m":"2026-03","x":"DROGARIA SAO PAULO","p":"","v":-114.27,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-08","m":"2026-03","x":"FARMACIA POPULAR","p":"","v":-75.92,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-13","m":"2026-03","x":"DROGARIA SAO PAULO","p":"","v":-72.27,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-14","m":"2026-03","x":"FARMACIA POPULAR","p":"","v":-105.14,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-03","m":"2026-03","x":"SPOTIFY","p":"","v":-40.52,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-22","m":"2026-03","x":"GOOGLE ONE","p":"","v":-37.58,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-06","m":"2026-03","x":"NETFLIX.COM","p":"","v":-37.38,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-05","m":"2026-03","x":"CINEMARK","p":"","v":-157.33,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-20","m":"2026-03","x":"PARQUE AQUATICO","p":"","v":-155.95,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-09","m":"2026-03","x":"PARQUE AQUATICO","p":"","v":-64.5,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-15","m":"2026-03","x":"RENNER LOJA 21","p":"","v":-133.96,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-07","m":"2026-03","x":"CENTAURO","p":"","v":-189.23,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-05","m":"2026-03","x":"CENTAURO","p":"","v":-162.49,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-05","m":"2026-03","x":"CENTAURO","p":"","v":-109.91,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-23","m":"2026-03","x":"PERFUMARIA AROMA","p":"","v":-60.85,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-04","m":"2026-03","x":"PERFUMARIA AROMA","p":"","v":-76.3,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-15","m":"2026-03","x":"SALAO BELA HORA","p":"","v":-51.02,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-06","m":"2026-03","x":"SALAO BELA HORA","p":"","v":-95.86,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-18","m":"2026-03","x":"CLINICA VET SAO FRANCISCO","p":"","v":-68.5,"c":"Pets","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-29","m":"2026-03","x":"CLINICA VET SAO FRANCISCO","p":"","v":-97.28,"c":"Pets","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-19","m":"2026-03","x":"MAGALU","p":"","v":-69.08,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-22","m":"2026-03","x":"MAGALU","p":"","v":-45.12,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-09","m":"2026-03","x":"MERCADOLIVRE*","p":"","v":-104.29,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-01","m":"2026-03","x":"AMAZON BR","p":"","v":-72.12,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-03-07","m":"2026-03","x":"MAGALU","p":"","v":-60.71,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-03-25","m":"2026-03","x":"LOJA DE PRESENTES","p":"","v":-106.47,"c":"Presentes","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-18","m":"2026-03","x":"MAGALU GELADEIRA","p":"3/6","v":-308.9,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-04-10","m":"2026-04","x":"PAGAMENTO FATURA CARTAO ANA","p":"","v":-5333.42,"c":"Pagamento de Fatura (conciliação)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-04-15","m":"2026-04","x":"PAGAMENTO FATURA CARTAO BRUNO","p":"","v":-2088.45,"c":"Pagamento de Fatura (conciliação)","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-03-06","m":"2026-03","x":"TED PARA CONTA BRUNO","p":"","v":-900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-03-06","m":"2026-03","x":"TED RECEBIDA DE ANA","p":"","v":900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-03-27","m":"2026-03","x":"APLICACAO CDB LIQUIDEZ DIARIA","p":"","v":-880,"c":"Investimentos (aplicação/resgate)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-03-12","m":"2026-03","x":"PLANO SAUDE MARIA APARECIDA","p":"","v":-1180,"c":"Acerto Família - Plano de Saúde da Avó","t":"Acerto"},{"o":"Conta Corrente (Bruno)","d":"2026-03-14","m":"2026-03","x":"PIX RECEBIDO IRMA CLARA","p":"","v":590,"c":"Acerto Família - Reembolso Irmã","t":"Acerto"},{"o":"Conta Corrente (Ana)","d":"2026-04-05","m":"2026-04","x":"CREDITO SALARIO ANA","p":"","v":6833.35,"c":"Receita - Salário Ana","t":"Receita"},{"o":"Conta Corrente (Bruno)","d":"2026-04-05","m":"2026-04","x":"CREDITO SALARIO BRUNO","p":"","v":5466.54,"c":"Receita - Salário Bruno","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-04-20","m":"2026-04","x":"PARTICIPACAO NOS RESULTADOS","p":"","v":3100,"c":"Receita - Salário Ana","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-04-28","m":"2026-04","x":"REND PAGO APLIC AUT MAIS","p":"","v":93.59,"c":"Rendimentos de Aplicação","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-04-12","m":"2026-04","x":"ALUGUEL IMOBILIARIA CENTRO","p":"","v":-2400.0,"c":"Moradia - Aluguel","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-04-11","m":"2026-04","x":"ESCOLA SEMENTE MENSALIDADE","p":"","v":-1450.0,"c":"Educação/Escola","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-04-11","m":"2026-04","x":"PLANO SAUDE FAMILIA","p":"","v":-819.61,"c":"Plano de Saúde","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-04-16","m":"2026-04","x":"ENERGIA ELETRICA","p":"","v":-303.1,"c":"Moradia - Energia","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-04-17","m":"2026-04","x":"SANEAMENTO AGUA","p":"","v":-110.37,"c":"Moradia - Água","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-04-12","m":"2026-04","x":"INTERNET FIBRA 500MB","p":"","v":-157.86,"c":"Moradia - Internet/TV","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-04-12","m":"2026-04","x":"SEGURO AUTO PARCELA","p":"","v":-238.0,"c":"Seguros","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-04-18","m":"2026-04","x":"TARIFA PACOTE DE SERVICOS","p":"","v":-44.63,"c":"Impostos/Taxas/Tarifas","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-11","m":"2026-04","x":"SUPERMERCADO BOM PRECO","p":"","v":-245.09,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-24","m":"2026-04","x":"SUPERMERCADO BOM PRECO","p":"","v":-292.25,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-11","m":"2026-04","x":"MERCADO SAO JOSE","p":"","v":-169.95,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-07","m":"2026-04","x":"HORTIFRUTI DA ESQUINA","p":"","v":-251.36,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-04","m":"2026-04","x":"MERCADO SAO JOSE","p":"","v":-335.51,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-03","m":"2026-04","x":"ATACADAO DIA A DIA","p":"","v":-149.51,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-29","m":"2026-04","x":"MERCADO SAO JOSE","p":"","v":-321.85,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-27","m":"2026-04","x":"PIZZARIA NAPOLI","p":"","v":-55.07,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-11","m":"2026-04","x":"CAFE COLOMBO","p":"","v":-80.58,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-20","m":"2026-04","x":"PADARIA CENTRAL","p":"","v":-46.84,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-05","m":"2026-04","x":"PADARIA CENTRAL","p":"","v":-120.81,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-24","m":"2026-04","x":"IFOOD *RESTAURANTE","p":"","v":-97.05,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-24","m":"2026-04","x":"PIZZARIA NAPOLI","p":"","v":-85.04,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-13","m":"2026-04","x":"IFOOD *RESTAURANTE","p":"","v":-119.99,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-29","m":"2026-04","x":"BURGER DA PRACA","p":"","v":-70.33,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-12","m":"2026-04","x":"IFOOD *LANCHONETE","p":"","v":-114.17,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-13","m":"2026-04","x":"IFOOD *LANCHONETE","p":"","v":-80.16,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-15","m":"2026-04","x":"ACAI DO PARQUE","p":"","v":-55.96,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-04","m":"2026-04","x":"RESTAURANTE SELF SERVICE","p":"","v":-82.17,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-07","m":"2026-04","x":"AUTO PECAS SILVA","p":"","v":-136.52,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-22","m":"2026-04","x":"UBER *TRIP","p":"","v":-190.17,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-11","m":"2026-04","x":"POSTO IPIRANGA","p":"","v":-134.67,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-03","m":"2026-04","x":"POSTO IPIRANGA","p":"","v":-175.18,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-02","m":"2026-04","x":"UBER *TRIP","p":"","v":-167.54,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-12","m":"2026-04","x":"AUTO PECAS SILVA","p":"","v":-178.34,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-24","m":"2026-04","x":"DROGASIL","p":"","v":-61.77,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-02","m":"2026-04","x":"FARMACIA POPULAR","p":"","v":-93.92,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-02","m":"2026-04","x":"FARMACIA POPULAR","p":"","v":-100.87,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-20","m":"2026-04","x":"FARMACIA POPULAR","p":"","v":-98.96,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-16","m":"2026-04","x":"NETFLIX.COM","p":"","v":-63.34,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-24","m":"2026-04","x":"NETFLIX.COM","p":"","v":-57.94,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-08","m":"2026-04","x":"NETFLIX.COM","p":"","v":-26.62,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-11","m":"2026-04","x":"GOOGLE ONE","p":"","v":-29.88,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-25","m":"2026-04","x":"CINEMARK","p":"","v":-136.33,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-10","m":"2026-04","x":"LIVRARIA CULTURA","p":"","v":-103.54,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-24","m":"2026-04","x":"RENNER LOJA 21","p":"","v":-107.3,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-02","m":"2026-04","x":"LOJA INFANTIL PIMPOLHO","p":"","v":-162.47,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-17","m":"2026-04","x":"RENNER LOJA 21","p":"","v":-213.62,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-24","m":"2026-04","x":"RENNER LOJA 21","p":"","v":-101.24,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-13","m":"2026-04","x":"PERFUMARIA AROMA","p":"","v":-76.5,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-15","m":"2026-04","x":"BARBEARIA DO ZE","p":"","v":-40.41,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-16","m":"2026-04","x":"SALAO BELA HORA","p":"","v":-65.43,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-01","m":"2026-04","x":"PETSHOP AMIGO FIEL","p":"","v":-98.72,"c":"Pets","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-01","m":"2026-04","x":"AMAZON BR","p":"","v":-82.3,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-19","m":"2026-04","x":"SHOPEE *PEDIDO","p":"","v":-87.36,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-27","m":"2026-04","x":"AMAZON BR","p":"","v":-99.97,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-25","m":"2026-04","x":"MAGALU","p":"","v":-93.18,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-04-09","m":"2026-04","x":"MAGALU","p":"","v":-84.89,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-04-23","m":"2026-04","x":"FLORICULTURA JARDIM","p":"","v":-97.51,"c":"Presentes","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-18","m":"2026-04","x":"MAGALU GELADEIRA","p":"4/6","v":-308.9,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-05-10","m":"2026-05","x":"PAGAMENTO FATURA CARTAO ANA","p":"","v":-4498.08,"c":"Pagamento de Fatura (conciliação)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-05-15","m":"2026-05","x":"PAGAMENTO FATURA CARTAO BRUNO","p":"","v":-1750.98,"c":"Pagamento de Fatura (conciliação)","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-04-06","m":"2026-04","x":"TED PARA CONTA BRUNO","p":"","v":-900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-04-06","m":"2026-04","x":"TED RECEBIDA DE ANA","p":"","v":900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-04-27","m":"2026-04","x":"APLICACAO CDB LIQUIDEZ DIARIA","p":"","v":-970,"c":"Investimentos (aplicação/resgate)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-04-12","m":"2026-04","x":"PLANO SAUDE MARIA APARECIDA","p":"","v":-1180,"c":"Acerto Família - Plano de Saúde da Avó","t":"Acerto"},{"o":"Conta Corrente (Bruno)","d":"2026-04-14","m":"2026-04","x":"PIX RECEBIDO IRMA CLARA","p":"","v":590,"c":"Acerto Família - Reembolso Irmã","t":"Acerto"},{"o":"Conta Corrente (Ana)","d":"2026-05-05","m":"2026-05","x":"CREDITO SALARIO ANA","p":"","v":6847.17,"c":"Receita - Salário Ana","t":"Receita"},{"o":"Conta Corrente (Bruno)","d":"2026-05-05","m":"2026-05","x":"CREDITO SALARIO BRUNO","p":"","v":5480.15,"c":"Receita - Salário Bruno","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-05-28","m":"2026-05","x":"REND PAGO APLIC AUT MAIS","p":"","v":113.57,"c":"Rendimentos de Aplicação","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-05-19","m":"2026-05","x":"ALUGUEL IMOBILIARIA CENTRO","p":"","v":-2400.0,"c":"Moradia - Aluguel","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-05-13","m":"2026-05","x":"ESCOLA SEMENTE MENSALIDADE","p":"","v":-1450.0,"c":"Educação/Escola","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-05-13","m":"2026-05","x":"PLANO SAUDE FAMILIA","p":"","v":-802.01,"c":"Plano de Saúde","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-05-20","m":"2026-05","x":"ENERGIA ELETRICA","p":"","v":-277.65,"c":"Moradia - Energia","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-05-20","m":"2026-05","x":"SANEAMENTO AGUA","p":"","v":-109.53,"c":"Moradia - Água","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-05-15","m":"2026-05","x":"INTERNET FIBRA 500MB","p":"","v":-158.83,"c":"Moradia - Internet/TV","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-05-14","m":"2026-05","x":"SEGURO AUTO PARCELA","p":"","v":-238.0,"c":"Seguros","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-05-11","m":"2026-05","x":"TARIFA PACOTE DE SERVICOS","p":"","v":-62.75,"c":"Impostos/Taxas/Tarifas","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-03","m":"2026-05","x":"SUPERMERCADO BOM PRECO","p":"","v":-306.79,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-10","m":"2026-05","x":"ATACADAO DIA A DIA","p":"","v":-203.41,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-09","m":"2026-05","x":"MERCADO SAO JOSE","p":"","v":-337.52,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-26","m":"2026-05","x":"MERCADO SAO JOSE","p":"","v":-146.57,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-09","m":"2026-05","x":"ATACADAO DIA A DIA","p":"","v":-216.03,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-13","m":"2026-05","x":"ATACADAO DIA A DIA","p":"","v":-212.21,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-07","m":"2026-05","x":"MERCADO SAO JOSE","p":"","v":-383.38,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-12","m":"2026-05","x":"SUPERMERCADO BOM PRECO","p":"","v":-374.01,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-06","m":"2026-05","x":"CAFE COLOMBO","p":"","v":-113.82,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-26","m":"2026-05","x":"BURGER DA PRACA","p":"","v":-85.29,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-12","m":"2026-05","x":"CAFE COLOMBO","p":"","v":-76.19,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-19","m":"2026-05","x":"BURGER DA PRACA","p":"","v":-64.08,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-09","m":"2026-05","x":"CAFE COLOMBO","p":"","v":-109.57,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-02","m":"2026-05","x":"PIZZARIA NAPOLI","p":"","v":-53.72,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-01","m":"2026-05","x":"CAFE COLOMBO","p":"","v":-115.8,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-06","m":"2026-05","x":"PADARIA CENTRAL","p":"","v":-73.16,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-20","m":"2026-05","x":"IFOOD *RESTAURANTE","p":"","v":-83.02,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-28","m":"2026-05","x":"ACAI DO PARQUE","p":"","v":-94.73,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-29","m":"2026-05","x":"ACAI DO PARQUE","p":"","v":-42.56,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-20","m":"2026-05","x":"RESTAURANTE SELF SERVICE","p":"","v":-57.77,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-25","m":"2026-05","x":"ACAI DO PARQUE","p":"","v":-47.05,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-11","m":"2026-05","x":"RESTAURANTE SELF SERVICE","p":"","v":-42.44,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-20","m":"2026-05","x":"AUTO PECAS SILVA","p":"","v":-81.64,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-23","m":"2026-05","x":"AUTO PECAS SILVA","p":"","v":-76.14,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-10","m":"2026-05","x":"UBER *TRIP","p":"","v":-165.85,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-28","m":"2026-05","x":"ESTACIONAMENTO SHOPPING","p":"","v":-148.37,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-17","m":"2026-05","x":"UBER *TRIP","p":"","v":-160.38,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-29","m":"2026-05","x":"DROGASIL","p":"","v":-115.91,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-23","m":"2026-05","x":"DROGASIL","p":"","v":-52.29,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-11","m":"2026-05","x":"DROGARIA SAO PAULO","p":"","v":-101.77,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-14","m":"2026-05","x":"DROGARIA SAO PAULO","p":"","v":-79.73,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-26","m":"2026-05","x":"GOOGLE ONE","p":"","v":-71.24,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-24","m":"2026-05","x":"VIVO CELULAR","p":"","v":-37.04,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-14","m":"2026-05","x":"VIVO CELULAR","p":"","v":-68.45,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-01","m":"2026-05","x":"VIVO CELULAR","p":"","v":-48.84,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-12","m":"2026-05","x":"NETFLIX.COM","p":"","v":-32.39,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-28","m":"2026-05","x":"PARQUE AQUATICO","p":"","v":-134.92,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-16","m":"2026-05","x":"PARQUE AQUATICO","p":"","v":-137.43,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-02","m":"2026-05","x":"LIVRARIA CULTURA","p":"","v":-145.37,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-12","m":"2026-05","x":"PARQUE AQUATICO","p":"","v":-86.62,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-11","m":"2026-05","x":"CENTAURO","p":"","v":-223.03,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-28","m":"2026-05","x":"RENNER LOJA 21","p":"","v":-220.08,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-27","m":"2026-05","x":"CENTAURO","p":"","v":-144.33,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-26","m":"2026-05","x":"LOJA INFANTIL PIMPOLHO","p":"","v":-82.13,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-25","m":"2026-05","x":"BARBEARIA DO ZE","p":"","v":-43.42,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-09","m":"2026-05","x":"PERFUMARIA AROMA","p":"","v":-36.15,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-10","m":"2026-05","x":"CLINICA VET SAO FRANCISCO","p":"","v":-73.7,"c":"Pets","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-01","m":"2026-05","x":"PETSHOP AMIGO FIEL","p":"","v":-75.05,"c":"Pets","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-29","m":"2026-05","x":"CLINICA VET SAO FRANCISCO","p":"","v":-117.51,"c":"Pets","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-05","m":"2026-05","x":"MAGALU","p":"","v":-56.03,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-24","m":"2026-05","x":"MAGALU","p":"","v":-80.29,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-14","m":"2026-05","x":"SHOPEE *PEDIDO","p":"","v":-63.84,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-05-26","m":"2026-05","x":"MERCADOLIVRE*","p":"","v":-70.68,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-05-11","m":"2026-05","x":"LOJA DE PRESENTES","p":"","v":-177.85,"c":"Presentes","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-18","m":"2026-05","x":"MAGALU GELADEIRA","p":"5/6","v":-308.9,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-06-10","m":"2026-06","x":"PAGAMENTO FATURA CARTAO ANA","p":"","v":-4891.14,"c":"Pagamento de Fatura (conciliação)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-06-15","m":"2026-06","x":"PAGAMENTO FATURA CARTAO BRUNO","p":"","v":-1865.37,"c":"Pagamento de Fatura (conciliação)","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-05-06","m":"2026-05","x":"TED PARA CONTA BRUNO","p":"","v":-900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-05-06","m":"2026-05","x":"TED RECEBIDA DE ANA","p":"","v":900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-05-27","m":"2026-05","x":"APLICACAO CDB LIQUIDEZ DIARIA","p":"","v":-1060,"c":"Investimentos (aplicação/resgate)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-05-12","m":"2026-05","x":"PLANO SAUDE MARIA APARECIDA","p":"","v":-1180,"c":"Acerto Família - Plano de Saúde da Avó","t":"Acerto"},{"o":"Conta Corrente (Bruno)","d":"2026-05-14","m":"2026-05","x":"PIX RECEBIDO IRMA CLARA","p":"","v":590,"c":"Acerto Família - Reembolso Irmã","t":"Acerto"},{"o":"Conta Corrente (Ana)","d":"2026-06-05","m":"2026-06","x":"CREDITO SALARIO ANA","p":"","v":6840.65,"c":"Receita - Salário Ana","t":"Receita"},{"o":"Conta Corrente (Bruno)","d":"2026-06-05","m":"2026-06","x":"CREDITO SALARIO BRUNO","p":"","v":5482.73,"c":"Receita - Salário Bruno","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-06-28","m":"2026-06","x":"REND PAGO APLIC AUT MAIS","p":"","v":123.18,"c":"Rendimentos de Aplicação","t":"Receita"},{"o":"Conta Corrente (Ana)","d":"2026-06-08","m":"2026-06","x":"ALUGUEL IMOBILIARIA CENTRO","p":"","v":-2400.0,"c":"Moradia - Aluguel","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-06-14","m":"2026-06","x":"ESCOLA SEMENTE MENSALIDADE","p":"","v":-1450.0,"c":"Educação/Escola","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-06-18","m":"2026-06","x":"PLANO SAUDE FAMILIA","p":"","v":-807.66,"c":"Plano de Saúde","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-06-09","m":"2026-06","x":"ENERGIA ELETRICA","p":"","v":-281.58,"c":"Moradia - Energia","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-06-13","m":"2026-06","x":"SANEAMENTO AGUA","p":"","v":-94.78,"c":"Moradia - Água","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-06-20","m":"2026-06","x":"INTERNET FIBRA 500MB","p":"","v":-160.33,"c":"Moradia - Internet/TV","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-06-14","m":"2026-06","x":"SEGURO AUTO PARCELA","p":"","v":-238.0,"c":"Seguros","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-06-19","m":"2026-06","x":"TARIFA PACOTE DE SERVICOS","p":"","v":-86.66,"c":"Impostos/Taxas/Tarifas","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-26","m":"2026-06","x":"SUPERMERCADO BOM PRECO","p":"","v":-362.52,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-10","m":"2026-06","x":"MERCADO SAO JOSE","p":"","v":-275.19,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-24","m":"2026-06","x":"HORTIFRUTI DA ESQUINA","p":"","v":-397.76,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-17","m":"2026-06","x":"SUPERMERCADO BOM PRECO","p":"","v":-260.73,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-06","m":"2026-06","x":"MERCADO SAO JOSE","p":"","v":-284.75,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-27","m":"2026-06","x":"ATACADAO DIA A DIA","p":"","v":-341.49,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-20","m":"2026-06","x":"SUPERMERCADO BOM PRECO","p":"","v":-285.11,"c":"Supermercado","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-21","m":"2026-06","x":"PIZZARIA NAPOLI","p":"","v":-156.1,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-02","m":"2026-06","x":"IFOOD *RESTAURANTE","p":"","v":-103.24,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-27","m":"2026-06","x":"BURGER DA PRACA","p":"","v":-163.21,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-01","m":"2026-06","x":"CAFE COLOMBO","p":"","v":-102.83,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-20","m":"2026-06","x":"PIZZARIA NAPOLI","p":"","v":-90.49,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-15","m":"2026-06","x":"CAFE COLOMBO","p":"","v":-74.81,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-18","m":"2026-06","x":"BURGER DA PRACA","p":"","v":-91.98,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-16","m":"2026-06","x":"IFOOD *RESTAURANTE","p":"","v":-131.24,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-13","m":"2026-06","x":"CAFE COLOMBO","p":"","v":-171.11,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-29","m":"2026-06","x":"PADARIA CENTRAL","p":"","v":-128.94,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-19","m":"2026-06","x":"IFOOD *LANCHONETE","p":"","v":-112.95,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-25","m":"2026-06","x":"IFOOD *LANCHONETE","p":"","v":-67.32,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-10","m":"2026-06","x":"RESTAURANTE SELF SERVICE","p":"","v":-91.01,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-13","m":"2026-06","x":"RESTAURANTE SELF SERVICE","p":"","v":-126.51,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-29","m":"2026-06","x":"RESTAURANTE SELF SERVICE","p":"","v":-119.89,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-03","m":"2026-06","x":"IFOOD *LANCHONETE","p":"","v":-85.54,"c":"Restaurantes/Delivery","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-17","m":"2026-06","x":"UBER *TRIP","p":"","v":-71.46,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-07","m":"2026-06","x":"POSTO IPIRANGA","p":"","v":-124.67,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-13","m":"2026-06","x":"POSTO IPIRANGA","p":"","v":-163.33,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-28","m":"2026-06","x":"UBER *TRIP","p":"","v":-125.79,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-10","m":"2026-06","x":"AUTO PECAS SILVA","p":"","v":-132.98,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-16","m":"2026-06","x":"UBER *TRIP","p":"","v":-77.5,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-03","m":"2026-06","x":"POSTO IPIRANGA","p":"","v":-168.63,"c":"Veículos/Transporte","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-06","m":"2026-06","x":"DROGASIL","p":"","v":-89.07,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-10","m":"2026-06","x":"FARMACIA POPULAR","p":"","v":-81.29,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-24","m":"2026-06","x":"FARMACIA POPULAR","p":"","v":-120.67,"c":"Farmácia/Saúde","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-13","m":"2026-06","x":"GOOGLE ONE","p":"","v":-70.92,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-10","m":"2026-06","x":"VIVO CELULAR","p":"","v":-46.56,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-24","m":"2026-06","x":"GOOGLE ONE","p":"","v":-41.88,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-30","m":"2026-06","x":"VIVO CELULAR","p":"","v":-43.53,"c":"Assinaturas/Telefonia","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-05","m":"2026-06","x":"PARQUE AQUATICO","p":"","v":-129.39,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-03","m":"2026-06","x":"CINEMARK","p":"","v":-61.96,"c":"Lazer/Entretenimento","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-17","m":"2026-06","x":"CENTAURO","p":"","v":-159.17,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-21","m":"2026-06","x":"LOJA INFANTIL PIMPOLHO","p":"","v":-163.47,"c":"Vestuário/Compras","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-21","m":"2026-06","x":"SALAO BELA HORA","p":"","v":-50.54,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-27","m":"2026-06","x":"PERFUMARIA AROMA","p":"","v":-90.18,"c":"Beleza/Cuidados Pessoais","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-01","m":"2026-06","x":"PETSHOP AMIGO FIEL","p":"","v":-84.72,"c":"Pets","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-14","m":"2026-06","x":"MERCADOLIVRE*","p":"","v":-65.5,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-01","m":"2026-06","x":"SHOPEE *PEDIDO","p":"","v":-79.68,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-15","m":"2026-06","x":"AMAZON BR","p":"","v":-96.05,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-09","m":"2026-06","x":"MERCADOLIVRE*","p":"","v":-103.5,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Ana","d":"2026-06-29","m":"2026-06","x":"MAGALU","p":"","v":-114.24,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Cartão Bruno","d":"2026-06-22","m":"2026-06","x":"FLORICULTURA JARDIM","p":"","v":-132.81,"c":"Presentes","t":"Despesa"},{"o":"Cartão Ana","d":"2026-01-18","m":"2026-06","x":"MAGALU GELADEIRA","p":"6/6","v":-308.9,"c":"Compras Online/Diversos","t":"Despesa"},{"o":"Conta Corrente (Ana)","d":"2026-06-06","m":"2026-06","x":"TED PARA CONTA BRUNO","p":"","v":-900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-06-06","m":"2026-06","x":"TED RECEBIDA DE ANA","p":"","v":900,"c":"Transferência entre contas do casal","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-06-27","m":"2026-06","x":"APLICACAO CDB LIQUIDEZ DIARIA","p":"","v":-1150,"c":"Investimentos (aplicação/resgate)","t":"Transferência"},{"o":"Conta Corrente (Bruno)","d":"2026-06-12","m":"2026-06","x":"PLANO SAUDE MARIA APARECIDA","p":"","v":-1180,"c":"Acerto Família - Plano de Saúde da Avó","t":"Acerto"},{"o":"Conta Corrente (Bruno)","d":"2026-06-14","m":"2026-06","x":"PIX RECEBIDO IRMA CLARA","p":"","v":590,"c":"Acerto Família - Reembolso Irmã","t":"Acerto"},{"o":"Conta Corrente (Ana)","d":"2026-03-11","m":"2026-03","x":"RESGATE CDB APLICACAO","p":"","v":9800,"c":"Investimentos (aplicação/resgate)","t":"Transferência"},{"o":"Conta Corrente (Ana)","d":"2026-03-12","m":"2026-03","x":"CONCESSIONARIA REVISAO E EMBREAGEM","p":"","v":-6400,"c":"Aquisição/Venda de Bem","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-05-09","m":"2026-05","x":"TED RECEBIDA VENDA VEICULO","p":"","v":21000,"c":"Aquisição/Venda de Bem","t":"Despesa"},{"o":"Conta Corrente (Bruno)","d":"2026-05-10","m":"2026-05","x":"TED ENVIADA ENTRADA CARRO NOVO","p":"","v":-21000,"c":"Aquisição/Venda de Bem","t":"Despesa"}]};
+const $ = s => document.querySelector(s);
+const BRL = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:2});
+const K = v => Math.abs(v)>=1000 ? (v/1000).toLocaleString('pt-BR',{maximumFractionDigits:0})+'k' : v.toLocaleString('pt-BR',{maximumFractionDigits:0});
+const rotMes = m => { const [a,b]=m.split('-'); return ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'][+b-1]+'/'+a.slice(2); };
+const ORIGENS = [...new Set(D.lanc.map(l=>l.o))].sort();
+const ORIG_MES = {}; D.meses.forEach(m => ORIG_MES[m] = new Set());
+D.lanc.forEach(l => { if(ORIG_MES[l.m]) ORIG_MES[l.m].add(l.o); });
+const N_COMPLETO = Math.max(...D.meses.map(m => ORIG_MES[m].size));
+const COMPLETOS = D.meses.filter(m => ORIG_MES[m].size === N_COMPLETO);
+const ULTIMO_FECHADO = COMPLETOS[COMPLETOS.length-1] || D.meses[D.meses.length-1];
+const faltando = m => m==='todos' ? [] : ORIGENS.filter(o => !ORIG_MES[m].has(o));
+const NAT = { 'Receita':'consumo', 'Despesa':'consumo', 'Acerto':'repasse', 'Empresa':'repasse', 'Transferência':'transf' };
+const st = { mes:'todos', origens:new Set(ORIGENS), nat:new Set(['consumo']), transf:false,
+             semExtra:true, busca:'', sortK:'d', sortA:false, catSel:null };
+
+/* --- lançamentos extraordinários ---------------------------------------
+   Regra: uma SAÍDA isolada de R$ 3.000 ou mais que valha 3x ou mais a mediana
+   mensal daquela categoria. Ex.: a quitação do financiamento do carro em jun/26
+   (R$ 62.447,81) contra uma mediana de R$ 2.253/mês em Veículos/Transporte.
+   Eles não são apagados: saem das médias e ganham um cartão só deles.        */
+const PISO_EXTRA = 3000, FATOR_EXTRA = 3;
+(function marcaExtraordinarios(){
+  /* medianas separadas por sinal: o resgate de previdência de jun/26 (entrada de
+     R$ 78.640,70) é tão extraordinário quanto a quitação do carro que ele pagou. */
+  const acum = { '+':{}, '-':{} };
+  D.lanc.forEach(l => { const s = l.v >= 0 ? '+' : '-';
+    (acum[s][l.c] = acum[s][l.c] || {});
+    acum[s][l.c][l.m] = (acum[s][l.c][l.m] || 0) + Math.abs(l.v); });
+  const mediana = arr => { const a = arr.slice().sort((x,y)=>x-y), n = a.length;
+    return n===0 ? 0 : (n%2 ? a[(n-1)/2] : (a[n/2-1]+a[n/2])/2); };
+  const med = { '+':{}, '-':{} };
+  ['+','-'].forEach(s => Object.keys(acum[s]).forEach(cat =>
+    med[s][cat] = mediana(D.meses.map(m => acum[s][cat][m] || 0))));
+  /* só é extraordinário quando o sinal segue a direção natural da categoria:
+     um valor positivo numa categoria de despesa é estorno (a devolução da passagem
+     da Azul, R$ 4.852,24 em jul/26), e estorno abate a despesa — não é receita
+     extraordinária nem some da conta. */
+  D.lanc.forEach(l => { const s = l.v >= 0 ? '+' : '-', v = Math.abs(l.v), m = med[s][l.c];
+    const naturalz = (l.t === 'Despesa' && l.v > 0) || (l.t === 'Receita' && l.v < 0);
+    l._e = !naturalz && v >= PISO_EXTRA && (!(m > 0) || v >= FATOR_EXTRA*m); });
+})();
+const MEDIA_MESES = m => m==='todos' ? D.meses.length : 1;
+
+/* ---------- filtros ---------- */
+const selMes = $('#fmes');
+selMes.innerHTML = '<option value="todos">Todos os meses</option>' + D.meses.map(m=>{
+  const f = ORIGENS.length - ORIG_MES[m].size;
+  return `<option value="${m}">${rotMes(m)}${f?' — incompleto':''}</option>`; }).join('');
+selMes.value = ULTIMO_FECHADO; st.mes = selMes.value;
+selMes.onchange = e => { st.mes = e.target.value; render(); };
+$('#forigem').innerHTML = ORIGENS.map(o=>`<button class="chip" aria-pressed="true" data-o="${o}">${o}</button>`).join('');
+$('#forigem').onclick = e => { const b=e.target.closest('.chip'); if(!b) return;
+  const o=b.dataset.o; if(st.origens.has(o)&&st.origens.size>1) st.origens.delete(o); else st.origens.add(o);
+  b.setAttribute('aria-pressed', st.origens.has(o)); render(); };
+$('#fnatureza').onclick = e => { const b = e.target.closest('.chip'); if(!b) return;
+  const n = b.dataset.n;
+  if(st.nat.has(n) && st.nat.size>1) st.nat.delete(n); else st.nat.add(n);
+  b.setAttribute('aria-pressed', st.nat.has(n)); render(); };
+$('#ftransf').onchange = e => { st.transf = e.target.checked; render(); };
+$('#fextra').onchange = e => { st.semExtra = e.target.checked; render(); };
+$('#busca').oninput = e => { st.busca = e.target.value.toLowerCase().trim(); renderTabela(); };
+$('#periodo').textContent = rotMes(D.meses[0]) + ' a ' + rotMes(D.meses[D.meses.length-1]);
+
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected', x===t));
+  document.querySelectorAll('.panel').forEach(p=>p.hidden = p.id !== t.dataset.p);
+});
+
+/* ---------- dados filtrados ---------- */
+const passaBase = l => st.origens.has(l.o)
+  && (l.t === 'Transferência' ? st.transf : st.nat.has(NAT[l.t] || 'consumo'))
+  && !(st.semExtra && l._e);
+/* os extraordinários do filtro atual, ignorando o toggle — o cartão sempre os mostra */
+const extraordinarios = () => D.lanc.filter(l => l._e && st.origens.has(l.o)
+  && (l.t === 'Transferência' ? st.transf : st.nat.has(NAT[l.t] || 'consumo'))
+  && (st.mes==='todos' || l.m===st.mes));
+const filtrados = () => D.lanc.filter(l => passaBase(l) && (st.mes==='todos' || l.m===st.mes));
+
+/* ---------- tooltip ---------- */
+const tip = $('#tip');
+function showTip(e, html){ tip.innerHTML=html; tip.style.opacity=1;
+  const x=Math.min(e.clientX+14, innerWidth-tip.offsetWidth-10), y=Math.max(e.clientY-tip.offsetHeight-10,8);
+  tip.style.left=x+'px'; tip.style.top=y+'px'; }
+function hideTip(){ tip.style.opacity=0; }
+document.addEventListener('scroll', hideTip, true);
+
+/* ---------- entradas e saídas pelo TIPO da categoria, não pelo sinal ----------
+   Um valor positivo numa categoria de despesa é ESTORNO (reembolso, devolução,
+   cancelamento de passagem): abate daquela despesa, não vira renda. É a mesma
+   conta do Dashboard do Excel, que soma cada categoria pelo líquido — foi o que
+   fazia entradas e saídas do painel divergirem do Excel todo mês.
+   Acerto/Empresa/Transferência, quando o filtro os inclui, continuam separados
+   pelo sinal: ali não existe "direção natural" da categoria.
+
+   E quando a visão é só consumo entra a MESMA linha do Excel, "Contribuição p/
+   contas dos Pais (líquido Acerto)": o saldo entre o que a família paga pelos pais
+   e o que os irmãos reembolsam é gasto de verdade, mesmo não sendo consumo. */
+const LIQ_ACERTO = 'Contribuição p/ contas dos Pais (líquido Acerto)';
+function liqAcerto(mes){
+  if(!st.nat.has('consumo') || st.nat.has('repasse')) return 0;   /* já entram inteiros */
+  return -D.lanc.filter(l => l.t === 'Acerto' && st.origens.has(l.o)
+                          && (mes === 'todos' || l.m === mes)
+                          && !(st.semExtra && l._e))
+                .reduce((s,l) => s + l.v, 0);
+}
+const eSaida = l => l.t === 'Despesa' || (l.t !== 'Receita' && l.v < 0);
+function totais(L, mes){
+  let ent = 0, sai = 0;
+  L.forEach(l => { if(eSaida(l)) sai -= l.v; else ent += l.v; });
+  return {ent, sai: sai + liqAcerto(mes)};
+}
+
+/* ---------- KPIs ---------- */
+function renderKpis(L){
+  const {ent, sai} = totais(L, st.mes);
+  const res = ent - sai;
+  const falta = faltando(st.mes);
+  const taxaOk = ent > sai*0.2;
+  const taxa = ent>0 ? res/ent*100 : 0;
+  $('#aviso').innerHTML = falta.length
+    ? `<div class="aviso"><b>Mês ainda não fechado.</b> Faltam lançamentos de: ${falta.join(', ')}.
+       Os números abaixo estão incompletos — use ${rotMes(ULTIMO_FECHADO)} para uma leitura confiável.</div>`
+    : '';
+  const rot = st.mes==='todos' ? 'no período' : 'em '+rotMes(st.mes);
+  const nMes = st.mes==='todos' ? new Set(L.map(l=>l.m)).size || 1 : 1;
+  $('#kpis').innerHTML = `
+   <div class="kpi ent"><div class="lab">Entradas ${rot}</div><div class="val">${BRL(ent)}</div>
+     <div class="note">${nMes>1?'média '+BRL(ent/nMes)+'/mês':'&nbsp;'}</div></div>
+   <div class="kpi sai"><div class="lab">Saídas ${rot}</div><div class="val">${BRL(sai)}</div>
+     <div class="note">${nMes>1?'média '+BRL(sai/nMes)+'/mês':'&nbsp;'}</div></div>
+   <div class="kpi"><div class="lab">Resultado</div><div class="val ${res>=0?'pos':'neg'}">${BRL(res)}</div>
+     <div class="note">${res>=0?'sobrou':'faltou'} ${rot}</div></div>
+   <div class="kpi"><div class="lab">Taxa de poupança</div>
+     <div class="val ${taxaOk ? (taxa>=0?'pos':'neg') : 'muted'}">${taxaOk ? taxa.toFixed(1)+'%' : '—'}</div>
+     <div class="note">${taxaOk ? 'do que entrou, quanto sobrou' : 'sem receita suficiente no mês para calcular'}</div></div>`;
+}
+
+/* ---------- barras por categoria ---------- */
+function barras(el, L, sinal){
+  const g = {};
+  const querSaida = sinal < 0;
+  L.forEach(l => {
+    if(eSaida(l) !== querSaida) return;
+    const v = querSaida ? -l.v : l.v;            /* estorno entra negativo e abate */
+    g[l.c] = g[l.c] || {tot:0, ori:{}};
+    g[l.c].tot += v;
+    g[l.c].ori[l.o] = (g[l.c].ori[l.o]||0) + v;
+  });
+  if(querSaida){
+    const q = liqAcerto(st.mes);
+    if(q > 0.005) g[LIQ_ACERTO] = {tot:q, ori:{'saldo dos acertos com os irmãos': q}};
+  }
+  const arr = Object.entries(g).filter(([,d]) => d.tot > 0.005).sort((a,b)=>b[1].tot-a[1].tot);
+  if(!arr.length){ el.innerHTML = '<p class="muted">Nenhum lançamento com os filtros atuais.</p>'; return; }
+  const max = arr[0][1].tot, soma = arr.reduce((s,[,d])=>s+d.tot,0);
+  el.innerHTML = arr.map(([c,d]) => {
+    const pct = (d.tot/soma*100).toFixed(1);
+    const det = Object.entries(d.ori).sort((a,b)=>b[1]-a[1])
+      .map(([o,v])=>`${o}: ${BRL(v)}`).join('<br>');
+    return `<div class="bar" data-tip="<b>${c}</b><br>${BRL(d.tot)} &middot; ${pct}% do total<br><br>${det}">
+      <span class="nm" title="${c}">${c}</span>
+      <span class="track"><span class="fill" style="width:${(d.tot/max*100).toFixed(2)}%;background:${sinal<0?'var(--s1)':'var(--s3)'}"></span></span>
+      <span class="vl">${BRL(d.tot)}</span></div>`;
+  }).join('');
+  el.querySelectorAll('.bar').forEach(b => {
+    b.onmousemove = e => showTip(e, b.dataset.tip);
+    b.onmouseleave = hideTip;
+  });
+}
+
+/* ---------- evolução ---------- */
+function serieMensal(){
+  return D.meses.map(m => {
+    const L = D.lanc.filter(l => passaBase(l) && l.m===m);
+    const {ent, sai} = totais(L, m);
+    return {m, ent, sai, res: ent-sai, inc: faltando(m).length};
+  });
+}
+function renderEvol(){
+  const S = serieMensal();
+  const W=920, H=352, ML=68, MR=18, MT=16, MB=46;
+  const iw = W-ML-MR, ih = H-MT-MB;
+  const vals = S.flatMap(d=>[d.ent,d.sai,d.res,0]);
+  let hi = Math.max(...vals, 0), lo = Math.min(...vals, 0);
+  const pad = (hi-lo)*0.08 || 1; hi+=pad; lo-=pad;
+  const y = v => MT + ih - (v-lo)/(hi-lo)*ih;
+  const bw = iw/S.length, gw = Math.min(bw*0.30, 34);
+  const rt = (x,v,w,col) => { const y0=y(0), y1=y(v), top=Math.min(y0,y1), h=Math.abs(y0-y1), r=Math.min(4,h,w/2);
+    return `<path d="M${x} ${top+h} L${x} ${top+r} Q${x} ${top} ${x+r} ${top} L${x+w-r} ${top} Q${x+w} ${top} ${x+w} ${top+r} L${x+w} ${top+h} Z" fill="${col}"/>`; };
+  let ticks=[]; for(let i=0;i<=4;i++){ ticks.push(lo+(hi-lo)*i/4); }
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  ticks.forEach(t => { s += `<line x1="${ML}" x2="${W-MR}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}" stroke="var(--grid)" stroke-width="1"/>
+    <text x="${ML-9}" y="${(y(t)+4).toFixed(1)}" fill="var(--muted)" font-size="11" text-anchor="end">${K(t)}</text>`; });
+  s += `<line x1="${ML}" x2="${W-MR}" y1="${y(0).toFixed(1)}" y2="${y(0).toFixed(1)}" stroke="var(--axis)" stroke-width="1.5"/>`;
+  S.forEach((d,i) => {
+    const cx = ML + bw*i + bw/2;
+    s += rt(cx-gw-1, d.ent, gw, 'var(--s3)') + rt(cx+1, d.sai, gw, 'var(--s2)');
+    s += `<text x="${cx}" y="${H-11}" fill="var(--muted)" font-size="11.5" text-anchor="middle">${rotMes(d.m)}${d.inc?' *':''}</text>`;
+  });
+  const pts = S.map((d,i)=>`${(ML+bw*i+bw/2).toFixed(1)},${y(d.res).toFixed(1)}`).join(' ');
+  s += `<polyline points="${pts}" fill="none" stroke="var(--s1)" stroke-width="2" stroke-linejoin="round"/>`;
+  S.forEach((d,i)=>{ const cx=ML+bw*i+bw/2;
+    s += `<circle cx="${cx.toFixed(1)}" cy="${y(d.res).toFixed(1)}" r="4.5" fill="var(--s1)" stroke="var(--card)" stroke-width="2"/>`; });
+  S.forEach((d,i)=>{ const cx=ML+bw*i;
+    s += `<rect class="hit" x="${cx}" y="${MT}" width="${bw}" height="${ih}" fill="transparent"
+      data-tip="<b>${rotMes(d.m)}</b>${d.inc?' &mdash; <i>mês incompleto</i>':''}<br>Entradas: ${BRL(d.ent)}<br>Saídas: ${BRL(d.sai)}<br>Resultado: ${BRL(d.res)}"/>`; });
+  s += '</svg>';
+  $('#svgEvol').outerHTML = s.replace('<svg ','<svg id="svgEvol" role="img" aria-label="Entradas, saídas e resultado por mês" ');
+  document.querySelectorAll('#svgEvol .hit').forEach(h=>{ h.onmousemove=e=>showTip(e,h.dataset.tip); h.onmouseleave=hideTip; });
+  const nInc = S.filter(d=>d.inc).length;
+  if($('#notaInc')) $('#notaInc').textContent = nInc ? '* mês ainda não fechado — faltam origens' : '';
+  $('#tblEvol').innerHTML = '<thead><tr><th>Mês</th><th>Entradas</th><th>Saídas</th><th>Resultado</th><th>Taxa poup.</th></tr></thead><tbody>' +
+    S.map(d=>{ const ok = d.ent > d.sai*0.2;
+      return `<tr><td>${rotMes(d.m)}${d.inc?' <span class="muted" title="faltam origens">· incompleto</span>':''}</td>
+      <td class="num">${BRL(d.ent)}</td><td class="num">${BRL(d.sai)}</td>
+      <td class="num ${d.res>=0?'pos':'neg'}">${BRL(d.res)}</td>
+      <td class="num">${ok?(d.res/d.ent*100).toFixed(1)+'%':'—'}</td></tr>`; }).join('') + '</tbody>';
+  if(S.some(d=>d.inc)) $('#tblEvol').insertAdjacentHTML('afterend','');
+}
+
+/* ---------- metas (editáveis; a planilha continua sendo a fonte) ---------- */
+const LS_KEY = 'metas:' + (D.titulo || 'painel');
+let METAS_EDIT = {};
+try { METAS_EDIT = JSON.parse(localStorage.getItem(LS_KEY) || '{}') || {}; } catch(e) { METAS_EDIT = {}; }
+const salvaEdit = () => { try { localStorage.setItem(LS_KEY, JSON.stringify(METAS_EDIT)); } catch(e){} };
+const metaDe = c => (c in METAS_EDIT) ? METAS_EDIT[c] : D.metas[c];
+
+function renderMetas(){
+  const el = $('#metasList');
+  const cats = Object.keys(D.metas);
+  if(!cats.length){ el.innerHTML='<p class="muted">Nenhuma meta definida na planilha.</p>'; return; }
+  const mesesUsados = st.mes==='todos' ? D.meses : [st.mes];
+  const n = mesesUsados.length;
+  const real = {};
+  D.lanc.filter(l => passaBase(l) && mesesUsados.includes(l.m) && eSaida(l))
+        .forEach(l => real[l.c] = (real[l.c]||0) + Math.abs(l.v));
+  const linhas = cats.map(c => {
+    const r = (real[c]||0)/n, meta = metaDe(c);
+    return {c, r, meta, pct: meta>0 ? r/meta*100 : (r>0?999:0)};
+  }).sort((a,b)=>b.pct-a.pct);
+  const ANCORA = 60; // a meta fica sempre em 60% da barra: assim as linhas ficam comparaveis entre si
+  const status = p => p<=90 ? ['var(--good)','Dentro','✓'] : p<100.5 ? ['var(--warn)','No limite','!'] : p<=120 ? ['var(--serious)','Estourou','▲'] : ['var(--crit)','Muito acima','▲'];
+  const sufixo = n>1 ? ' <span class="muted">(média de '+n+' meses)</span>' : '';
+  el.innerHTML = `<p class="small" style="margin:-4px 0 12px">Realizado ${n>1?'médio mensal':'de '+rotMes(st.mes)}${sufixo} contra a meta. O traço vertical é a meta — barra além do traço, estourou. Teto mensal da família: <b>${D.teto?BRL(D.teto):'—'}</b>.</p>` +
+   linhas.map(l => { const [col,txt,ic] = status(l.pct);
+    return `<div class="meta" data-tip="<b>${l.c}</b><br>Realizado: ${BRL(l.r)}<br>Meta: ${BRL(l.meta)}<br>${l.r<=l.meta?'Folga':'Excesso'}: ${BRL(Math.abs(l.meta-l.r))}">
+      <span class="nm" title="${l.c}">${l.c}</span>
+      <span class="track"><span class="fill" style="width:${Math.min(l.pct*ANCORA/100,100).toFixed(2)}%;background:${col}"></span>
+        <span class="tick" style="left:${ANCORA}%"></span></span>
+      <span class="num">${BRL(l.r)} <span class="muted">/</span>
+        <input type="number" step="10" min="0" class="metaIn${(l.c in METAS_EDIT)?' edited':''}"
+               data-c="${l.c}" value="${l.meta}" aria-label="Meta mensal de ${l.c}"></span>
+      <span class="st"><span class="dot" style="background:${col}"></span><b>${ic} ${txt}</b> ${l.pct<999?l.pct.toFixed(0)+'%':''}</span></div>`; }).join('');
+  el.querySelectorAll('.meta').forEach(b=>{ b.onmousemove=e=>showTip(e,b.dataset.tip); b.onmouseleave=hideTip; });
+  el.querySelectorAll('.metaIn').forEach(inp => {
+    inp.onmousemove = e => e.stopPropagation();
+    inp.onchange = () => {
+      const c = inp.dataset.c, v = parseFloat(inp.value);
+      if(!isFinite(v) || v < 0){ inp.value = metaDe(c); return; }
+      if(Math.abs(v - D.metas[c]) < 0.005) delete METAS_EDIT[c]; else METAS_EDIT[c] = v;
+      salvaEdit(); renderMetas(); statusMetas();
+    };
+  });
+  statusMetas();
+}
+function statusMetas(){
+  const n = Object.keys(METAS_EDIT).length;
+  const somaP = Object.keys(D.metas).reduce((s,c)=>s+D.metas[c],0);
+  const somaE = Object.keys(D.metas).reduce((s,c)=>s+metaDe(c),0);
+  const el = $('#metasStatus'); if(!el) return;
+  const teto = D.teto || 0;
+  const cabe = teto ? (somaE<=teto ? `<b class="pos">cabe no teto</b> (sobra ${BRL(teto-somaE)} para poupança)`
+                                   : `<b class="neg">estoura o teto</b> em ${BRL(somaE-teto)}`) : '';
+  el.innerHTML = (n ? `<b>${n}</b> meta(s) editada(s) aqui · ` : 'nenhuma meta editada · ')
+    + `soma das metas ${BRL(somaE)}${n?` <span class="muted">(planilha: ${BRL(somaP)})</span>`:''} · ${cabe}`;
+  const bt = $('#btnResetMetas'); if(bt) bt.disabled = !n;
+}
+
+/* ---------- tabela de lançamentos ---------- */
+const COLS = [['d','Data'],['m','Mês'],['o','Origem'],['x','Descrição'],['p','Parc.'],['c','Categoria'],['v','Valor']];
+function renderTabela(){
+  let L = filtrados();
+  if(st.busca) L = L.filter(l => (l.x+' '+l.c).toLowerCase().includes(st.busca));
+  L = L.slice().sort((a,b)=>{ const k=st.sortK; let r;
+    if(k==='v') r = a.v-b.v; else r = String(a[k]).localeCompare(String(b[k]),'pt-BR');
+    return st.sortA ? r : -r; });
+  const soma = L.reduce((s,l)=>s+l.v,0);
+  $('#contaLanc').innerHTML = `<b>${L.length.toLocaleString('pt-BR')}</b> lançamento(s) · soma <b class="${soma>=0?'pos':'neg'}">${BRL(soma)}</b>`;
+  const head = '<thead><tr>' + COLS.map(([k,t])=>`<th data-k="${k}" class="${k==='v'?'num':''}">${t}${st.sortK===k?(st.sortA?' ↑':' ↓'):''}</th>`).join('') + '</tr></thead>';
+  const MAXR = 600;
+  const body = '<tbody>' + L.slice(0,MAXR).map(l=>`<tr>
+     <td>${l.d.split('-').reverse().join('/')}</td><td>${rotMes(l.m)}</td><td>${l.o}</td>
+     <td>${l.x.replace(/</g,'&lt;')}</td><td>${l.p||''}</td><td>${l.c}</td>
+     <td class="num ${l.v>=0?'pos':''}">${BRL(l.v)}</td></tr>`).join('') +
+     (L.length>MAXR?`<tr><td colspan="7" class="muted">… mostrando as ${MAXR} primeiras de ${L.length}. Refine o filtro ou a busca.</td></tr>`:'') + '</tbody>';
+  const t = $('#tblLanc'); t.innerHTML = head + body;
+  t.querySelectorAll('th').forEach(th => th.onclick = () => {
+    const k = th.dataset.k;
+    if(st.sortK===k) st.sortA=!st.sortA; else { st.sortK=k; st.sortA = k!=='v'&&k!=='d'; }
+    renderTabela(); });
+}
+
+
+/* ---------- COMPROMISSOS: o que já está assumido nos meses à frente ----------
+   Só entra compromisso assumido (parcela de cartão e financiamento).
+   Acertos familiares (valores que a família adianta e recebe de volta) saem por
+   padrão; a chave "incluir acertos familiares" mostra o desembolso bruto. */
+const PARC = (D.parcelas || []);
+const eAcerto = p => p.t === 'Acerto' || p.t === 'Empresa';
+const stC = { mes: 'todos', acertos: false, ligado: false };
+
+const parcVisiveis = () => PARC.filter(p => stC.acertos || !eAcerto(p));
+const mesesComp    = () => [...new Set(parcVisiveis().map(p => p.m))].sort();
+
+/* entradas médias dos meses fechados — serve só de régua de comparação,
+   não é projeção de nada */
+function entradaMedia(){
+  const fech = D.meses.filter(m => faltando(m).length === 0);
+  if(!fech.length) return {v:0, n:0};
+  const soma = D.lanc.filter(l => fech.includes(l.m) && l.t === 'Receita' && l.v > 0 && !l._e)
+                     .reduce((s,l) => s + l.v, 0);
+  return {v: soma / fech.length, n: fech.length};
+}
+
+function renderChipsComp(){
+  const ms = mesesComp();
+  const box = $('#chipsComp'); if(!box) return;
+  box.innerHTML = [['todos','Todos os meses'], ...ms.map(m => [m, rotMes(m)])]
+    .map(([v,r]) => `<button class="chip" data-m="${v}" aria-pressed="${stC.mes===v}">${r}</button>`).join('');
+  box.querySelectorAll('.chip').forEach(b => b.onclick = () => {
+    stC.mes = b.dataset.m; renderCompromissos();
+  });
+}
+
+function renderCompromissos(){
+  const el = $('#heroComp'); if(!el) return;
+
+  if(!stC.ligado){
+    stC.ligado = true;
+    const ck = $('#cAcertos');
+    if(ck) ck.onchange = () => {
+      stC.acertos = ck.checked;
+      if(stC.mes !== 'todos' && !mesesComp().includes(stC.mes)) stC.mes = 'todos';
+      renderCompromissos();
+    };
+  }
+
+  const ms = mesesComp();
+  const temAcerto = PARC.some(eAcerto);
+  const ck = $('#cAcertos');
+  if(ck) ck.closest('.toggle').style.display = temAcerto ? '' : 'none';
+
+  if(!ms.length){
+    renderChipsComp();
+    el.innerHTML = `<div class="card"><h2>Nenhum compromisso em aberto</h2>
+      <p class="sub">Nada parcelado nem financiado à frente — todo o dinheiro dos próximos meses ainda é escolha sua.</p></div>`;
+    ['svgComp','alivioList','tblComp','contaComp'].forEach(i => { const n=$('#'+i); if(n) n.innerHTML=''; });
+    return;
+  }
+  if(stC.mes !== 'todos' && !ms.includes(stC.mes)) stC.mes = 'todos';
+  renderChipsComp();
+
+  const VIS  = parcVisiveis();
+  const noMes = m => VIS.filter(p => p.m === m);
+  const soma  = a => a.reduce((s,p) => s + p.v, 0);
+  const E = entradaMedia();
+  const tot = soma(VIS);
+  const fim = ms[ms.length - 1];
+  const foco = stC.mes === 'todos' ? null : stC.mes;
+
+  /* ---------- topo: comprometido x entradas, sem estimativa ----------
+     O topo segue o filtro: em "Todos os meses" o número grande é o saldo total
+     em aberto; com um mês escolhido, é o quanto aquele mês já tem preso. */
+  const pico   = ms.reduce((a,m) => soma(noMes(m)) > soma(noMes(a)) ? m : a, ms[0]);
+  const vPico  = soma(noMes(pico));
+  const pctDe  = v => E.v > 0 ? (v / E.v * 100).toFixed(0) + '%' : '—';
+
+  const topo = foco
+    ? { q: `Comprometido em <b>${rotMes(foco)}</b>`, n: soma(noMes(foco)),
+        sub: `${pctDe(soma(noMes(foco)))} das entradas médias de ${BRL(E.v)} `
+           + `<span class="muted">(média dos ${E.n} meses fechados)</span>. `
+           + `Sobram ${BRL(E.v - soma(noMes(foco)))} para o resto do mês.`,
+        stats: [['Parcelas neste mês', String(noMes(foco).length), 'de um total de ' + VIS.length],
+                ['Mês mais pesado', rotMes(pico), BRL(vPico)],
+                ['Último compromisso', rotMes(fim), 'a partir daí, zero parcela']] }
+    : { q: 'Ainda a pagar em compromissos já assumidos', n: tot,
+        sub: `${VIS.length} parcelas espalhadas entre ${rotMes(ms[0])} e ${rotMes(fim)}. `
+           + `O mês mais pesado é ${rotMes(pico)}, com ${BRL(vPico)} — ${pctDe(vPico)} das entradas médias de ${BRL(E.v)} `
+           + `<span class="muted">(média dos ${E.n} meses fechados)</span>.`,
+        stats: [['Próximo mês', rotMes(ms[0]), BRL(soma(noMes(ms[0])))],
+                ['Mês mais pesado', rotMes(pico), BRL(vPico)],
+                ['Último compromisso', rotMes(fim), 'a partir daí, zero parcela']] };
+
+  el.innerHTML = `<div class="hero">
+    <div class="q">${topo.q}</div>
+    <div class="n">${BRL(topo.n)}</div>
+    <div class="sub2">${topo.sub}</div>
+    <div class="livre">${topo.stats.map(([r,v,n]) =>
+      `<div><div class="r">${r}</div><div class="v">${v}</div><div class="small muted">${n}</div></div>`).join('')}</div>
+  </div>`;
+
+  /* ---------- gráfico: só cartão + financiamento ---------- */
+  const MOSTRA = ms.slice(0, 18);
+  const dados = MOSTRA.map(m => ({
+    m,
+    cartao: soma(noMes(m).filter(p => p.f !== 'financiamento')),
+    fin:    soma(noMes(m).filter(p => p.f === 'financiamento')),
+  }));
+  const W=920, H=300, ML=68, MR=18, MT=16, MB=44, iw=W-ML-MR, ih=H-MT-MB;
+  /* escala pelas BARRAS, não pela renda: com 4% da renda comprometida a linha
+     achatava tudo e nenhum mês se distinguia do outro. A comparação com as
+     entradas vive no topo e na legenda, em texto. */
+  const hi = Math.max(...dados.map(d => d.cartao + d.fin)) * 1.12 || 1;
+  const y = v => MT + ih - v/hi*ih;
+  const bw = iw/dados.length, gw = Math.min(bw*0.6, 46);
+  const seg = (x, base, val, cor, op) => {
+    if(val <= 0) return '';
+    const y0 = y(base), y1 = y(base+val), h = Math.max(y0-y1-2, 0);
+    return `<rect x="${x}" y="${y1}" width="${gw}" height="${h}" fill="${cor}" opacity="${op}"/>`;
+  };
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  for(let i=0;i<=4;i++){ const t=hi*i/4;
+    s += `<line x1="${ML}" x2="${W-MR}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}" stroke="var(--grid)"/>
+          <text x="${ML-9}" y="${(y(t)+4).toFixed(1)}" fill="var(--muted)" font-size="11" text-anchor="end">${K(t)}</text>`; }
+  dados.forEach((d,i) => {
+    const x = ML + bw*i + (bw-gw)/2;
+    const op = (!foco || foco === d.m) ? 1 : .3;
+    s += seg(x, 0, d.cartao, 'var(--s1)', op)
+       + seg(x, d.cartao, d.fin, 'var(--s7)', op);
+    s += `<text x="${(ML+bw*i+bw/2).toFixed(1)}" y="${H-24}" font-size="11" text-anchor="middle"
+            fill="${foco===d.m?'var(--ink)':'var(--muted)'}" font-weight="${foco===d.m?600:400}">${rotMes(d.m)}</text>`;
+  });
+  s += `<line x1="${ML}" x2="${W-MR}" y1="${(MT+ih).toFixed(1)}" y2="${(MT+ih).toFixed(1)}" stroke="var(--axis)" stroke-width="1.5"/>`;
+  dados.forEach((d,i) => {
+    const t = d.cartao + d.fin;
+    s += `<rect class="hitc" x="${ML+bw*i}" y="${MT}" width="${bw}" height="${ih}" fill="transparent" style="cursor:pointer"
+      data-m="${d.m}"
+      data-tip="<b>${rotMes(d.m)}</b><br>Parcelas de cartão: ${BRL(d.cartao)}<br>Financiamentos: ${BRL(d.fin)}<br><b>Total: ${BRL(t)}</b><br>${pctDe(t)} das entradas médias"/>`;
+  });
+  s += '</svg>';
+  $('#svgComp').outerHTML = s.replace('<svg ','<svg id="svgComp" role="img" aria-label="Compromissos por mês" ');
+  const notaC = $('#notaComp');
+  if(notaC) notaC.innerHTML = E.v > 0
+    ? `Escala das barras. Para comparar: as entradas médias são ${BRL(E.v)}/mês — o mês mais pesado (${rotMes(pico)}) usa ${pctDe(vPico)} disso.`
+    : '';
+  document.querySelectorAll('#svgComp .hitc').forEach(h => {
+    h.onmousemove = e => showTip(e, h.dataset.tip);
+    h.onmouseleave = hideTip;
+    h.onclick = () => { hideTip(); stC.mes = (stC.mes === h.dataset.m) ? 'todos' : h.dataset.m; renderCompromissos(); };
+  });
+
+  /* ---------- quando alivia (sempre a série inteira, não filtra por mês) ---------- */
+  const grupos = {};
+  VIS.forEach(p => {
+    const raiz = p.x.replace(/\s*\d{1,3}\/\d{1,3}\s*$/,'').trim() || p.x;
+    (grupos[raiz] = grupos[raiz] || {itens:[], f:p.f, c:p.c}).itens.push(p);
+  });
+  const linhas = Object.entries(grupos).map(([nome,g]) => {
+    const itens = g.itens.slice().sort((a,b) => a.m.localeCompare(b.m));
+    return {nome, f:g.f, c:g.c, fim:itens[itens.length-1].m, n:itens.length, mensal:itens[0].v};
+  }).sort((a,b) => a.fim.localeCompare(b.fim) || b.mensal - a.mensal);
+  let acum = 0;
+  $('#alivioList').innerHTML =
+    `<div class="alivio" style="border-bottom:2px solid var(--border);padding-bottom:6px">
+       <b>Compromisso</b><b class="num">Por mês</b><b class="num">Acaba em</b><b class="num">Alívio acumulado</b></div>` +
+    linhas.map(l => { acum += l.mensal;
+      return `<div class="alivio">
+        <span title="${l.nome}">${l.nome.length>34 ? l.nome.slice(0,34)+'…' : l.nome}
+          <span class="muted">· ${l.n}x · ${l.c}</span></span>
+        <span class="num">${BRL(l.mensal)}</span>
+        <span class="num quando">${rotMes(l.fim)}</span>
+        <span class="num"><b class="ok">+${BRL(acum)}</b>/mês</span></div>`; }).join('');
+
+  /* ---------- tabela (respeita o filtro de mês) ---------- */
+  const TAB = foco ? noMes(foco) : VIS;
+  $('#contaComp').textContent = foco
+    ? `${TAB.length} parcelas em ${rotMes(foco)} · ${BRL(soma(TAB))}`
+    : `${TAB.length} parcelas entre ${rotMes(ms[0])} e ${rotMes(fim)} · ${BRL(soma(TAB))}`;
+  $('#tblComp').innerHTML =
+    '<thead><tr><th>Mês</th><th>Compromisso</th><th>Parcela</th><th>Tipo</th><th>Categoria</th><th class="num">Valor</th></tr></thead><tbody>' +
+    TAB.slice().sort((a,b) => a.m.localeCompare(b.m) || b.v - a.v).map(p =>
+      `<tr><td>${rotMes(p.m)}</td><td>${p.x.replace(/</g,'&lt;')}</td><td>${p.p}</td>
+        <td>${p.f === 'financiamento' ? 'Financiamento' : 'Cartão'}</td><td>${p.c}</td>
+        <td class="num">${BRL(p.v)}</td></tr>`).join('') +
+    `<tr><td colspan="5"><b>Total</b></td><td class="num"><b>${BRL(soma(TAB))}</b></td></tr></tbody>`;
+}
+/* ---------- cartão dos lançamentos extraordinários ---------- */
+function renderExtra(){
+  const el = $('#cardExtra'); if(!el) return;
+  const E = extraordinarios().sort((a,b)=>Math.abs(b.v)-Math.abs(a.v));
+  if(!E.length){ el.innerHTML = ''; return; }
+  const tot = E.reduce((s,l)=>s+Math.abs(l.v),0);
+  const liq = E.reduce((s,l)=>s+l.v,0);
+  el.innerHTML = `<div class="card destaque">
+    <h2>Lançamentos extraordinários${st.mes==='todos'?'':' em '+rotMes(st.mes)}</h2>
+    <p class="sub">${E.length} lançamento(s), ${BRL(tot)} em módulo (${BRL(liq)} líquido). São entradas ou saídas
+      isoladas de R$ 3.000 ou mais que valem 3× ou mais a mediana mensal da própria categoria — venda ou compra de bem,
+      quitação, resgate, acerto de uma vez. Não são renda nem consumo: são patrimônio mudando de forma.
+      ${st.semExtra ? 'Estão <b>fora</b> dos números acima e das médias.' : 'Estão <b>dentro</b> dos números acima — desmarque o filtro para separá-los.'}</p>
+    <div class="extra-list">` + E.map(l => `
+      <div class="extra-item">
+        <span class="mm">${rotMes(l.m)}</span>
+        <span class="cc"><b>${l.c}</b> · ${l.x.replace(/</g,'&lt;')} <span class="muted">· ${l.o}</span></span>
+        <span class="vv" style="color:${l.v>0?'var(--s3)':'var(--s7)'}">${l.v>0?'+':'−'}${BRL(Math.abs(l.v))}</span>
+      </div>`).join('') + `</div></div>`;
+}
+
+/* ---------- matriz categoria × mês ----------
+   O tom mede a VARIAÇÃO dentro da linha (menor mês -> maior mês), não o valor
+   absoluto: a pergunta é "como esta categoria se comporta", não "qual é a maior".
+   Linha com amplitude abaixo de 15% é marcada como estável e não recebe gradiente,
+   senão o aluguel fixo apareceria oscilando tanto quanto o supermercado.        */
+const Kc = v => v <= 0 ? '—'
+  : v >= 10000 ? (v/1000).toLocaleString('pt-BR',{maximumFractionDigits:0}) + 'k'
+  : v >= 1000  ? (v/1000).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1}) + 'k'
+  : v.toLocaleString('pt-BR',{maximumFractionDigits:0});
+const LIM_ESTAVEL = 0.15;
+
+function renderMatriz(){
+  const t = $('#mtx'); if(!t) return;
+  const cats = {};
+  D.lanc.filter(l => passaBase(l) && eSaida(l)).forEach(l => {
+    cats[l.c] = cats[l.c] || {};
+    cats[l.c][l.m] = (cats[l.c][l.m] || 0) + (-l.v);
+  });
+  /* meses incompletos aparecem, mas não entram na média nem na oscilação:
+     ago/26 com R$ 14 em Educação faria a categoria parecer variar 100%.       */
+  const OK = D.meses.map(m => faltando(m).length === 0);
+  const nOk = OK.filter(Boolean).length || D.meses.length;
+  const linhas = Object.keys(cats).map(c => {
+    const vals = D.meses.map(m => cats[c][m] || 0);
+    const base = vals.filter((v,i) => OK[i] && v > 0);
+    const total = vals.reduce((s,v,i) => s + (OK[i] ? v : 0), 0);
+    const max = base.length ? Math.max(...base) : 0;
+    const min = base.length ? Math.min(...base) : 0;
+    return { c, vals, ok: OK, total, media: total/nOk, max, min,
+             amp: max > 0 ? (max-min)/max : 0, nCom: base.length };
+  }).sort((a,b) => b.total - a.total);
+  if(!linhas.length){ t.innerHTML = '<tbody><tr><td class="muted">Nenhuma despesa com os filtros atuais.</td></tr></tbody>'; return; }
+
+  const bucket = (v, l, i) => {
+    if(v <= 0 || l.max <= 0 || !l.ok[i]) return 0;
+    if(l.amp < LIM_ESTAVEL || l.nCom < 2) return 2;
+    return 1 + Math.min(4, Math.max(0, Math.floor((v - l.min) / (l.max - l.min) * 4.999)));
+  };
+  const rotOsc = l => l.nCom < 2 ? '<span class="muted">—</span>'
+    : l.amp < LIM_ESTAVEL ? '<span class="muted">estável</span>'
+    : l.amp >= 0.75 ? `<b class="neg">${(l.amp*100).toFixed(0)}%</b>`
+    : `${(l.amp*100).toFixed(0)}%`;
+
+  t.innerHTML = '<thead><tr><th class="cat">Categoria</th>'
+    + D.meses.map(m => `<th>${rotMes(m)}${faltando(m).length?' *':''}</th>`).join('')
+    + '<th>Média</th><th title="Quanto o maior mês foi maior que o menor">Osc.</th><th>Meta</th></tr></thead><tbody>'
+    + linhas.map(l => {
+        const meta = metaDe(l.c);
+        const sel = st.catSel === l.c ? ' class="sel"' : '';
+        return `<tr${sel} data-c="${l.c}">
+          <td class="cat" title="${l.c}">${l.c}</td>`
+          + l.vals.map((v,i) => `<td class="h${bucket(v,l,i)}${l.ok[i]?'':' inc'}"
+               data-tip="<b>${l.c}</b><br>${rotMes(D.meses[i])}: ${BRL(v)}${l.ok[i]?'':' <i>(mês incompleto — fora da média)</i>'}<br>média da categoria: ${BRL(l.media)}${l.amp>=LIM_ESTAVEL&&l.nCom>1?`<br>faixa: ${BRL(l.min)} a ${BRL(l.max)}`:''}">${Kc(v)}</td>`).join('')
+          + `<td>${Kc(l.media)}</td><td>${rotOsc(l)}</td>`
+          + `<td class="muted">${meta!=null?Kc(meta):'—'}</td></tr>`;
+      }).join('') + '</tbody>';
+  t.querySelectorAll('tbody tr').forEach(tr => {
+    tr.onclick = () => { st.catSel = (st.catSel === tr.dataset.c) ? null : tr.dataset.c; renderMatriz(); renderCatDetalhe(); };
+  });
+  t.querySelectorAll('td[data-tip]').forEach(td => { td.onmousemove = e => showTip(e, td.dataset.tip); td.onmouseleave = hideTip; });
+}
+
+/* ---------- detalhe de uma categoria ---------- */
+function renderCatDetalhe(){
+  const el = $('#catDet'); if(!el) return;
+  const c = st.catSel;
+  if(!c){ el.innerHTML = '<p class="small" style="margin-top:14px">Clique numa categoria acima para ver o detalhe mês a mês dela.</p>'; return; }
+  const vals = D.meses.map(m => D.lanc.filter(l => passaBase(l) && eSaida(l) && l.c===c && l.m===m).reduce((s,l)=>s+(-l.v),0));
+  const meta = metaDe(c);
+  const okPre = D.meses.map(m => faltando(m).length === 0);
+  const nPre = okPre.filter(Boolean).length || vals.length;
+  const media = vals.reduce((s,v,i)=>s+(okPre[i]?v:0),0) / nPre;
+  const W=920, H=250, ML=68, MR=18, MT=18, MB=42, iw=W-ML-MR, ih=H-MT-MB;
+  const hi = Math.max(...vals, meta||0) * 1.12 || 1;
+  const y = v => MT + ih - v/hi*ih;
+  const bw = iw/vals.length, gw = Math.min(bw*0.46, 46);
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${c} mês a mês">`;
+  for(let i=0;i<=3;i++){ const t = hi*i/3;
+    s += `<line x1="${ML}" x2="${W-MR}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}" stroke="var(--grid)"/>
+          <text x="${ML-9}" y="${(y(t)+4).toFixed(1)}" fill="var(--muted)" font-size="11" text-anchor="end">${K(t)}</text>`; }
+  vals.forEach((v,i) => {
+    const x = ML + bw*i + (bw-gw)/2, top = y(v), h = MT+ih-top, r = Math.min(4,h,gw/2);
+    const acima = meta!=null && v > meta;  // barra laranja = estourou a meta
+    s += `<path d="M${x} ${top+h} L${x} ${top+r} Q${x} ${top} ${x+r} ${top} L${x+gw-r} ${top} Q${x+gw} ${top} ${x+gw} ${top+r} L${x+gw} ${top+h} Z" fill="${acima?'var(--s2)':'var(--s1)'}" opacity="${okPre[i]?1:.42}"/>`;
+    s += `<text x="${(ML+bw*i+bw/2).toFixed(1)}" y="${H-24}" fill="var(--muted)" font-size="11.5" text-anchor="middle">${rotMes(D.meses[i])}</text>`;
+    s += `<text x="${(ML+bw*i+bw/2).toFixed(1)}" y="${(top-7).toFixed(1)}" fill="var(--ink2)" font-size="11" text-anchor="middle">${v>0?Kc(v):''}</text>`;
+  });
+  s += `<line x1="${ML}" x2="${W-MR}" y1="${(MT+ih).toFixed(1)}" y2="${(MT+ih).toFixed(1)}" stroke="var(--axis)" stroke-width="1.5"/>`;
+  if(meta != null){
+    s += `<line x1="${ML}" x2="${W-MR}" y1="${y(meta).toFixed(1)}" y2="${y(meta).toFixed(1)}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="5 4" opacity=".75"/>
+          <text x="${W-MR}" y="${(y(meta)-7).toFixed(1)}" fill="var(--ink2)" font-size="11" text-anchor="end">meta ${BRL(meta)}</text>`;
+  }
+  s += '</svg>';
+  const okM = D.meses.map(m => faltando(m).length === 0);
+  const nOkM = okM.filter(Boolean).length || vals.length;
+  const acima = vals.filter((v,i) => okM[i] && meta!=null && v > meta).length;
+  const incN = okM.filter(x=>!x).length;
+  el.innerHTML = `<div style="margin-top:20px;border-top:1px solid var(--grid);padding-top:16px">
+    <h2 style="font-size:15px;margin:0 0 2px">${c}</h2>
+    <p class="sub" style="margin:0 0 12px">Média de ${BRL(media)}/mês${meta!=null?` contra meta de ${BRL(meta)}`:' (sem meta definida)'}.
+      ${meta!=null?`Estourou em <b>${acima}</b> de ${nOkM} meses fechados — barras laranja.`:''}
+      ${incN?`Os ${incN} último(s) mês(es) ainda não fecharam e não entram na conta.`:''}
+      ${st.semExtra?'Extraordinários estão fora.':''}</p>
+    <div class="chartbox">${s}</div></div>`;
+}
+
+/* ---------- exportar metas para levar de volta à planilha ---------- */
+function bindBotoesMetas(){
+  const bd = $('#btnBaixaMetas'), br = $('#btnResetMetas');
+  if(bd) bd.onclick = () => {
+    const payload = {
+      arquivo: 'metas_editadas',
+      painel: D.titulo,
+      gerado_em: new Date().toISOString().slice(0,16).replace('T',' '),
+      teto_mensal: D.teto,
+      metas: Object.fromEntries(Object.keys(D.metas).sort().map(c => [c, metaDe(c)])),
+      editadas: Object.keys(METAS_EDIT).sort(),
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'metas_editadas.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+  };
+  if(br) br.onclick = () => { METAS_EDIT = {}; salvaEdit(); renderMetas(); render(); };
+}
+
+/* ---------- render ---------- */
+function render(){
+  const L = filtrados();
+  renderKpis(L);
+  renderExtra();
+  barras($('#barsCat'), L, -1);
+  barras($('#barsRec'), L, +1);
+  renderEvol();
+  renderMatriz();
+  renderCatDetalhe();
+  renderMetas();
+  renderTabela();
+  renderCompromissos();
+}
+bindBotoesMetas();
+render();
+</script>
+</body>
+</html>
