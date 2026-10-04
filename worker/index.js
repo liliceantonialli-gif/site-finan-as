@@ -75,6 +75,62 @@ const MODELO = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 const MAX_TOKENS = 180;
 // ============ FIM DA PARTE PARA EDITAR ============
 
+
+// ============ PAINEL DE DEMONSTRAÇÃO: "Pergunte ao painel" ============
+// O painel (demo/painel.html) faz duas chamadas: "rota" (quais consultas fazer)
+// e "resposta" (escrever a resposta com o resultado das consultas, calculado no navegador).
+const PAINEL_ROTA = `Você escolhe as consultas que o painel financeiro de uma família precisa rodar para responder à pergunta.
+Responda SOMENTE com um JSON válido, sem nenhum texto antes ou depois, neste formato:
+{"chamadas":[{"ferramenta":"NOME","args":{...}}]}
+
+Ferramentas:
+1. consultar_lancamentos — filtra e soma lançamentos. args:
+   - base: "compra" para perguntas sobre dias, semanas ou fim de semana (use "de" e "ate" no formato AAAA-MM-DD);
+           "caixa" para perguntas sobre meses (use "meses": ["AAAA-MM", ...]).
+   - categorias: lista opcional de categorias (ex.: ["Restaurantes e delivery"])
+   - texto: trecho opcional da descrição (ex.: "ifood", "posto", "escola")
+   - tipo: "saidas" (padrão), "entradas" ou "ambos"
+2. resumo_do_periodo — entradas, saídas, resultado, categorias com meta e % da meta, extraordinários. args: {"meses":["AAAA-MM", ...]}.
+   Para comparar dois períodos, faça uma chamada para cada um.
+3. compromissos_futuros — parcelas de cartão e financiamentos ainda a pagar. args: {}.
+
+Regras: no máximo 3 chamadas. Use as datas de referência, os meses disponíveis e o período escolhido que estão no contexto.
+"Neste período" = o período escolhido no painel. "Fim de semana" = sábado e domingo indicados no contexto.`;
+
+const PAINEL_RESPOSTA = `Você é o assistente do painel financeiro de uma família (demonstração com dados fictícios).
+Responda em português do Brasil, direto e curto: comece pela resposta com o número principal, depois no máximo 3 tópicos curtos se ajudarem. Até 120 palavras.
+Valores no formato R$ 1.234,56.
+Use SOMENTE os números do RESULTADO DAS CONSULTAS. Não invente lançamentos e não faça contas novas além de diferenças simples entre dois números que estão no resultado.
+Diga o critério usado (data da compra ou mês-caixa) e o período.
+Se o resultado não responder à pergunta, diga isso e sugira uma pergunta que o painel consegue responder.
+Se o mês estiver em aberto, avise que é parcial. Não recomende investimentos; ideias de corte de gastos são bem-vindas.
+Regras do método: mês-caixa = mês em que o dinheiro sai (compras no cartão entram no mês do vencimento da fatura); pagamento de fatura não é gasto; reembolso abate a própria categoria; acertos de família contam pelo líquido; extraordinários ficam fora das médias.`;
+
+const corta = (v, n) => String(v || "").slice(0, n);
+
+async function responderPainel(body, env, cors) {
+  const etapa = body.etapa === "resposta" ? "resposta" : "rota";
+  const pergunta = corta(body.pergunta, 500);
+  if (!pergunta.trim()) return responder({ erro: "Pergunta vazia" }, 400, cors);
+  const contexto = "CONTEXTO DO PAINEL:\n" + corta(body.refs, 7000) +
+    (body.historico ? "\n\nCONVERSA ANTERIOR:\n" + corta(body.historico, 2000) : "");
+  const mensagens = etapa === "rota"
+    ? [{ role: "system", content: PAINEL_ROTA },
+       { role: "user", content: contexto + "\n\nPERGUNTA: " + pergunta }]
+    : [{ role: "system", content: PAINEL_RESPOSTA },
+       { role: "user", content: contexto + "\n\nRESULTADO DAS CONSULTAS (JSON):\n" + corta(body.resultado, 14000) + "\n\nPERGUNTA: " + pergunta }];
+  try {
+    const r = await env.AI.run(MODELO, {
+      messages: mensagens,
+      max_tokens: etapa === "rota" ? 300 : 350,
+      temperature: etapa === "rota" ? 0 : 0.3,
+    });
+    return responder({ resposta: r.response }, 200, cors);
+  } catch (e) {
+    return responder({ erro: "IA indisponível no momento." }, 500, cors);
+  }
+}
+
 export default {
   async fetch(request, env) {
     const cors = {
@@ -92,6 +148,8 @@ export default {
     } catch {
       return responder({ erro: "Requisição inválida" }, 400, cors);
     }
+
+    if (body && body.modo === "painel") return responderPainel(body, env, cors);
 
     // Guarda só as últimas 10 mensagens e limita o tamanho (economiza a cota grátis)
     const mensagens = (Array.isArray(body.messages) ? body.messages : [])
