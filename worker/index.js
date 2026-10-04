@@ -125,7 +125,8 @@ async function responderPainel(body, env, cors) {
       max_tokens: etapa === "rota" ? 300 : 350,
       temperature: etapa === "rota" ? 0 : 0.3,
     });
-    return responder({ resposta: r.response }, 200, cors);
+    const texto = typeof r.response === "string" ? r.response : JSON.stringify(r.response);
+    return responder({ resposta: texto }, 200, cors);
   } catch (e) {
     return responder({ erro: "IA indisponível no momento." }, 500, cors);
   }

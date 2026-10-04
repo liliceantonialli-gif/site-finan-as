@@ -935,7 +935,7 @@ function buildSugs(){const A=selArr(),per=A.length>1?"neste período":"em "+full
   $$("#sugs button").forEach(b=>b.onclick=()=>{q.value=b.textContent;ask()})}
 async function chamar(corpo,signal){const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(corpo),signal});
   const d=await r.json().catch(()=>({}));if(!r.ok||!d.resposta)throw new Error(d.erro||"sem resposta");return d.resposta}
-function lerJSON(t){const m=String(t).match(/\{[\s\S]*\}/);if(!m)return null;try{return JSON.parse(m[0])}catch(_){return null}}
+function lerJSON(t){if(t&&typeof t==="object")return t;const m=String(t).match(/\{[\s\S]*\}/);if(!m)return null;try{return JSON.parse(m[0])}catch(_){return null}}
 function executar(plano){const out=[];const ch=(plano&&Array.isArray(plano.chamadas)?plano.chamadas:[]).slice(0,3);
   ch.forEach(c=>{const t=TOOLS.find(x=>x.name===c.ferramenta);if(!t)return;try{out.push({ferramenta:t.name,args:c.args||{},resultado:t.execute(c.args||{})})}catch(e){out.push({ferramenta:t.name,args:c.args||{},erro:String(e.message||e)})}});
   if(!out.length)out.push({ferramenta:"resumo_do_periodo",args:{meses:selArr()},resultado:TOOLS[1].execute({meses:selArr()})});
@@ -952,7 +952,7 @@ async function ask(){const text=q.value.trim();if(!text||ctl)return;
     const res=executar(lerJSON(rota));
     ab.innerHTML=`<span class="state">${esc(res.map(r=>r.ferramenta==="compromissos_futuros"?"Somando parcelas e financiamentos…":r.ferramenta==="resumo_do_periodo"?"Lendo o resumo do período…":"Consultando os lançamentos…").join(" "))}</span>`;
     const txt=await chamar({modo:"painel",etapa:"resposta",pergunta:text,historico:hist,refs,resultado:JSON.stringify(res)},ctl.signal);
-    ab.innerHTML=mdLite(txt);turns.push({role:"user",content:text},{role:"assistant",content:txt});if(turns.length>8)turns=turns.slice(-8)}
+    const txt2=typeof txt==="string"?txt:JSON.stringify(txt);ab.innerHTML=mdLite(txt2);turns.push({role:"user",content:text},{role:"assistant",content:txt2});if(turns.length>8)turns=turns.slice(-8)}
   catch(e){if(e&&e.name==="AbortError")ab.innerHTML=`<span class="muted">Pergunta cancelada.</span>`;
     else ab.innerHTML=`<div class="err">Não consegui responder agora. Tente de novo em instantes.</div>`}
   finally{ctl=null;send.disabled=false;stopB.hidden=true;log.scrollTop=log.scrollHeight}}
