@@ -920,6 +920,7 @@ const TOOLS=[
     return withDefaults(()=>{const S=new Set(ms),n=ms.length,t=totals(S),g=cats(S);
       return{meses:ms.map(m=>m+" ("+ST[MESES[m].status]+")"),entradas:r2(t.e),saidas:r2(t.s),resultado:r2(t.r),media_mensal:{entradas:r2(t.e/n),saidas:r2(t.s/n)},
         categorias:Object.entries(g).sort((a,b)=>b[1].t-a[1].t).map(([c,d])=>({categoria:c,media_mensal:r2(d.t/n),meta:metaOf(c)||null,pct_meta:metaOf(c)?Math.round(d.t/n/metaOf(c)*100):null})),
+        categorias_acima_da_meta:Object.entries(g).filter(([c,d])=>metaOf(c)&&d.t/n>metaOf(c)*1.005).sort((a,b)=>(b[1].t/n-metaOf(b[0]))-(a[1].t/n-metaOf(a[0]))).map(([c,d])=>({categoria:c,gasto_medio_mensal:r2(d.t/n),meta:metaOf(c),passou:r2(d.t/n-metaOf(c))})),
         extraordinarios_fora_dos_totais:ROWS.filter(l=>l._e&&S.has(l.mes)).map(l=>({data:l.d,descricao:l.desc,valor:l.v}))}})}},
  {name:"compromissos_futuros",description:"Parcelas de cartão e financiamentos ainda a pagar: cada compromisso (valor da parcela, quantas faltam, último mês, saldo) e o total por mês.",
   execute(){return withDefaults(()=>{const{ser,by}=commitments();return{compromissos:ser.map(s=>({descricao:s.desc,tipo:s.tipo==="fin"?"financiamento":"parcela de cartão",parcela:r2(s.v),faltam:s.parcelas.length,ultima:s.fim,saldo:r2(s.saldo)})),por_mes:Object.keys(by).sort().map(m=>({mes:m,total:r2(by[m].card+by[m].fin)}))}})}}

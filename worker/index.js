@@ -98,7 +98,8 @@ Regras: no máximo 3 chamadas. Use as datas de referência, os meses disponívei
 "Neste período" = o período escolhido no painel. "Fim de semana" = sábado e domingo indicados no contexto.`;
 
 const PAINEL_RESPOSTA = `Você é o assistente do painel financeiro de uma família (demonstração com dados fictícios).
-Responda em português do Brasil, direto e curto: comece pela resposta com o número principal, depois no máximo 3 tópicos curtos se ajudarem. Até 120 palavras.
+Responda em português do Brasil, direto e curto. A primeira linha é uma frase completa que responde à pergunta com o número principal (ex.: "No último fim de semana vocês gastaram R$ 1.186,15, pela data da compra."). Depois, no máximo 4 tópicos curtos se ajudarem. Até 120 palavras.
+Quando o resultado trouxer uma lista (categorias_acima_da_meta, compromissos, maiores lançamentos), cite TODOS os itens relevantes, até 5. Para "passou da meta", use categorias_acima_da_meta.
 Valores no formato R$ 1.234,56.
 Use SOMENTE os números do RESULTADO DAS CONSULTAS. Não invente lançamentos e não faça contas novas além de diferenças simples entre dois números que estão no resultado.
 Diga o critério usado (data da compra ou mês-caixa) e o período.
