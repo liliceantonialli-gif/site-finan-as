@@ -3,27 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M.A. Consultoria — Organize uma vez. Siga sozinha.</title>
-<meta name="description" content="Implantação guiada do orçamento da sua família: uma planilha que fecha ao centavo, um painel claro e a rotina para continuar sem depender de ninguém.">
+<title>M.A. Consultoria — Organize uma vez. Depois, o controle é seu.</title>
+<meta name="description" content="Implantação guiada do orçamento da casa para famílias e profissionais liberais: uma planilha que fecha ao centavo com o banco, um painel claro e uma rotina de 30 minutos por mês. Preço fechado, sem mensalidade, com tudo no seu nome.">
 <link rel="icon" type="image/png" href="imagens/01_icone_MA_azul_marinho.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261004">
+<link rel="stylesheet" href="css/style.css?v=20261004b">
 </head>
 <body>
 
 <header class="cabecalho">
   <div class="container">
     <a href="#topo" class="cabecalho__logo">
-      <img src="imagens/01_logo_MA_fundo_creme.jpg" alt="M.A. Consultoria">
+      <img src="imagens/logo_MA.png" alt="M.A. Consultoria" width="547" height="296">
     </a>
     <nav class="menu-principal" id="menu-principal">
       <a href="#como-funciona">Como funciona</a>
-      <a href="#pacotes">Pacotes</a>
-      <a href="#quem-sou">Quem sou</a>
       <a href="#galeria">Demonstração</a>
-        <a href="#faq">FAQ</a>
+      <a href="#quem-sou">Quem sou</a>
+      <a href="#pacotes">Pacotes</a>
+      <a href="#faq">Dúvidas</a>
       <a href="#contato" class="botao botao--principal">Agendar conversa</a>
     </nav>
     <button class="botao-menu-mobile" id="botao-menu-mobile" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-principal">
@@ -38,16 +38,39 @@
   <section class="hero">
     <div class="container">
       <div class="hero__texto">
-        <span class="rotulo">Gestão Orçamentária</span>
-        <h1>Organize uma vez. Siga sozinha.</h1>
-        <p class="hero__subtitulo">Implantação guiada do orçamento da sua família: em poucos encontros, você sai com uma planilha que fecha ao centavo, um painel claro e a rotina para continuar sem depender de ninguém.</p>
+        <span class="rotulo">Gestão orçamentária para famílias e profissionais liberais</span>
+        <h1>Organize uma vez. Depois, o controle é seu.</h1>
+        <p class="hero__subtitulo">Em poucos encontros online, montamos na sua conta uma planilha que fecha ao centavo com o banco, um painel que mostra para onde foi o dinheiro e uma rotina de 30 minutos por mês. Preço fechado, sem mensalidade.</p>
         <div class="grupo-botoes">
           <a href="#contato" class="botao botao--principal">Agendar conversa gratuita de 10 min</a>
-          <a href="https://wa.me/5511994290680?text=Ol%C3%A1%2C%20Maria%20Alice!%20Quero%20receber%20o%20kit%20gratuito%20de%20or%C3%A7amento%20familiar." target="_blank" rel="noopener" class="botao botao--secundario">Pedir o kit gratuito</a>
+          <a href="demo/painel.html" target="_blank" rel="noopener" class="botao botao--secundario">Ver o painel funcionando</a>
+        </div>
+        <div class="hero__assinatura">
+          <img src="imagens/foto_maria_alice_rosto.jpg" alt="" width="56" height="56">
+          <p><strong>Maria Alice Antonialli</strong><br>10 anos em planejamento e controle orçamentário no Itaú</p>
         </div>
       </div>
-      <div class="hero__imagem">
-        <img src="imagens/02_painel_visao-do-mes.png" alt="Painel 'Para onde foi o dinheiro', mostrando a visão do mês de um orçamento familiar de exemplo">
+      <figure class="hero__imagem">
+        <picture><source media="(max-width: 640px)" srcset="imagens/demo_fatura_m.png" width="736" height="1252"><img src="imagens/demo_fatura.png" width="908" height="1214" alt="Painel de demonstração mostrando a fatura do cartão em formação: R$ 8.599,34 em compras novas e as categorias que já passaram da meta do mês"></picture>
+        <figcaption>Painel de demonstração, com uma família fictícia</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- FAIXA DE PROVA -->
+  <section class="faixa-prova" aria-label="Por que confiar no método">
+    <div class="container">
+      <div class="prova">
+        <p class="prova__destaque prova__destaque--fechou">R$ 0,00</p>
+        <p>de diferença entre planilha, extrato e fatura. O número só vale quando fecha ao centavo.</p>
+      </div>
+      <div class="prova">
+        <p class="prova__destaque">Preço fechado</p>
+        <p>Implantação com começo, meio e fim. Sem mensalidade e sem depender de ninguém depois.</p>
+      </div>
+      <div class="prova">
+        <p class="prova__destaque">Tudo no seu nome</p>
+        <p>Sem senha, sem extrato e sem acesso às suas contas. Seus dados não saem do seu computador.</p>
       </div>
     </div>
   </section>
@@ -57,19 +80,20 @@
     <div class="container">
       <div class="secao__cabecalho">
         <span class="rotulo">Você se reconhece?</span>
-        <h2>Um retrato comum de quem cuida do dinheiro da casa</h2>
+        <h2>Situações comuns para quem cuida do dinheiro da casa</h2>
       </div>
       <div class="grade-reconhecimento">
-        <p class="cartao-frase">"Todo mês falta dinheiro e eu não sei exatamente onde foi."</p>
-        <p class="cartao-frase">"Já tentei planilha e aplicativo. Duas semanas depois virou ficção."</p>
-        <p class="cartao-frase">"A fatura do cartão chega e eu levo susto."</p>
-        <p class="cartao-frase">"Eu e meu marido/minha esposa não conseguimos conversar sobre dinheiro, porque cada um tem um número na cabeça."</p>
-        <p class="cartao-frase">"Não sei quanto do meu salário do mês que vem já está comprometido em parcelas."</p>
-        <p class="cartao-frase">"Tenho consultório / PJ e não separo o que é da empresa e o que é da casa."</p>
+        <p class="cartao-frase">“Todo mês falta dinheiro e eu não sei exatamente onde foi.”</p>
+        <p class="cartao-frase">“Já tentei planilha e aplicativo. Duas semanas depois, virou ficção.”</p>
+        <p class="cartao-frase">“A fatura do cartão chega e eu levo susto.”</p>
+        <p class="cartao-frase">“Lá em casa cada um tem um número na cabeça, e a conversa sobre dinheiro não anda.”</p>
+        <p class="cartao-frase">“Não sei quanto do salário do mês que vem já está comprometido em parcelas.”</p>
+        <p class="cartao-frase">“Tenho consultório ou PJ e não separo o que é da empresa e o que é da casa.”</p>
       </div>
-      <p style="margin-top:2rem; max-width:70ch; color:var(--cor-cinza-texto);">
-        <strong>Por que as planilhas falham:</strong> dependem de você lembrar de digitar. Este método inverte a lógica — você não digita nada. O banco já anotou tudo; o trabalho é transformar extratos e faturas numa tabela organizada, e a inteligência artificial faz isso bem e rápido.
-      </p>
+      <div class="por-que-falham">
+        <h3>Por que as planilhas costumam falhar</h3>
+        <p>Elas dependem de alguém lembrar de anotar cada gasto. Este método inverte a lógica: ninguém digita nada. O banco já registrou tudo; o trabalho é transformar extratos e faturas numa tabela organizada, e a inteligência artificial faz isso bem e rápido.</p>
+      </div>
     </div>
   </section>
 
@@ -78,28 +102,22 @@
     <div class="container">
       <div class="secao__cabecalho">
         <span class="rotulo">O modelo</span>
-        <h2>Organize uma vez, siga sozinha</h2>
+        <h2>Uma implantação, não uma assinatura</h2>
+        <p>Eu organizo junto com você até o método rodar sem mim. Depois disso, a rotina é sua.</p>
       </div>
       <div class="grade-modelo">
         <div class="cartao-modelo">
-          <span class="cartao-modelo__numero">1</span>
           <h3>Horas de implantação, não mensalidade</h3>
-          <p>Você contrata um preço fechado, com começo, meio e fim.</p>
+          <p>Você contrata um preço fechado, com começo, meio e fim. Não existe cobrança recorrente da M.A.</p>
         </div>
         <div class="cartao-modelo">
-          <span class="cartao-modelo__numero">2</span>
-          <h3>Tudo fica no seu nome e no seu computador</h3>
-          <p>Planilha, painel, assinatura de IA e, se você quiser, a conexão automática com o banco (Open Finance) são criados na SUA conta. A consultora não recebe extratos, não guarda arquivos e não tem acesso às suas contas. Nos encontros, você compartilha a tela e opera; ela orienta.</p>
+          <h3>Tudo fica na sua conta</h3>
+          <p>Planilha, painel, assinatura de IA e, se você quiser, a conexão automática com o banco (Open Finance) são criados no seu nome. Nos encontros, você compartilha a tela e opera; eu oriento.</p>
         </div>
         <div class="cartao-modelo">
-          <span class="cartao-modelo__numero">3</span>
-          <h3>Você fecha o mês sozinha em ~30 minutos</h3>
-          <p>Os fechamentos acompanhados servem para isso: no primeiro ela conduz, no segundo você conduz, no terceiro você faz e ela só confere.</p>
+          <h3>Você fecha o mês em cerca de 30 minutos</h3>
+          <p>Os fechamentos acompanhados existem para isso: no primeiro eu conduzo, no segundo você conduz e, no último, você faz e eu só confiro.</p>
         </div>
-      </div>
-      <div class="bloco-destaque">
-        <h3>Seus dados ficam com você</h3>
-        <p>Dados financeiros são pessoais e sensíveis. Deixá-los com o titular é mais seguro para a família e mais simples do ponto de vista da LGPD (Lei Geral de Proteção de Dados).</p>
       </div>
     </div>
   </section>
@@ -110,7 +128,7 @@
       <div class="secao__cabecalho">
         <span class="rotulo">Como funciona</span>
         <h2>Provar, capturar, soltar</h2>
-        <p>A ideia central é <strong>conciliar</strong>: bater duas fontes independentes e a diferença dar zero. Se o total da fatura é R$ 4.321,55, o débito no extrato tem que ser R$ 4.321,55. Enquanto não fechar em R$ 0,00, o número não é confiável.</p>
+        <p>A ideia central é <strong>conciliar</strong>: comparar duas fontes independentes até a diferença dar zero. Se o total da fatura é R$ 4.321,55, o débito no extrato tem de ser R$ 4.321,55. Enquanto não fechar em R$ 0,00, o número não é confiável.</p>
       </div>
 
       <div class="tres-palavras">
@@ -120,166 +138,184 @@
         </div>
         <div class="palavra-cartao">
           <div class="palavra-cartao__titulo">Capturar</div>
-          <p>As regras da família ("PIX para fulano é supermercado") viram uma tabela (o De-Para). O mês seguinte fica rápido.</p>
+          <p>As regras da casa (“Pix para fulano é supermercado”) viram uma tabela, o De-Para. O mês seguinte fica rápido.</p>
         </div>
         <div class="palavra-cartao">
           <div class="palavra-cartao__titulo">Soltar</div>
-          <p>Um lembrete recorrente no dia do vencimento da fatura. Sem gatilho, a rotina morre no segundo mês.</p>
+          <p>Um lembrete no dia do vencimento da fatura. Sem esse gatilho, a rotina morre no segundo mês.</p>
         </div>
       </div>
 
-      <h3 style="margin-top:2.8rem;">5 conceitos que mudam a forma de ver o orçamento</h3>
-      <ul class="lista-conceitos">
-        <li>Regime de caixa — conta quando o dinheiro sai do bolso.</li>
-        <li>O mês do cartão é o mês do <strong>vencimento</strong> da fatura, não o da compra.</li>
-        <li>Pagar a fatura não é despesa — lançar as compras <em>e</em> o pagamento conta o mesmo gasto duas vezes.</li>
-        <li>De-Para — a IA aprende com as suas correções.</li>
-        <li>Parcelas — o futuro que você já gastou.</li>
-      </ul>
-
-      <h3 style="margin-top:2.8rem;">Em 4 passos</h3>
-      <div class="passos">
-        <div class="passo">
-          <h4>Conversa inicial gratuita</h4>
-          <p>10 minutos para entender a rotina da casa, quantos bancos e cartões entram e qual pacote faz sentido. Antes, você responde um pré-formulário de 2 minutos.</p>
+      <div class="duas-colunas">
+        <div>
+          <h3>5 ideias que mudam a forma de ver o orçamento</h3>
+          <ul class="lista-conceitos">
+            <li><span><strong>Regime de caixa:</strong> o gasto conta quando o dinheiro sai da conta.</span></li>
+            <li><span><strong>Mês do cartão:</strong> é o mês do vencimento da fatura, não o da compra.</span></li>
+            <li><span><strong>Pagar a fatura não é despesa:</strong> lançar as compras e também o pagamento conta o mesmo gasto duas vezes.</span></li>
+            <li><span><strong>De-Para:</strong> a IA aprende com as suas correções.</span></li>
+            <li><span><strong>Parcelas:</strong> são o futuro que já foi gasto.</span></li>
+          </ul>
         </div>
-        <div class="passo">
-          <h4>Montagem</h4>
-          <p>Criamos juntas, na sua conta, a planilha, o painel e as regras da sua família (e a conexão com o banco, se você quiser).</p>
+        <div>
+          <h3>Em 4 passos</h3>
+          <ol class="passos">
+            <li class="passo">
+              <h4>Conversa inicial gratuita</h4>
+              <p>10 minutos para entender a rotina da casa e indicar o pacote certo. Antes, você responde um pré-formulário de 2 minutos.</p>
+            </li>
+            <li class="passo">
+              <h4>Montagem</h4>
+              <p>Montamos na sua conta, com você na tela, a planilha, o painel e as regras da sua casa (e a conexão com o banco, se quiser).</p>
+            </li>
+            <li class="passo">
+              <h4>Fechamentos acompanhados</h4>
+              <p>Do “eu conduzo” ao “você conduz e eu só confiro”.</p>
+            </li>
+            <li class="passo">
+              <h4>Autonomia</h4>
+              <p>Você fecha o mês em cerca de 30 minutos. Se travar, existe a sessão avulsa.</p>
+            </li>
+          </ol>
         </div>
-        <div class="passo">
-          <h4>Fechamentos acompanhados</h4>
-          <p>Do "eu conduzo" ao "você faz sozinha".</p>
-        </div>
-        <div class="passo">
-          <h4>Autonomia</h4>
-          <p>Você fecha o mês em ~30 minutos. Se travar, existe a sessão avulsa.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- O QUE VOCÊ RECEBE -->
-  <section class="secao secao--branca" id="o-que-recebe">
-    <div class="container">
-      <div class="secao__cabecalho">
-        <span class="rotulo">O que você recebe</span>
-        <h2>Uma pasta única, no computador da família</h2>
-      </div>
-      <ul class="lista-entrega">
-        <li>Planilha oficial do orçamento — toda a verdade está aqui.</li>
-        <li>Painel visual (abre com duplo clique, funciona sem internet): Visão do mês, Evolução, Metas, Lançamentos, Compromissos, Como ler.</li>
-        <li>As regras da família (De-Para) e as convenções já decididas.</li>
-        <li>Guia do método em PDF e os prompts mensais (1 página).</li>
-        <li>Um lembrete no celular no dia do vencimento da fatura.</li>
-      </ul>
-
-      <h3>As 3 conferências que provam o orçamento</h3>
-      <div class="tabela-conferencias">
-        <table>
-          <tbody>
-            <tr>
-              <th scope="row">Total de cada fatura × débito no extrato</th>
-              <td class="valor-fechado">R$ 0,00</td>
-            </tr>
-            <tr>
-              <th scope="row">Saldo inicial + lançamentos × saldo final do extrato</th>
-              <td class="valor-fechado">R$ 0,00</td>
-            </tr>
-            <tr>
-              <th scope="row">Lançamentos sem categoria ("A classificar")</th>
-              <td class="valor-fechado">&lt; 3%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div style="margin-top:2.5rem;">
-        <img src="imagens/07_documento_de_entrega.png" alt="Documento de entrega: 'O seu orçamento fecha ao centavo', exemplo do que a família recebe" style="border-radius:14px; box-shadow:var(--sombra-cartao);">
-        <p class="legenda-ficticia">Exemplo com dados fictícios.</p>
       </div>
     </div>
   </section>
 
   <!-- GALERIA DO PAINEL -->
-  <section class="secao" id="galeria">
+  <section class="secao secao--branca" id="galeria">
     <div class="container">
       <div class="secao__cabecalho">
         <span class="rotulo">O painel por dentro</span>
-        <h2>Cada aba responde uma pergunta</h2>
+        <h2>Cada tela responde uma pergunta da casa</h2>
+        <p>Escolha uma pergunta para ver a tela correspondente. Os números são de uma família fictícia; no seu painel, entram os seus.</p>
       </div>
+
+      <div class="visor" id="visor">
+        <div class="visor__abas" role="tablist" aria-label="Telas do painel">
+          <button type="button" role="tab" id="aba-mes" aria-controls="tela-mes" aria-selected="true">Como fechou o mês?</button>
+          <button type="button" role="tab" id="aba-metas" aria-controls="tela-metas" aria-selected="false">Onde passou da meta?</button>
+          <button type="button" role="tab" id="aba-parcelas" aria-controls="tela-parcelas" aria-selected="false">Quanto já está comprometido?</button>
+          <button type="button" role="tab" id="aba-pergunte" aria-controls="tela-pergunte" aria-selected="false">Posso perguntar ao painel?</button>
+        </div>
+
+        <figure class="visor__tela" id="tela-mes" role="tabpanel" aria-labelledby="aba-mes">
+          <picture><source media="(max-width: 640px)" srcset="imagens/demo_inicio_m.png" width="736" height="826"><img src="imagens/demo_inicio.png" width="1984" height="630" loading="lazy" alt="Tela inicial do painel: setembro fechou no vermelho, faltaram R$ 327, com entradas, saídas, resultado e taxa de poupança comparados com agosto"></picture>
+          <figcaption>A primeira tela responde em uma frase se sobrou ou faltou dinheiro, e compara com o mês anterior.</figcaption>
+        </figure>
+        <figure class="visor__tela" id="tela-metas" role="tabpanel" aria-labelledby="aba-metas">
+          <picture><source media="(max-width: 640px)" srcset="imagens/demo_metas_m.png" width="736" height="1026"><img src="imagens/demo_metas.png" width="1984" height="872" loading="lazy" alt="Tabela de gastos por categoria comparados com a meta: Pets e Casa e utilidades passaram da meta"></picture>
+          <figcaption>Gasto de cada categoria contra a meta, com o que passou no topo e a comparação com o mês anterior.</figcaption>
+        </figure>
+        <figure class="visor__tela visor__tela--rolagem" id="tela-parcelas" role="tabpanel" aria-labelledby="aba-parcelas">
+          <div class="rolagem"><img src="imagens/demo_compromissos.png" width="1984" height="764" loading="lazy" alt="Gráfico de barras com parcelas de cartão e financiamentos já assumidos para os próximos meses"></div>
+          <figcaption>Parcelas de cartão e financiamentos já assumidos, mês a mês. Só compromisso real, nada estimado.<span class="dica-rolagem"> Deslize o gráfico para o lado para ver os próximos meses.</span></figcaption>
+        </figure>
+        <figure class="visor__tela" id="tela-pergunte" role="tabpanel" aria-labelledby="aba-pergunte">
+          <picture><source media="(max-width: 640px)" srcset="imagens/demo_pergunte_m.png" width="736" height="830"><img src="imagens/demo_pergunte.png" width="1348" height="700" loading="lazy" alt="Pergunta 'Quanto gastei no último fim de semana?' respondida pelo painel: R$ 1.186,15, separado por categoria"></picture>
+          <figcaption>Pergunte em português, como numa conversa, e o painel responde com os números da família.</figcaption>
+        </figure>
+      </div>
+
       <div class="bloco-demo">
         <div>
-          <span class="rotulo">Demonstração interativa</span>
-          <h3>Navegue no painel que você recebe na implantação</h3>
-          <p>Escolha o período, veja as metas, as parcelas que já estão comprometidas e a fatura em formação — e faça perguntas ao painel, como “quanto gastei no último fim de semana?”. É uma família fictícia: no seu, entram os seus números.</p>
+          <h3>Experimente o painel de demonstração</h3>
+          <p>Troque o período, abra as metas, veja a fatura em formação e faça perguntas. Na versão de demonstração as perguntas são simples; no painel da sua família, elas vão além.</p>
         </div>
-        <a href="demo/painel.html" class="botao botao--principal" target="_blank" rel="noopener">Abrir o painel de demonstração</a>
+        <a href="demo/painel.html" class="botao botao--principal" target="_blank" rel="noopener">Abrir a demonstração</a>
       </div>
-      <div class="grade-galeria">
-        <figure class="item-galeria">
-          <a href="demo/painel.html" target="_blank" rel="noopener" class="link-demo"><img src="imagens/03_painel_evolucao.png" alt="Aba do painel mostrando a evolução do orçamento mês a mês"></a>
-          <figcaption>Evolução mês a mês</figcaption>
-        </figure>
-        <figure class="item-galeria">
-          <a href="demo/painel.html" target="_blank" rel="noopener" class="link-demo"><img src="imagens/04_painel_metas.png" alt="Aba do painel mostrando metas por categoria de gasto"></a>
-          <figcaption>Metas por categoria</figcaption>
-        </figure>
-        <figure class="item-galeria">
-          <a href="demo/painel.html" target="_blank" rel="noopener" class="link-demo"><img src="imagens/05_painel_compromissos.png" alt="Aba do painel mostrando parcelas futuras já assumidas"></a>
-          <figcaption>Parcelas futuras já assumidas</figcaption>
-        </figure>
-        <figure class="item-galeria">
-          <a href="demo/painel.html" target="_blank" rel="noopener" class="link-demo"><img src="imagens/06_painel_como-ler.png" alt="Aba didática do painel explicando como interpretar os números"></a>
-          <figcaption>Aba didática: como ler</figcaption>
-        </figure>
+    </div>
+  </section>
+
+  <!-- O QUE VOCÊ RECEBE -->
+  <section class="secao" id="o-que-recebe">
+    <div class="container">
+      <div class="secao__cabecalho">
+        <span class="rotulo">O que você recebe</span>
+        <h2>Uma pasta única, no computador da família</h2>
       </div>
-      <p class="legenda-ficticia">Todas as imagens do painel e a demonstração usam dados fictícios de uma família criada apenas para exemplo. Clique em qualquer imagem para abrir a demonstração.</p>
+      <div class="duas-colunas duas-colunas--centro">
+        <ul class="lista-entrega">
+          <li>Planilha oficial do orçamento, onde fica toda a verdade.</li>
+          <li>Painel visual que abre com duplo clique e funciona sem internet: visão do mês, evolução, metas, lançamentos, compromissos e um guia de leitura.</li>
+          <li>As regras da casa (De-Para) e as convenções já decididas.</li>
+          <li>Guia do método em PDF e os prompts mensais, em 1 página.</li>
+          <li>Um lembrete no celular no dia do vencimento da fatura.</li>
+        </ul>
+        <div>
+          <h3>As 3 conferências que provam o orçamento</h3>
+          <div class="tabela-conferencias">
+            <table>
+              <tbody>
+                <tr>
+                  <th scope="row">Total de cada fatura × débito no extrato</th>
+                  <td class="valor-fechado">R$ 0,00</td>
+                </tr>
+                <tr>
+                  <th scope="row">Saldo inicial + lançamentos × saldo final do extrato</th>
+                  <td class="valor-fechado">R$ 0,00</td>
+                </tr>
+                <tr>
+                  <th scope="row">Lançamentos sem categoria (“A classificar”)</th>
+                  <td class="valor-fechado">&lt; 3%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUEM SOU -->
+  <section class="secao secao--branca quem-sou" id="quem-sou">
+    <div class="container">
+      <div class="quem-sou__foto">
+        <img src="imagens/foto_maria_alice.png" width="1227" height="1282" loading="lazy" alt="Maria Alice Antonialli, consultora responsável pela M.A. Consultoria">
+      </div>
+      <div>
+        <span class="rotulo">Quem sou</span>
+        <h2>Maria Alice Antonialli</h2>
+        <p>Durante dez anos, no Itaú, meu trabalho foi planejar e controlar orçamento: fazer o número fechar e explicar por que ele não fechava. Quando olhei para o orçamento da minha própria família, percebi que nenhum aplicativo entregava o que eu fazia no banco: a prova de que o número está certo.</p>
+        <p>Construí um método, testei em casa até fechar mês após mês ao centavo, e hoje implanto o mesmo método para outras famílias e para profissionais liberais. Eu organizo com você; depois, o controle é seu.</p>
+        <ul class="credenciais">
+          <li>10 anos no Itaú em PMO, planejamento e controle orçamentário</li>
+          <li>Empresária e gestora de projetos e processos</li>
+          <li>Criadora do método Provar, Capturar, Soltar</li>
+        </ul>
+      </div>
     </div>
   </section>
 
   <!-- PACOTES E PREÇOS -->
-  <section class="secao secao--branca" id="pacotes">
+  <section class="secao" id="pacotes">
     <div class="container">
       <div class="secao__cabecalho">
         <span class="rotulo">Pacotes e preços</span>
         <h2>Preço fechado, sem mensalidade</h2>
+        <p>Na conversa de 10 minutos, indico o pacote que combina com a rotina da sua casa.</p>
       </div>
 
       <div class="grade-pacotes">
-        <div class="cartao-pacote">
-          <span class="rotulo">Porta de entrada</span>
-          <h3>Kit gratuito</h3>
-          <div class="cartao-pacote__preco">Grátis</div>
-          <p>Guia em PDF com o método, planilha-modelo em branco e prompts, para quem quer tentar sozinha antes de contratar.</p>
-          <ul>
-            <li>Guia do método em PDF</li>
-            <li>Planilha-modelo em branco</li>
-            <li>Prompts prontos</li>
-            <li>Envio por e-mail no mesmo dia</li>
-          </ul>
-          <a href="https://wa.me/5511994290680?text=Ol%C3%A1%2C%20Maria%20Alice!%20Quero%20receber%20o%20kit%20gratuito%20de%20or%C3%A7amento%20familiar." target="_blank" rel="noopener" class="botao botao--secundario">Quero o kit gratuito</a>
-        </div>
-
         <div class="cartao-pacote cartao-pacote--destaque">
-          <span class="rotulo">Mais escolhido</span>
+          <span class="cartao-pacote__perfil">1 banco e até 2 cartões</span>
           <h3>Implantação Essencial</h3>
           <div class="cartao-pacote__preco">R$ 1.490</div>
-          <p>Para família simples: 1 banco e até 2 cartões.</p>
+          <p>Para a casa com rotina mais simples, em que quase tudo passa por uma conta e um ou dois cartões.</p>
           <ul>
             <li>Montagem completa na sua conta</li>
             <li>2 fechamentos acompanhados</li>
             <li>Suporte por mensagem por 60 dias</li>
             <li>Prazo total: cerca de 2 meses</li>
           </ul>
-          <a href="#contato" class="botao botao--principal">Agendar conversa gratuita de 10 min</a>
+          <a href="#contato" class="botao botao--principal">Agendar conversa gratuita</a>
         </div>
 
         <div class="cartao-pacote">
-          <span class="rotulo">Famílias maiores</span>
+          <span class="cartao-pacote__perfil">Vários bancos e cartões</span>
           <h3>Implantação Completa</h3>
           <div class="cartao-pacote__preco">R$ 2.490</div>
-          <p>Para família com vários bancos e cartões, parcelamentos e despesas divididas (ex.: contas dos pais com os irmãos).</p>
+          <p>Para rotinas com parcelamentos e despesas divididas, como contas dos pais rateadas entre irmãos.</p>
           <ul>
             <li>Montagem completa na sua conta</li>
             <li>3 fechamentos acompanhados</li>
@@ -290,37 +326,42 @@
         </div>
 
         <div class="cartao-pacote">
-          <span class="rotulo">PF + PJ</span>
+          <span class="cartao-pacote__perfil">Casa + consultório ou PJ</span>
           <h3>Profissionais liberais</h3>
           <div class="cartao-pacote__preco">Sob consulta</div>
-          <p>Para quem tem consultório ou empresa e precisa separar pró-labore, conta PJ e casa.</p>
+          <p>Para médicos e outros profissionais que precisam separar pró-labore, conta da empresa e orçamento da casa.</p>
           <ul>
             <li>Escopo próprio, definido na conversa inicial</li>
             <li>Separação clara entre PF e PJ</li>
           </ul>
           <a href="#contato" class="botao botao--secundario">Falar sobre meu caso</a>
         </div>
+      </div>
 
-        <div class="cartao-pacote">
-          <span class="rotulo">Já sou cliente</span>
-          <h3>Sessão avulsa</h3>
-          <div class="cartao-pacote__preco">R$ 250 <small>/ 1 hora</small></div>
-          <p>Para quem já foi implantado: revisão, tira-dúvidas ou "o mês não fechou e não achei a linha".</p>
-          <ul>
-            <li>1 hora online</li>
-            <li>Foco no que travou</li>
-          </ul>
-          <a href="#contato" class="botao botao--secundario">Agendar sessão avulsa</a>
+      <div class="grade-extras">
+        <div class="cartao-extra">
+          <div>
+            <h3>Kit gratuito <span class="cartao-extra__preco">Grátis</span></h3>
+            <p>Guia do método em PDF, planilha-modelo e prompts prontos, para quem quer tentar por conta própria antes de contratar.</p>
+          </div>
+          <a href="https://wa.me/5511994290680?text=Ol%C3%A1%2C%20Maria%20Alice!%20Quero%20receber%20o%20kit%20gratuito%20de%20or%C3%A7amento%20familiar." target="_blank" rel="noopener" class="botao botao--secundario">Pedir o kit</a>
+        </div>
+        <div class="cartao-extra">
+          <div>
+            <h3>Sessão avulsa <span class="cartao-extra__preco">R$ 250 / 1 hora</span></h3>
+            <p>Para quem já fez a implantação: revisão, dúvidas ou aquele mês que não fechou e você não achou a linha.</p>
+          </div>
+          <a href="#contato" class="botao botao--secundario">Agendar sessão</a>
         </div>
       </div>
 
       <div class="aviso-custos">
-        <strong>Transparência — custos que são seus, não da M.A.:</strong>
-        <ul style="margin-top:0.6rem; display:grid; gap:0.4rem;">
-          <li>Assinatura de IA com Projetos (ex.: Claude Pro), cerca de US$ 20/mês, cobrada em dólar, no seu nome.</li>
-          <li>Opcional: conexão automática com o banco via Open Finance (ex.: Banco MCP, a partir de R$ 19,90/mês por 1 banco). Sem ela, o método funciona com os PDFs de extrato e fatura.</li>
+        <strong>Custos que são seus, não da M.A.</strong>
+        <ul>
+          <li>Assinatura de IA com Projetos (ex.: Claude Pro), cerca de US$ 20 por mês, cobrada em dólar, no seu nome.</li>
+          <li>Opcional: conexão automática com o banco via Open Finance (ex.: Banco MCP, a partir de R$ 19,90 por mês para 1 banco). Sem ela, o método funciona com os PDFs de extrato e fatura.</li>
         </ul>
-        <p style="margin:0.6rem 0 0;">Formas de pagamento: Pix ou cartão. 50% na contratação e 50% após o primeiro fechamento, ou em até 3x.</p>
+        <p>Formas de pagamento: Pix ou cartão. 50% na contratação e 50% após o primeiro fechamento, ou em até 3x.</p>
       </div>
     </div>
   </section>
@@ -329,42 +370,25 @@
   <section class="secao secao--privacidade" id="privacidade">
     <div class="container">
       <div class="secao__cabecalho">
-        <span class="rotulo" style="color:var(--cor-laranja);">Privacidade</span>
+        <span class="rotulo">Privacidade</span>
         <h2>Seus dados ficam com você</h2>
-        <p>Não guardamos dados bancários, não acessamos contas e não temos acesso ao Open Finance do cliente. As assinaturas ficam no nome do cliente.</p>
+        <p>Não guardo dados bancários, não acesso contas e não tenho acesso ao seu Open Finance. As assinaturas ficam no seu nome.</p>
       </div>
       <div class="grade-privacidade">
         <div class="cartao-privacidade">
           <h3>Sem senha, sem extrato</h3>
-          <p>Nos encontros, você compartilha a tela e opera; a consultora orienta, mas nunca recebe seus arquivos.</p>
+          <p>Nos encontros, você compartilha a tela e opera. Eu oriento, mas nunca recebo seus arquivos.</p>
         </div>
         <div class="cartao-privacidade">
           <h3>Tudo no seu nome</h3>
-          <p>Planilha, painel e assinaturas de IA (e Open Finance, se você quiser) são criados na sua própria conta.</p>
+          <p>Planilha, painel e assinatura de IA (e Open Finance, se quiser) são criados na sua própria conta.</p>
         </div>
         <div class="cartao-privacidade">
-          <h3>LGPD por design</h3>
-          <p>Deixar os dados com o titular é mais seguro para a família e mais simples do ponto de vista da lei.</p>
+          <h3>LGPD desde o início</h3>
+          <p>Deixar os dados com o titular é mais seguro para a família e mais simples do ponto de vista da Lei Geral de Proteção de Dados.</p>
         </div>
       </div>
-      <p style="margin-top:1.8rem; font-size:0.9rem;">
-        Saiba mais na nossa <a href="privacidade.html">política de privacidade</a>.
-      </p>
-    </div>
-  </section>
-
-  <!-- QUEM SOU -->
-  <section class="secao secao--branca quem-sou" id="quem-sou">
-    <div class="container">
-      <div class="quem-sou__foto">
-        <img src="imagens/foto_maria_alice.png" alt="Foto de Maria Alice Antonialli, consultora responsável pela M.A. Consultoria">
-      </div>
-      <div>
-        <span class="rotulo">Quem sou</span>
-        <h2>Maria Alice Antonialli</h2>
-        <p>Durante dez anos, no Itaú, meu trabalho foi planejar e controlar orçamento: fazer número fechar e explicar por que ele não fechava. Quando olhei para o orçamento da minha própria família, percebi que nenhum aplicativo entregava o que eu fazia no banco — a prova de que o número está certo.</p>
-        <p>Construí um método, testei em casa e hoje ensino outras famílias a montar o delas. Eu organizo com você; depois, o controle é seu.</p>
-      </div>
+      <p class="privacidade__link">Saiba mais na <a href="privacidade.html">política de privacidade</a>.</p>
     </div>
   </section>
 
@@ -377,53 +401,57 @@
       </div>
       <div class="lista-faq">
         <details class="item-faq">
-          <summary>Vocês acessam minha conta bancária?</summary>
-          <p>Não. Nada fica com a consultora: nem senha, nem extrato, nem conexão com o banco. Tudo é criado na sua conta e você opera na sua tela.</p>
+          <summary>Você acessa minha conta bancária?</summary>
+          <p>Não. Nada fica comigo: nem senha, nem extrato, nem conexão com o banco. Tudo é criado na sua conta e você opera na sua tela.</p>
         </details>
         <details class="item-faq">
           <summary>Preciso saber Excel?</summary>
           <p>Não. Você não digita os gastos: a IA transforma os dados do banco em planilha. O seu papel é dizer o que cada gasto é.</p>
         </details>
         <details class="item-faq">
-          <summary>Depois da implantação eu fico sozinha?</summary>
-          <p>Sim, esse é o objetivo. O suporte por mensagem cobre 60 ou 90 dias, e depois existe a sessão avulsa se precisar.</p>
+          <summary>Depois da implantação, sigo por conta própria?</summary>
+          <p>Sim, esse é o objetivo. O suporte por mensagem cobre 60 ou 90 dias e, depois, existe a sessão avulsa se precisar.</p>
         </details>
         <details class="item-faq">
-          <summary>Tenho que pagar alguma assinatura?</summary>
-          <p>Sim, uma assinatura de IA com Projetos (ex.: Claude Pro, cerca de US$ 20/mês). A conexão automática com o banco é opcional.</p>
+          <summary>Tenho de pagar alguma assinatura?</summary>
+          <p>Sim, uma assinatura de IA com Projetos (ex.: Claude Pro, cerca de US$ 20 por mês), no seu nome. A conexão automática com o banco é opcional.</p>
         </details>
         <details class="item-faq">
           <summary>Quanto tempo por mês depois de pronto?</summary>
           <p>Cerca de 30 minutos, no dia do vencimento da fatura.</p>
         </details>
         <details class="item-faq">
-          <summary>Meu marido/minha esposa tem outra conta e outro cartão. Entra?</summary>
+          <summary>Meu cônjuge tem outra conta e outro cartão. Entra?</summary>
           <p>Deve entrar. Um mês sem uma das contas parece um rombo que não existe.</p>
         </details>
         <details class="item-faq">
           <summary>Funciona para médico ou quem tem PJ?</summary>
-          <p>Sim, com escopo próprio (PF + PJ). Fale com a gente para um orçamento.</p>
+          <p>Sim, com escopo próprio (PF + PJ). O valor é definido na conversa inicial.</p>
         </details>
         <details class="item-faq">
           <summary>É consultoria de investimento?</summary>
-          <p>Não. É organização e controle do orçamento.</p>
+          <p>Não. É organização e controle do orçamento. Não indico investimentos.</p>
         </details>
         <details class="item-faq">
           <summary>Posso testar antes?</summary>
-          <p>Sim: baixe o kit gratuito e tente sozinha.</p>
+          <p>Sim: navegue pelo <a href="demo/painel.html" target="_blank" rel="noopener">painel de demonstração</a> ou peça o kit gratuito e tente por conta própria.</p>
+        </details>
+        <details class="item-faq">
+          <summary>Atende fora da minha cidade?</summary>
+          <p>Sim. Todos os encontros são online, para todo o Brasil.</p>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- CHAMADA FINAL + PRÉ-FORMULÁRIO -->
+<!-- CHAMADA FINAL + PRÉ-FORMULÁRIO -->
   <section class="secao secao--final" id="contato">
     <div class="container">
       <div class="grade-final">
         <div>
           <span class="rotulo">Vamos conversar?</span>
           <h2>Conte sua situação em 2 minutos e agende uma conversa de 10</h2>
-          <p>Responda o pré-formulário ao lado. Ao enviar, o seu WhatsApp abre com as respostas já escritas — é só tocar em enviar. Assim a Maria Alice chega na conversa de 10 minutos sabendo da sua rotina e já indica o pacote certo.</p>
+          <p>Responda o pré-formulário. Ao enviar, o seu WhatsApp abre com as respostas já escritas — é só tocar em enviar. Assim a Maria Alice chega na conversa de 10 minutos sabendo da sua rotina e já indica o pacote certo.</p>
           <ul class="lista-entrega">
             <li>Conversa gratuita, 100% online, para todo o Brasil.</li>
             <li>Segunda a sexta, das 9h às 18h.</li>
@@ -520,7 +548,7 @@
   <div class="container">
     <div class="rodape__grade">
       <div class="rodape__logo">
-        <img src="imagens/01_logo_MA_fundo_azul_marinho.jpg" alt="M.A. Consultoria">
+        <img src="imagens/logo_MA_claro.png" alt="M.A. Consultoria" width="547" height="296">
         <p>M.A. Estratégia &amp; Negócios</p>
       </div>
       <div>
@@ -535,15 +563,15 @@
         <h4>Site</h4>
         <ul>
           <li><a href="#como-funciona">Como funciona</a></li>
+          <li><a href="demo/painel.html" target="_blank" rel="noopener">Painel de demonstração</a></li>
           <li><a href="#pacotes">Pacotes</a></li>
-          <li><a href="#quem-sou">Quem sou</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#faq">Dúvidas</a></li>
           <li><a href="privacidade.html">Política de privacidade</a></li>
         </ul>
       </div>
       <div>
         <h4>Outras frentes da M.A.</h4>
-        <p style="font-size:0.9rem; color:rgba(247,242,236,0.85);">A M.A. Consultoria também atende empresas em crescimento em Estratégia, Gestão e Performance: planejamento estratégico, gestão financeira, indicadores e projetos (PMO).</p>
+        <p class="rodape__texto">A M.A. também atende empresas em crescimento em estratégia, gestão e performance: planejamento estratégico, gestão financeira, indicadores e projetos (PMO).</p>
       </div>
     </div>
     <div class="rodape__aviso">
@@ -553,7 +581,7 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=20261004"></script>
-<script src="chat.js?v=20261004"></script>
+<script src="js/main.js?v=20261004b"></script>
+<script src="chat.js?v=20261004b"></script>
 </body>
 </html>

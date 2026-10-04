@@ -28,6 +28,33 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Visor do painel: cada aba (pergunta) mostra uma tela.
+  // Sem JavaScript, todas as telas aparecem uma embaixo da outra.
+  var visor = document.getElementById('visor');
+  if (visor) {
+    var abas = Array.prototype.slice.call(visor.querySelectorAll('[role="tab"]'));
+    visor.classList.add('visor--ativo');
+    function mostrar(aba, foco) {
+      abas.forEach(function (a) {
+        var ativa = a === aba;
+        a.setAttribute('aria-selected', ativa ? 'true' : 'false');
+        a.tabIndex = ativa ? 0 : -1;
+        document.getElementById(a.getAttribute('aria-controls')).hidden = !ativa;
+      });
+      if (foco) aba.focus();
+    }
+    abas.forEach(function (aba, i) {
+      aba.addEventListener('click', function () { mostrar(aba); });
+      aba.addEventListener('keydown', function (e) {
+        var alvo = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') alvo = abas[(i + 1) % abas.length];
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') alvo = abas[(i - 1 + abas.length) % abas.length];
+        if (alvo) { e.preventDefault(); mostrar(alvo, true); }
+      });
+    });
+    mostrar(abas[0]);
+  }
+
   // Pré-formulário: monta a mensagem e abre o WhatsApp da pessoa com as respostas.
   // Nada é enviado para servidor nenhum — quem envia é a própria pessoa, pelo WhatsApp dela.
   var WHATSAPP = '5511994290680';
