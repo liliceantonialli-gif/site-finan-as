@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261004c">
+<link rel="stylesheet" href="css/style.css?v=20261007">
 </head>
 <body>
 
@@ -290,83 +290,92 @@
   <!-- PACOTES E PREÇOS -->
   <section class="secao" id="pacotes">
     <div class="container">
-      <div class="escada">
-        <div class="secao__cabecalho escada__cabecalho">
-          <span class="rotulo">Pacotes e preços</span>
-          <h2>Três degraus, no seu ritmo</h2>
-          <p>Comece de graça, monte por conta própria ou faça comigo. Você sobe o degrau que fizer sentido para a sua casa.</p>
-          <p class="escada__ajuda">Na dúvida, a <a href="#contato">conversa gratuita de 10 minutos</a> ajuda a escolher.</p>
-        </div>
+      <div class="secao__cabecalho">
+        <span class="rotulo">Pacotes e preços</span>
+        <h2>Comece do jeito que fizer sentido para você</h2>
+        <p>Comece de graça, monte por conta própria ou faça comigo. Na dúvida, a <a href="#contato">conversa gratuita de 10 minutos</a> ajuda a escolher.</p>
+      </div>
 
-        <!-- DEGRAU 1 -->
-        <article class="degrau degrau--1">
-          <p class="degrau__passo"><span class="degrau__numero">1</span>Comece grátis</p>
+      <div class="ofertas">
+        <!-- KIT GRATUITO -->
+        <article class="oferta">
+          <p class="oferta__etapa">Comece grátis</p>
           <h3>Kit gratuito</h3>
-          <p class="degrau__preco">Grátis</p>
-          <p>Um guia rápido e uma planilha para você descobrir, em 15 minutos, para onde foi o dinheiro do último mês.</p>
+          <p class="oferta__preco">Grátis</p>
+          <p class="oferta__texto">Um guia rápido e uma planilha para você descobrir, em 15 minutos, para onde foi o dinheiro do último mês.</p>
           <button type="button" class="botao botao--secundario" data-abrir-kit>Quero o kit</button>
         </article>
 
-        <!-- DEGRAU 2 -->
-        <article class="degrau degrau--2">
-          <p class="degrau__passo"><span class="degrau__numero">2</span>Monte por conta própria</p>
+        <!-- KIT FAÇA VOCÊ MESMO -->
+        <article class="oferta">
+          <p class="oferta__etapa">Monte por conta própria</p>
           <h3>Kit Faça Você Mesmo</h3>
-          <p class="degrau__preco">R$ 47</p>
-          <p>Para quem quer montar o método por conta própria, no seu tempo.</p>
-          <ul class="degrau__lista">
+          <p class="oferta__preco">R$ 47</p>
+          <ul class="oferta__lista">
             <li>Guia completo do método</li>
             <li>Planilha completa: cartões, parcelas e metas</li>
             <li>Os 3 prompts prontos</li>
             <li>Videoaula gravada</li>
           </ul>
-          <p class="degrau__abatimento">Os R$ 47 são abatidos se você contratar a implantação em até 30 dias.</p>
+          <p class="oferta__abatimento">Os R$ 47 são abatidos se você contratar a implantação em até 30 dias.</p>
           <!-- PREENCHER: trocar o endereço abaixo pelo link de pagamento do kit. Enquanto isso, o botão abre o WhatsApp. -->
           <a href="https://wa.me/5511994290680?text=Ol%C3%A1%2C%20Maria%20Alice!%20Quero%20comprar%20o%20Kit%20Fa%C3%A7a%20Voc%C3%AA%20Mesmo%20(R%24%2047)." target="_blank" rel="noopener" class="botao botao--secundario" id="link-kit-47">Comprar o kit</a>
         </article>
 
-        <!-- DEGRAU 3 -->
-        <article class="degrau degrau--3">
-          <p class="degrau__passo"><span class="degrau__numero">3</span>Faça comigo</p>
-          <h3>Implantação guiada</h3>
-          <p class="degrau__selo">Turma fundadora · 5 vagas</p>
-          <p>Em encontros online, monto o método com você, na sua conta, até você fechar o mês por conta própria.</p>
-
-          <div class="plano">
-            <div class="plano__topo">
-              <h4>Essencial</h4>
-              <p class="plano__perfil">1 banco e até 2 cartões</p>
-            </div>
-            <p class="plano__preco"><s>de R$ 1.490</s> <strong>R$ 890</strong> <span>ou 3x de R$ 297</span></p>
-            <ul class="degrau__lista">
-              <li>Montagem na sua conta</li>
-              <li>2 fechamentos acompanhados</li>
-              <li>Suporte por mensagem por 60 dias</li>
-            </ul>
-          </div>
-
-          <div class="plano">
-            <div class="plano__topo">
-              <h4>Completa</h4>
-              <p class="plano__perfil">Vários bancos e cartões, parcelamentos e despesas divididas</p>
-            </div>
-            <p class="plano__preco"><s>de R$ 2.490</s> <strong>R$ 1.490</strong> <span>ou 3x de R$ 497</span></p>
-            <ul class="degrau__lista">
-              <li>Montagem na sua conta</li>
-              <li>3 fechamentos acompanhados</li>
-              <li>Revisão de metas</li>
-              <li>Suporte por mensagem por 90 dias</li>
-            </ul>
-          </div>
-
-          <p class="degrau__nota">Para a turma fundadora, peço um depoimento e uma conversa de feedback após o segundo fechamento.</p>
-
-          <ul class="degrau__outros">
-            <li><span>Sessão avulsa (1 hora)</span><strong>R$ 200</strong></li>
-            <li><span>Profissionais liberais e da saúde<small>Casa + consultório ou PJ</small></span><strong>Sob consulta</strong></li>
+        <!-- IMPLANTAÇÃO ESSENCIAL -->
+        <article class="oferta oferta--implantacao">
+          <p class="oferta__etapa">Faça comigo · turma fundadora</p>
+          <h3>Implantação Essencial</h3>
+          <p class="oferta__perfil">1 banco e até 2 cartões</p>
+          <p class="oferta__preco"><s>de R$ 1.490</s> R$ 890 <span>ou 3x de R$ 297</span></p>
+          <ul class="oferta__lista">
+            <li>Montagem na sua conta</li>
+            <li>2 fechamentos acompanhados</li>
+            <li>Suporte por mensagem por 60 dias</li>
           </ul>
-
           <a href="#contato" class="botao botao--principal">Agendar conversa gratuita</a>
         </article>
+
+        <!-- IMPLANTAÇÃO COMPLETA -->
+        <article class="oferta oferta--implantacao">
+          <p class="oferta__etapa">Faça comigo · turma fundadora</p>
+          <h3>Implantação Completa</h3>
+          <p class="oferta__perfil">Vários bancos e cartões, parcelamentos e despesas divididas</p>
+          <p class="oferta__preco"><s>de R$ 2.490</s> R$ 1.490 <span>ou 3x de R$ 497</span></p>
+          <ul class="oferta__lista">
+            <li>Montagem na sua conta</li>
+            <li>3 fechamentos acompanhados</li>
+            <li>Revisão de metas</li>
+            <li>Suporte por mensagem por 90 dias</li>
+          </ul>
+          <a href="#contato" class="botao botao--principal">Agendar conversa gratuita</a>
+        </article>
+      </div>
+
+      <p class="ofertas__nota"><strong>Turma fundadora: 5 vagas.</strong> Nessa condição, peço um depoimento e uma conversa de feedback após o segundo fechamento.</p>
+
+      <!-- BLOCO SEPARADO: casos específicos -->
+      <div class="ofertas-extra">
+        <div class="ofertas-extra__item">
+          <div>
+            <h3>Profissionais liberais e da saúde</h3>
+            <p>Para quem precisa separar pró-labore, conta PJ e orçamento da casa. Escopo próprio, definido na conversa inicial.</p>
+          </div>
+          <div class="ofertas-extra__acao">
+            <p class="ofertas-extra__preco">Sob consulta</p>
+            <a href="#contato" class="botao botao--secundario">Falar sobre meu caso</a>
+          </div>
+        </div>
+        <div class="ofertas-extra__item">
+          <div>
+            <h3>Sessão avulsa (1 hora)</h3>
+            <p>Para quem já fez a implantação: revisão, dúvidas ou aquele mês que não fechou.</p>
+          </div>
+          <div class="ofertas-extra__acao">
+            <p class="ofertas-extra__preco">R$ 200</p>
+            <a href="#contato" class="botao botao--secundario">Agendar sessão</a>
+          </div>
+        </div>
       </div>
 
       <div class="aviso-custos">
@@ -622,7 +631,7 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=20261004c"></script>
-<script src="chat.js?v=20261004c"></script>
+<script src="js/main.js?v=20261007"></script>
+<script src="chat.js?v=20261007"></script>
 </body>
 </html>

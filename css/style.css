@@ -762,111 +762,94 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 /* =====================================================================
-   ESCADA DE OFERTAS (3 degraus)
-   Os cartões se alinham pela base: cada degrau começa mais alto que o anterior.
+   OFERTAS: 4 cartões da mesma altura + bloco separado para casos específicos
    ===================================================================== */
-.escada {
+.ofertas {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.3fr;
-  grid-template-rows: auto auto;
-  gap: 1.4rem;
-  align-items: end;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+  margin-top: 2.6rem;
+  align-items: stretch;
 }
-/* o título ocupa o espaço acima dos dois primeiros degraus */
-.escada__cabecalho {
-  grid-column: 1 / 3;
-  grid-row: 1;
-  align-self: start;
-  text-align: left;
-  margin: 0;
-  max-width: 34rem;
-}
-.escada__cabecalho p { color: var(--cor-cinza-texto); }
-.degrau--1 { grid-column: 1; grid-row: 2; }
-.degrau--2 { grid-column: 2; grid-row: 2; }
-.degrau--3 { grid-column: 3; grid-row: 1 / 3; }
-.degrau__outros small { display: block; font-size: 0.82rem; color: var(--cor-cinza-texto); }
-.degrau {
+.oferta {
   background: var(--cor-branco);
   border-radius: var(--raio-cartao);
   box-shadow: var(--sombra-cartao);
-  padding: 1.7rem 1.6rem 1.8rem;
   border-top: 4px solid var(--cor-laranja);
+  padding: 1.6rem 1.4rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
 }
-.degrau > p { color: var(--cor-cinza-texto); font-size: 0.97rem; margin: 0 0 0.9rem; }
-.degrau h3 { margin: 0 0 0.1rem; }
-.degrau .botao { margin-top: 0.6rem; align-self: stretch; }
-.degrau__passo {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.92rem !important;
-  font-weight: 600;
-  color: #C45A12 !important;
-  margin: 0 0 0.7rem !important;
-}
-.degrau__numero {
-  width: 1.8rem; height: 1.8rem; flex: none;
-  display: inline-flex; align-items: center; justify-content: center;
-  border-radius: 50%;
-  background: var(--cor-azul-marinho);
-  color: var(--cor-creme);
+.oferta--implantacao { border-top-color: var(--cor-azul-marinho); }
+.oferta h3 { font-size: 1.2rem; margin: 0 0 0.3rem; }
+.oferta__etapa { font-size: 0.85rem; font-weight: 600; color: #C45A12; margin: 0 0 0.6rem; }
+.oferta__perfil { font-size: 0.88rem; color: var(--cor-cinza-texto); margin: 0 0 0.2rem; }
+.oferta__preco {
   font-family: var(--fonte-titulo);
-  font-size: 0.95rem;
-}
-.degrau .degrau__preco {
-  font-family: var(--fonte-titulo);
-  font-size: 1.9rem;
+  font-size: 1.8rem;
+  font-weight: 700;
   color: var(--cor-azul-marinho);
-  margin: 0.2rem 0 0.7rem;
+  margin: 0.4rem 0 1rem;
+  line-height: 1.2;
 }
-.degrau__lista { display: grid; gap: 0.45rem; margin: 0 0 1rem; }
-.degrau__lista li { padding-left: 1.3rem; position: relative; font-size: 0.95rem; }
-.degrau__lista li::before { content: "✓"; position: absolute; left: 0; color: var(--cor-verde-fechou); font-weight: 700; }
-.degrau .degrau__abatimento {
+.oferta__preco s, .oferta__preco span {
+  display: block;
+  font-family: var(--fonte-texto);
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--cor-cinza-texto);
+}
+.oferta__preco span { margin-top: 0.15rem; }
+.oferta__texto { font-size: 0.95rem; color: var(--cor-cinza-texto); margin: 0 0 1rem; }
+.oferta__lista { display: grid; gap: 0.45rem; margin: 0 0 1rem; }
+.oferta__lista li { padding-left: 1.3rem; position: relative; font-size: 0.93rem; }
+.oferta__lista li::before { content: "✓"; position: absolute; left: 0; color: var(--cor-verde-fechou); font-weight: 700; }
+.oferta__abatimento {
   background: var(--cor-creme);
   border-left: 3px solid var(--cor-laranja);
   border-radius: 0 8px 8px 0;
-  padding: 0.7rem 0.9rem;
-  font-size: 0.92rem;
-  color: var(--cor-azul-marinho);
-  font-weight: 500;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.88rem;
+  margin: 0 0 1rem;
 }
+.oferta .botao { margin-top: auto; padding: 0.8rem 0.6rem; font-size: 0.93rem; line-height: 1.6; white-space: normal; text-align: center; }
+.ofertas__nota { text-align: center; font-size: 0.92rem; color: var(--cor-cinza-texto); margin: 1.4rem auto 0; max-width: 70ch; }
+.ofertas__nota strong { color: var(--cor-azul-marinho); }
 
-/* degrau 3: a implantação, em destaque */
-.degrau--3 { border-top-color: var(--cor-azul-marinho); box-shadow: 0 18px 44px rgba(23,38,61,0.15); }
-.degrau .degrau__selo {
-  align-self: flex-start;
-  background: var(--cor-azul-marinho);
-  color: var(--cor-creme);
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 999px;
-  padding: 0.3rem 0.85rem;
-  margin: 0.4rem 0 0.9rem;
+.ofertas-extra {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 1.8rem;
+  background: var(--cor-branco);
+  border-radius: var(--raio-cartao);
+  border: 1px solid rgba(23,38,61,0.1);
 }
-.plano {
-  border-top: 1px solid rgba(23,38,61,0.12);
-  padding-top: 1rem;
-  margin-top: 0.2rem;
+.ofertas-extra__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: 1.4rem 1.6rem;
 }
-.plano__topo { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-.plano h4 { font-size: 1.12rem; margin: 0; }
-.plano__perfil { margin: 0; font-size: 0.88rem; color: var(--cor-cinza-texto); }
-.plano__preco { margin: 0.5rem 0 0.7rem; display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
-.plano__preco s { color: var(--cor-cinza-texto); font-size: 0.92rem; }
-.plano__preco strong { font-family: var(--fonte-titulo); font-size: 1.75rem; font-weight: 700; color: var(--cor-azul-marinho); }
-.plano__preco span { font-size: 0.9rem; color: var(--cor-cinza-texto); }
-.degrau .degrau__nota { font-size: 0.85rem; font-style: italic; margin: 0.2rem 0 1rem; }
-.degrau__outros { display: grid; margin: 0 0 0.4rem; border-top: 1px solid rgba(23,38,61,0.12); }
-.degrau__outros li {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
-  padding: 0.65rem 0; border-bottom: 1px solid rgba(23,38,61,0.12); font-size: 0.95rem;
+.ofertas-extra__item + .ofertas-extra__item { border-left: 1px solid rgba(23,38,61,0.1); }
+.ofertas-extra h3 { font-size: 1.1rem; margin: 0 0 0.3rem; }
+.ofertas-extra p { margin: 0; font-size: 0.92rem; color: var(--cor-cinza-texto); }
+.ofertas-extra__acao { flex: none; display: grid; gap: 0.5rem; justify-items: end; }
+.ofertas-extra .ofertas-extra__preco { font-family: var(--fonte-titulo); font-size: 1.15rem; font-weight: 700; color: var(--cor-azul-marinho); }
+.ofertas-extra .botao { padding: 0.65rem 1.2rem; }
+
+@media (max-width: 1100px) {
+  .ofertas { grid-template-columns: 1fr 1fr; }
 }
-.degrau__outros strong { white-space: nowrap; color: var(--cor-azul-marinho); }
+@media (max-width: 860px) {
+  .ofertas-extra { grid-template-columns: 1fr; }
+  .ofertas-extra__item + .ofertas-extra__item { border-left: none; border-top: 1px solid rgba(23,38,61,0.1); }
+}
+@media (max-width: 640px) {
+  .ofertas { grid-template-columns: 1fr; }
+  .ofertas-extra__item { flex-direction: column; align-items: stretch; }
+  .ofertas-extra__acao { justify-items: stretch; grid-template-columns: auto 1fr; align-items: center; }
+}
 
 /* formulário do kit gratuito */
 .dialogo-kit {
@@ -889,20 +872,6 @@ button { font-family: inherit; cursor: pointer; }
 }
 .dialogo-kit__fechar:focus-visible { outline: 3px solid var(--cor-laranja); outline-offset: 2px; }
 
-@media (max-width: 960px) {
-  .escada { grid-template-columns: 1fr 1fr; }
-  .escada__cabecalho { grid-column: 1 / -1; text-align: center; margin-inline: auto; max-width: 62ch; }
-  .degrau--3 { grid-column: 1 / -1; grid-row: 3; display: grid; grid-template-columns: 1fr 1fr; column-gap: 2rem; }
-  .degrau--3 > :not(.plano) { grid-column: 1 / -1; }
-  .degrau--3 .degrau__selo { justify-self: start; }
-}
-@media (max-width: 640px) {
-  .escada { grid-template-columns: 1fr; }
-  .degrau--1, .degrau--2, .degrau--3 { grid-column: 1; grid-row: auto; }
-  .degrau--3 { display: flex; }
-}
-.escada__ajuda { font-size: 0.95rem; }
-.escada__ajuda a { font-weight: 600; text-decoration: underline; }
 
 /* menu do topo em telas médias: cabe numa linha */
 .menu-principal a { white-space: nowrap; }
